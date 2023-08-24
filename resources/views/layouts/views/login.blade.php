@@ -8,7 +8,7 @@
         <div class="card ">
             <div class="card-header text-center d-flex flex-column align-items-center mt-2">
                 <img src="path/to/logo.png" alt="Logo" class="img-fluid" style="width:200px; height 200px;">
-                <h3 class="mt-3">NOMCAARRD eLibrary</h3>
+                <h4 class="mt-3">NOMCAARRD eLibrary</h4>
             </div>
             <div class="card-body">
                 <!-- Error Messages -->
@@ -40,7 +40,7 @@
                     <div class="text-center mt-3">
                         <button type="submit" class="btn btn-success" style="width:100%">Login</button>
                     </div>
-                    <div class="text-right mt-3">
+                    <div class="text-right mt-2">
                     <p style="font-size: 11pt"> <a class="text-decoration-none" href="">Forgot password?</a></p>
                     </div>
                 </form>
