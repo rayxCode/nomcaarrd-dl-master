@@ -1,14 +1,18 @@
-@include('layouts.includes.css')
+@extends('layouts.app')
 
 
+@section('style')
+    <!--- specific styles should be put here --->
+@endsection
 
+@section('content')
 <div class="container d-flex align-items-center justify-content-center mt-5" style="width: 50%;">
     <div class="col-md-6">
         <!-- Login Form -->
         <div class="card ">
             <div class="card-header text-center d-flex flex-column align-items-center mt-2">
                 <img src="path/to/logo.png" alt="Logo" class="img-fluid" style="width:200px; height 200px;">
-                <h3 class="mt-3">NOMCAARRD eLibrary</h3>
+                <h4 class="mt-3">NOMCAARRD eLibrary</h4>
             </div>
             <div class="card-body">
                 <!-- Error Messages -->
@@ -40,7 +44,7 @@
                         placeholder="Confirm password" required>
                     </div>
                     <p class="mt-3" style="font-size: 11pt">Already have an account?
-                        <a class="text-decoration-none" href="">Login here</a> &nbsp </p>
+                        <a class="text-decoration-none" href="/login">Login here</a> &nbsp </p>
                     <div class="text-center mt-3">
                         <button type="submit" class="btn btn-success" style="width:100%">Register </button>
                     </div>
@@ -50,4 +54,8 @@
     </div>
 </div>
 
-@include('layouts.includes.js')
+@endsection
+
+@section('scripts')
+   <!--- specific scripts should be put here --->
+@endsection

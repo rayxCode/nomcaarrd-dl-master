@@ -1,13 +1,17 @@
-@include('layouts.includes.css')
+@extends('layouts.app')
 
 
+@section('style')
+    <!--- specific styles should be put here --->
+@endsection
 
+@section('content')
 <div class="container d-flex align-items-center justify-content-center mt-5" style="width: 50%;">
     <div class="col-md-6">
         <!-- Login Form -->
         <div class="card ">
             <div class="card-header text-center d-flex flex-column align-items-center mt-2">
-                <img src="path/to/logo.png" alt="Logo" class="img-fluid" style="width:200px; height 200px;">
+                <img src="path/to/logo.png" alt="Logo" class="img-fluid" style="width:200px; height 200px">
                 <h4 class="mt-3">NOMCAARRD eLibrary</h4>
             </div>
             <div class="card-body">
@@ -36,17 +40,35 @@
                         placeholder="Password" required>
                     </div>
                     <p class="mt-3" style="font-size: 11pt">Don't have an account yet?
-                        <a class="text-decoration-none" href="">Register here</a> &nbsp </p>
+                        <a class="text-decoration-none" href="/signup">Register here</a> &nbsp </p>
                     <div class="text-center mt-3">
                         <button type="submit" class="btn btn-success" style="width:100%">Login</button>
                     </div>
-                    <div class="text-right mt-2">
+                    <div class="text-right mt-3">
                     <p style="font-size: 11pt"> <a class="text-decoration-none" href="">Forgot password?</a></p>
                     </div>
                 </form>
             </div>
+            <div class="d-flex mt-2 ">
+                <div class="container justify-content-start">
+                    <p class="text-black-50 text-left" style="font-size: 12px">
+                        <a href="" class="text-decoration-none"> Terms & Privacy Policy </a>
+                    </p>
+                </div>
+                <div class="container justify-content-end">
+                    <p class="text-black-50 text-right" style="font-size: 11px">&copy @php
+                        echo date("Y");
+                    @endphp</p>
+                </div>
+            </div>
         </div>
+
     </div>
+
 </div>
 
-@include('layouts.includes.js')
+@endsection
+
+@section('scripts')
+   <!--- specific scripts should be put here --->
+@endsection
