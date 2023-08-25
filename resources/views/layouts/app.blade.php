@@ -24,11 +24,12 @@
             @yield('styles')
     </head>
     <body class="font-sans antialiased">
-        <!--- Navbar--->
+
+    <!--- Navbar--->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
+        <div class="container">
         <div class="d-flex">
-        <a class="navbar-brand ms-5" href="/"> Placeholder Logo</a>
+        <a class="navbar-brand" href="/"> Placeholder Logo</a>
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Catalogs</a>
@@ -50,9 +51,7 @@
             <!-- Page Content -->
             <main>
                 @yield('content')
-
             </main>
-        </div>
 
     </body>
             <!-- JavaScript Bundle with Popper -->
