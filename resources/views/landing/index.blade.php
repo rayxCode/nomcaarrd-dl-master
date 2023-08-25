@@ -155,7 +155,8 @@
                 </div>
                 <div class="ms-3 ">
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p><i>a minute ago</i></p>
+                    <p class="text-dark" style="font-size: 16px; margin-top: -15px"> De la Cruz, Juan D.</p>
+                    <p class="text-dark" style="font-size: 14px; margin-top: -15px"><i>a minute ago</i></p>
                 </div>
             </div>
             <!-- end query catalog here -->

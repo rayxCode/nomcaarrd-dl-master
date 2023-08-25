@@ -27,8 +27,8 @@
 
     <!--- Navbar--->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-        <div class="d-flex">
+        <div class="container-fluid">
+        <div class="d-flex ms-4">
         <a class="navbar-brand" href="/"> Placeholder Logo</a>
             <ul class="navbar-nav">
                 <li class="nav-item">
