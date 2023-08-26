@@ -27,11 +27,11 @@
             </div>
         </div>
         <!-- change paper type ids and name -->
-        <div class="mt-3 container-md d-flex">
+        <div class="mt-3 d-flex container-fluid justifiy-content-start multiline">
             <h5 style="font-size: 1em">Filters:</h5>
-            <div class="form-check form-check-inline ms-4 ">
+            <div class="form-check form-check-inline ms-4">
                 <input class="form-check-input" type="checkbox" id="paperType1" value="option1">
-                <label class="form-check-label" for="paperType1">Books</label>
+                <label class="form-check-label" for="paperType1" style="1em">Books</label>
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="checkbox" id="paperType2" value="option2">
@@ -39,7 +39,7 @@
 
             </div>
             <!-- Adding more paper types -->
-            <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline ">
                 <input class="form-check-input" type="checkbox" id="paperType2" value="option2">
                 <label class="form-check-label" for="paperType2">Journals</label>
 
@@ -73,7 +73,7 @@
     <div style="height: 20px"> </div> <!-- space for section 2 start container-->
     <div class="container-fluid bg-light" style="width: 80%; border-radius:10px">
         <div class="ms-2">
-            <h2>Explore various knowledge!...</h2>
+            <h2>Explore various topics!...</h2>
             <hr class="bg-dark" style="margin-top: -5px; height:2px;">
         </div>
     <!-- remove dev to start query here -->
@@ -83,11 +83,11 @@
             <div>
                 <img src="" alt="" class="image-fluid" style="width: 100px; height: 150px">
             </div>
-            <div class="ms-4 ">
-                <p>Lorem ipsum dolor</p>
+            <div class="ms-4 container-fluid">
+                <p style="font-size: 1rem">Lorem ipsum dolor</p>
                 <img src="" alt="" style="width:10px; height: 10px;">
-                <p>Lorem ipsum dolor</p>
-                <p class="multi-line" style="font-size: 14px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam purus diam, finibus id posuere ut, pulvinar eu ipsum.
+                <p style="font-size: 1rem">Lorem ipsum dolor</p>
+                <p class="multi-line" style="font-size: 1rem; text-align:justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam purus diam, finibus id posuere ut, pulvinar eu ipsum.
                     Aliquam id felis pellentesque, gravida sem non, porta tortor.</p>
             </div>
         </div>
@@ -95,11 +95,11 @@
         <div>
             <img src="" alt="" class="image-fluid" style="width: 100px; height: 150px">
         </div>
-        <div class="ms-4 ">
-            <p>Lorem ipsum dolor</p>
+        <div class="ms-4 container-fluid ">
+            <p style="font-size: 1rem">Lorem ipsum dolor</p>
             <img src="" alt="" style="width:10px; height: 10px;">
-            <p>Lorem ipsum dolor</p>
-            <p class="multi-line" style="font-size: 14px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam purus diam, finibus id posuere ut, pulvinar eu ipsum.
+            <p style="font-size: 1rem">Lorem ipsum dolor</p>
+            <p class="multi-line" style="font-size: 1rem; text-align:justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam purus diam, finibus id posuere ut, pulvinar eu ipsum.
                 Aliquam id felis pellentesque, gravida sem non, porta tortor.</p>
         </div>
         </div>
@@ -111,23 +111,23 @@
             <div>
                 <img src="" alt="" class="image-fluid" style="width: 100px; height: 150px">
             </div>
-            <div class="ms-4 ">
-                <p>Lorem ipsum dolor</p>
+            <div class="ms-4 container-fluid">
+                <p style="font-size: 1rem">Lorem ipsum dolor</p>
                 <img src="" alt="" style="width:10px; height: 10px;">
-                <p>Lorem ipsum dolor</p>
-                <p class="multi-line" style="font-size: 14px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam purus diam, finibus id posuere ut, pulvinar eu ipsum.
+                <p style="font-size: 1rem">Lorem ipsum dolor</p>
+                <p class="multi-line" style="font-size: 1rem; text-align:justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam purus diam, finibus id posuere ut, pulvinar eu ipsum.
                     Aliquam id felis pellentesque, gravida sem non, porta tortor.</p>
             </div>
         </div>
         <div class="container-fluid d-flex ms-2">
         <div>
-            <img src="" alt="" class="image-fluid" style="width: 100px; height: 150px">
+            <img src="" alt="" class="image-fluid" style="width: 100px;height: 150px">
         </div>
-        <div class="ms-4 ">
-            <p>Lorem ipsum dolor</p>
+        <div class="ms-4 container-fluid">
+            <p style="font-size: 1rem">Lorem ipsum dolor</p>
             <img src="" alt="" style="width:10px; height: 10px;">
-            <p>Lorem ipsum dolor</p>
-            <p class="multi-line" style="font-size: 14px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam purus diam, finibus id posuere ut, pulvinar eu ipsum.
+            <p style="font-size: 1rem">Lorem ipsum dolor</p>
+            <p class="multi-line" style="font-size: 1rem; text-align:justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam purus diam, finibus id posuere ut, pulvinar eu ipsum.
                 Aliquam id felis pellentesque, gravida sem non, porta tortor.</p>
         </div>
         </div>
