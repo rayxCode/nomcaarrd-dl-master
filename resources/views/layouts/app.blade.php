@@ -10,7 +10,7 @@
 
 
             <!-- Fonts -->
-            <link rel="preconnect" href="https://fonts.bunny.net">
+           {{--  <link rel="preconnect" href="https://fonts.bunny.net"> --}}
             <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
             <!-- Scripts -->
@@ -21,7 +21,7 @@
             <!-- Font Awesome -->
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-            @yield('styles')
+            @yield('style')
     </head>
     <body class="font-sans antialiased">
 
@@ -30,28 +30,22 @@
         <div class="container-fluid">
         <div class="d-flex ms-4">
         <a class="navbar-brand" href="/"> Placeholder Logo</a>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Catalogs</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <!-- Add more menu items here -->
-            </ul>
+
         </div>
                 <div class="d-flex justify-content-end" style="margin-inline-end: 2%">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
                          </svg>
-                <a href="/login" class="text-decoration-none nav-link">  &nbsp LOGIN</a>
+                <a href={{'login'}} class="text-decoration-none nav-link">  &nbsp LOGIN</a>
                 </div>
         </div>
     </nav>
-            <!-- Page Content -->
-            <main>
-                @yield('content')
-            </main>
+    <main>
+         <!-- Page Content -->
+         @yield('content')
+
+    </main>
+
 
     </body>
             <!-- JavaScript Bundle with Popper -->

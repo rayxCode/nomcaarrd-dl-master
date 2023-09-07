@@ -49,6 +49,7 @@
                     </div>
                 </form>
             </div>
+            {{-- end card body --}}
             <!-- footer div -->
             <div class="d-flex mt-2 text-black-50">
                 <div class="container justify-content-start d-flex t">

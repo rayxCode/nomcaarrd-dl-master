@@ -3,6 +3,7 @@
 
 @section('style')
     <!--- specific styles should be put here --->
+    {{-- compile specific style class here for clean code --}}
 @endsection
 
 @section('content')
@@ -10,7 +11,7 @@
 <br>
 <br>
 <!--- Start of section 1 from the design --->
-<div class="container-fluid mt-4">
+<div class="container-fluid mt-4 ">
     <div class="mt-4 mx-auto" style="width: 70%">
         <div>
             <div >
@@ -139,9 +140,8 @@
   <div style="height: 20px"> </div> <!-- space for section 2 end container-->
 </div> <!-- end for section 2-->
 <!-- start for section 3  -->
-<div>
     <div style="height: 20px"> </div> <!-- space for section 3 start container-->
-    <div class="container-fluid d-flex mx-auto" style="width: 80%">
+    <div class="container-fluid d-flex mx-auto" style="width: 70%">
         <!-- recently added section dev -->
         <div>
             <!-- code here -->
@@ -189,7 +189,34 @@
         </div>
     </div>
     <div style="height: 20px"> </div> <!-- space for section 3 end container-->
-</div>
+<br>
+<br>
+    {{-- footer for landing page --}}
+    <div class="container-fluid">
+        <div class="mx-auto d-flex justify-content-center" style="width:70rem">
+            <div class="flex-fill ms-5 mt-2">
+                <p>NOMCAARRD</p>
+                <p>About NOMCAARRD</p>
+                <p>Catalogs</p>
+                <p>Frequently asked questions (FAQ)</p>
+            </div>
+            <div class="mt-2 ms-3" style="width: 22%" >
+                <p>LOCAL RESOURCES</p>
+                <p>Central Mindanao University </p>
+            </div>
+            <div class="flex-fill mt-5 ms-3" style="width:25rem">
+                <p>Philippine Consortium of Aquatic Agriculture Research and Development</p>
+            </div>
+            <div class="flex-fill mt-2 ms-2">
+                <p>HOW TO REACH US</p>
+                <p>nomcaarrd.sample@gmail.com</p>
+                <p>OR CONTACT US</p>
+                <P>+63 999 287 7281</P>
+            </div>
+        </div>
+    </div>
+    {{-- end footer queques --}}
+        @include('includes.footer')
 @endsection
 
 @section('scripts')
