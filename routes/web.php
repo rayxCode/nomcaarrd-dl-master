@@ -22,5 +22,7 @@ Route::view('/signup', 'pages.signup')
 ->name('signup');
 Route::view('/account', 'pages.accounts')
 ->name('account');
+Route::view('/bookmarks', 'pages.account_bookmarks')
+->name('bookmarks');
 
 

@@ -1,0 +1,108 @@
+@extends('layouts.app')
+
+@section('style')
+    {{-- specific scripts here --}}
+@endsection
+
+@section('content')
+
+{{-- put code here --}}
+<div class="container-fluid">
+    <div class="d-flex justify-content-center">
+        {{-- second div for menus --}}
+        <div class="rounded mt-2" style="width:12rem">
+            <p class="mt-3 ms-2" >Account Setting</p>
+            <hr class="bg-dark" style="margin-top: -10px">
+            {{-- need to edit here for selected highlights  --}}
+            <div class="ms-2 text-black">
+                <p >
+                    <a href="" class="text-decoration-none text-black-50">Dashboard</a>
+                </p>
+                <p>
+                    <a href="" class="text-decoration-none text-black-50">Edit Profile</a>
+                </p>
+                <p>
+                    <a href="" class="text-decoration-none text-black-50">Bookmarks</a>
+                </p>
+                <p>
+                    <a href="" class="text-decoration-none text-black-50">Logout</a>
+                </p>
+            </div>
+        </div>
+        {{-- second div for display --}}
+        <div class="ms-5 mt-4" style="width:50rem">
+            <br>
+            <div class="container-fluid d-flex">
+                <div class="flex-fill">
+                    <p class="text-black-50">Bookmarks </p>
+                </div>
+                <div class="">
+                    <a class="text-decoration-none" rel="" href="#">Clear</a>
+                </div>
+            </div>
+            {{-- start table query here  --}}
+            <hr class="bg-dark" style="margin-top: -3px">
+            <table class="table table-hover table-borderless" >
+                <caption><i>Current list for bookmarked books</i></caption>
+                <thead style="font-size: 12px">
+                    <tr>
+                        <th>No.</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Serial</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>1</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                </tr>
+            </table>
+            {{-- end of table query here --}}
+            {{-- footer signature --}}
+            <br>
+            <hr class="bg-dark">
+
+            @include('includes.footer')
+        </div>
+    </div>
+</div>
+
+
+@endsection
+
+@section('script')
+    {{-- specific scripts here --}}
+@endsection

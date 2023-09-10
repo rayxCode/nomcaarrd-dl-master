@@ -14,7 +14,7 @@
             <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
             <!-- Scripts -->
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
+            {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
 
             <!-- CSS only -->
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,13 +24,11 @@
             @yield('style')
     </head>
     <body class="font-sans antialiased">
-
     <!--- Navbar--->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
         <div class="d-flex ms-4">
         <a class="navbar-brand" href="/"> Placeholder Logo</a>
-
         </div>
                 <div class="d-flex justify-content-end" style="margin-inline-end: 2%">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
