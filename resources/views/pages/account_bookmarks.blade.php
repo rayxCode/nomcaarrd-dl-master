@@ -29,6 +29,7 @@
                 </p>
             </div>
         </div>
+               {{-- end for menu in second div display --}}
         {{-- second div for display --}}
         <div class="ms-5 mt-4" style="width:50rem">
             <br>

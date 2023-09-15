@@ -24,5 +24,10 @@ Route::view('/account', 'pages.accounts')
 ->name('account');
 Route::view('/bookmarks', 'pages.account_bookmarks')
 ->name('bookmarks');
-
+Route::view('/edit', 'pages.account_profile')
+->name('edit');
+Route::view('/catalogs', 'pages.catalogs')
+->name('catalogs');
+Route::view('/books', 'pages.books')
+->name('books');
 

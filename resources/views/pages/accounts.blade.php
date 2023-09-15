@@ -110,6 +110,7 @@
             </p>
         </div>
     </div>
+    {{-- end for menu in second div display --}}
     {{-- second div for display --}}
     {{-- need to change and incorporate js for changing display and no needing to reload --}}
     <div class=" ms-5 mt-4" style="width:50rem">
