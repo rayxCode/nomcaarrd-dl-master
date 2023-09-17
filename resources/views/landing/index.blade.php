@@ -20,12 +20,13 @@
             </div>
         <h3 class="text-center mt-5">Read books, journals, articles and more...</h3>
         </div>
-
+        <form action="/catalogs/"  method="POST">
         <div class="input-group mt-3">
             <input type="text" class="form-control" placeholder="Search for catalog...">
             <div class="input-group-append">
                 <button class="btn btn-success" type="button">Search</button>
             </div>
+        </form>
         </div>
         <!-- change paper type ids and name -->
         <div class="mt-3 d-flex container-fluid justifiy-content-start multiline">
@@ -192,7 +193,7 @@
 <br>
 <br>
     {{-- footer for landing page --}}
-    <div class="container-fluid">
+    <div class="container-fluid bg-light">
         <div class="mx-auto d-flex justify-content-center" style="width:70rem">
             <div class="flex-fill ms-5 mt-2">
                 <p>NOMCAARRD</p>
@@ -214,9 +215,10 @@
                 <P>+63 999 287 7281</P>
             </div>
         </div>
-    </div>
-    {{-- end footer queques --}}
+        {{-- end footer queques --}}
         @include('includes.footer')
+    </div>
+
 @endsection
 
 @section('scripts')

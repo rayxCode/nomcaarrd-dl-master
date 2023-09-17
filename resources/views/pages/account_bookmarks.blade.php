@@ -7,7 +7,16 @@
 @section('content')
 
 {{-- put code here --}}
-<div class="container-fluid">
+<div class="container-fluid" style="width: 62rem">
+    <div class="mt-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href={{'/'}} class="text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href={{'dashboard'}} class="text-decoration-none"> Accounts</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> Bookmarks</li>
+          </ol>
+        </nav>
+  </div>
     <div class="d-flex justify-content-center">
         {{-- second div for menus --}}
         <div class="rounded mt-2" style="width:12rem">
@@ -16,16 +25,16 @@
             {{-- need to edit here for selected highlights  --}}
             <div class="ms-2 text-black">
                 <p >
-                    <a href="" class="text-decoration-none text-black-50">Dashboard</a>
+                    <a href={{'dashboard'}} class="text-decoration-none text-black-50">Dashboard</a>
                 </p>
                 <p>
-                    <a href="" class="text-decoration-none text-black-50">Edit Profile</a>
+                    <a href={{'profiles'}} class="text-decoration-none text-black-50">Edit Profile</a>
                 </p>
                 <p>
-                    <a href="" class="text-decoration-none text-black-50">Bookmarks</a>
+                    <a href={{'bookmarks'}} class="text-decoration-none text-black-50">Bookmarks</a>
                 </p>
                 <p>
-                    <a href="" class="text-decoration-none text-black-50">Logout</a>
+                    <a href={{'home'}} class="text-decoration-none text-black-50">Logout</a>
                 </p>
             </div>
         </div>

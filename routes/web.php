@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CatalogController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,20 +16,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'landing.index')
-->name('home');
+Route::get('/', function() {
+    // put return code here
+    // put function with required code
+    return view('landing.index');
+})->name('home');
 Route::view('/login', 'pages.login')
 ->name('login');
 Route::view('/signup', 'pages.signup')
 ->name('signup');
-Route::view('/account', 'pages.accounts')
-->name('account');
+Route::view('/dashboard', 'pages.accounts')
+->name('dashboard');
 Route::view('/bookmarks', 'pages.account_bookmarks')
 ->name('bookmarks');
-Route::view('/edit', 'pages.account_profile')
-->name('edit');
+Route::view('/profiles', 'pages.account_profile')
+->name('profile');
 Route::view('/catalogs', 'pages.catalogs')
 ->name('catalogs');
 Route::view('/books', 'pages.books')
 ->name('books');
 
+/* Route::resources([
+    'home' => UserController::class,
+    'account' => UserController::class,
+    'home' => CatalogController::class,
+    'catalogs' => CatalogController::class,
+    'books' => CatalogController::class
+]); */

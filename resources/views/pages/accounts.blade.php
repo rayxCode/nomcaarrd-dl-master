@@ -84,10 +84,16 @@
 @section('content')
 
 {{-- start container for accounts here --}}
-<br>
-<br>
 <div>
 <div class="container-fluid" style="width: 62rem">
+    <div class="mt-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href={{'/'}} class="text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> Accounts </li>
+          </ol>
+        </nav>
+  </div>
     {{-- first div f --}}
   <div class="d-flex justify-content-center">
     {{-- second div for menus --}}
@@ -97,16 +103,16 @@
         {{-- need to edit here for selected highlights  --}}
         <div class="ms-2 text-black">
             <p >
-                <a href="" class="text-decoration-none text-black-50">Dashboard</a>
+                <a href={{'dashboard'}} class="text-decoration-none text-black-50">Dashboard</a>
             </p>
             <p>
-                <a href="" class="text-decoration-none text-black-50">Edit Profile</a>
+                <a href={{'profiles'}} class="text-decoration-none text-black-50">Edit Profile</a>
             </p>
             <p>
-                <a href="" class="text-decoration-none text-black-50">Bookmarks</a>
+                <a href={{'bookmarks'}} class="text-decoration-none text-black-50">Bookmarks</a>
             </p>
             <p>
-                <a href="" class="text-decoration-none text-black-50">Logout</a>
+                <a href={{'home'}} class="text-decoration-none text-black-50">Logout</a>
             </p>
         </div>
     </div>
@@ -140,11 +146,11 @@
               <div class="step-counter">1</div>
               <div class="step-name">Create an account</div>
             </div>
-            <div class="stepper-item">
+            <div class="stepper-item active">
               <div class="step-counter">2</div>
               <div class="step-name">Edit your profile</div>
             </div>
-            <div class="stepper-item active">
+            <div class="stepper-item">
               <div class="step-counter">3</div>
               <div class="step-name">Get verified</div>
             </div>
