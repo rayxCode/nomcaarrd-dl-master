@@ -21,7 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'affiliation',
     ];
+    protected $guarded = ['password', 'email'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -32,6 +34,13 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+     /**
+     * The attributes that should be guarded.
+     *
+     * @var array<int, string>
+     */
+     // Add other columns as needed
+
 
     /**
      * The attributes that should be cast.

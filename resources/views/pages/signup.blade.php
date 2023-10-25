@@ -27,12 +27,12 @@
                 @endif
 
                 <!-- Signup Form -->
-                <form method="POST" action="">
+                <form method="POST" action="{{'signup'}}">
                     @csrf
 
                     <div class="mb-3">
-                        <input type="email" class="form-control" id="email" name="email"
-                        placeholder="Email" required>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" autocomplete="off"
+                        placeholder="Email" required >
                     </div>
 
                     <div class="mb-3">
@@ -40,8 +40,7 @@
                         placeholder="Password" required>
                     </div>
                     <div class="mb-3">
-                        <input type="password" class="form-control" id="cfpassword" name="cfpassword"
-                        placeholder="Confirm password" required>
+                        <input type="password" class="form-control" id="cfpassword" name="password_confirmation" placeholder="Confirm password" required>
                     </div>
                     <p class="mt-3" style="font-size: 11pt">Already have an account?
                         <a class="text-decoration-none" href="/login">Login here</a> &nbsp </p>

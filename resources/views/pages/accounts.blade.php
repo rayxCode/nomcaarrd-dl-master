@@ -112,7 +112,7 @@
                 <a href={{'bookmarks'}} class="text-decoration-none text-black-50">Bookmarks</a>
             </p>
             <p>
-                <a href={{'home'}} class="text-decoration-none text-black-50">Logout</a>
+                <a href={{route('auth.logout')}} class="text-decoration-none text-black-50">Logout</a>
             </p>
         </div>
     </div>

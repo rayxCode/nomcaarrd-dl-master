@@ -22,6 +22,7 @@
             <link href="./styles/css/all.min.css" rel="stylesheet">
 
             @yield('style')
+
     </head>
     <body class="font-sans antialiased">
     <!--- Navbar--->
@@ -34,7 +35,9 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
                          </svg>
-                <a href={{'login'}} class="text-decoration-none nav-link">  &nbsp LOGIN</a>
+                <a href={{ Auth::check() ? 'dashboard' : 'login'}} class="text-decoration-none nav-link">
+                     &nbsp {{Auth::check() ? $user['name'] : 'LOGIN'}}
+                 </a>
                 </div>
         </div>
     </nav>

@@ -3,7 +3,11 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\Auth\LogoutController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,30 +20,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function() {
-    // put return code here
-    // put function with required code
-    return view('landing.index');
-})->name('home');
+// routes/web.php
+
+
+Route::get('/login', [LoginController::class, 'showLoginForm']);
+Route::post('/login', [LoginController::class, 'login']);
+Route::get('/logout', [LogoutController::class, 'logout'])->name('auth.logout');
+Route::post('/signup', [RegisterController::class, 'register']);
+
+
+
+Route::view('/', 'landing.index')
+->name('home');
 Route::view('/login', 'pages.login')
 ->name('login');
 Route::view('/signup', 'pages.signup')
 ->name('signup');
 Route::view('/dashboard', 'pages.accounts')
-->name('dashboard');
+->name('dashboard')->middleware('auth');
 Route::view('/bookmarks', 'pages.account_bookmarks')
-->name('bookmarks');
+->name('bookmarks')->middleware('auth');
 Route::view('/profiles', 'pages.account_profile')
-->name('profile');
+->name('profile')->middleware('auth');
 Route::view('/catalogs', 'pages.catalogs')
 ->name('catalogs');
 Route::view('/books', 'pages.books')
 ->name('books');
-
-/* Route::resources([
-    'home' => UserController::class,
-    'account' => UserController::class,
-    'home' => CatalogController::class,
-    'catalogs' => CatalogController::class,
-    'books' => CatalogController::class
-]); */
