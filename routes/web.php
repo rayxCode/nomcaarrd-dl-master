@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Auth\LogoutController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Catalog;
 
 
 /*
@@ -30,8 +31,11 @@ Route::post('/signup', [RegisterController::class, 'register']);
 
 
 
-Route::view('/', 'landing.index')
-->name('home');
+Route::get('/', function () {
+    $catalog = Catalog::find(1);
+ // This is where elibrary fetch data from the database
+    return view('landing.index', ['catalogs' => $catalog]);
+})->name('home');
 Route::view('/login', 'pages.login')
 ->name('login');
 Route::view('/signup', 'pages.signup')

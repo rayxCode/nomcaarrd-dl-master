@@ -23,6 +23,7 @@ return new class extends Migration
                 $table->string('status');
                 // comments table was here
                 $table->float('rating');
+                $table->string('photo_path');
                 $table->string('editedBy');
                 $table->timestamps();
             });

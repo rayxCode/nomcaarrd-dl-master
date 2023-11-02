@@ -14,6 +14,7 @@ class Catalog extends Model
         'publishedDate',
         'type_id',
         'fileURL',
+        'photo_path',
         'status',
         'editedBy',
         'author_id', // Added author_id
@@ -29,7 +30,7 @@ class Catalog extends Model
 
     public function author()
     {
-        return $this->belongsTo(Author::class, 'author_id');
+        return $this->hasMany(Author::class, 'author_id');
     }
 
     public function comments()

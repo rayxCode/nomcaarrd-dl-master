@@ -17,7 +17,14 @@ public function register(Request $request)
 {
     $this->validate($request, [
         'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:8|confirmed',
+        'password' => [
+            'required',
+            'string',
+            'min:8',
+            'confirmed',
+            'regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])/', // password validation
+            // 8 letters, upper case, lower case, with numbers
+        ],
         // Add other validation rules based on your schema
     ]);
 
