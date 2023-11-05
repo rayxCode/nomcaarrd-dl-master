@@ -15,12 +15,15 @@ return new class extends Migration
                 $table->id();
                 $table->string('password');
                 $table->string('name');
+                $table->varchar('firstname', 50);
+                $table->varchar('middlename', 50);
+                $table->varchar('lastname', 50);
                 $table->unsignedBigInteger('affiliation')->default(1);
                 $table->foreign('affiliation')->references('affiliation_id')->on('affiliations');
                 $table->string('email')->unique();
+                $table->string('photo_path');
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('editedBy')->nullable();
-                $table->rememberToken();
                 $table->timestamps();
             });
     }

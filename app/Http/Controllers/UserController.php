@@ -22,6 +22,52 @@ class UserController extends Controller
         return view('users.show', compact('user'));
     }
 
+    public function edit($id)
+    {
+        // Fetch the user's details from the database using the provided $id
+        $user = User::find($id);
+
+        if (!$user) {
+            // If the user is not found, returns an error or redirect to an error page
+            return redirect()->route('error.page')->with('error', 'User not found');
+        }
+
+        // Pass the user data to the view for editing
+        return view('profile.edit', ['user' => $user]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'affiliation' => 'required',
+        ]);
+
+        // Find the user by ID
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->route('error.page')->with('error', 'User not found');
+        }
+
+          // Create the 'name' from 'firstname', 'middlename', and 'lastname'
+          $name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
+
+        // Update the user's profile with the new data
+        $user->name = $name;
+        $user->email = $request->input('email');
+        $user->affiliation = $request->input('affiliation');
+
+        $user->save();
+
+        // Redirect back to the profile page or a success page
+        return redirect()->route('profile.show', ['id' => $user->id])->with('success', 'Profile updated successfully');
+    }
+
     public function create()
     {
         // Show the form to create a new user

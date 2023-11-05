@@ -4,10 +4,34 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
-use App\Catalog;
+use App\Models\Catalog;
 
 class CatalogController extends Controller
 {
+    //method for our catalog search box
+    public function search(Request $request)
+    {
+        // Fetch search query and selected filters
+        $search = $request->input('search');
+        // Retrieve other filters as needed
+
+        // Query builder to filter catalogs based on search and filters
+        $catalogs = Catalog::query();
+
+        // Apply search query
+        if ($search) {
+            $catalogs->where('title', 'like', '%' . $search . '%');
+        }
+
+        // Apply other filters (add more as needed)
+        // $selectedFilters = $request->input('filter_name');
+        // $catalogs->whereIn('field_name', $selectedFilters);
+
+        // Get the filtered results
+        $filteredCatalogs = $catalogs->get();
+
+        return view('pages.search', ['catalogs' => $filteredCatalogs, 'search'=> $search]);
+    }
 
     // Display a listing of the catalog.
     public function index()
@@ -16,11 +40,6 @@ class CatalogController extends Controller
         return view('catalogs.index', compact('catalogs'));
     }
 
-    // Show the form for creating a new catalog entry.
-    public function create()
-    {
-        return view('catalogs.create');
-    }
 
     // Store a newly created catalog entry in storage.
     public function store(Request $request)
@@ -33,12 +52,12 @@ class CatalogController extends Controller
             'type_id' => 'required|exists:catalogTypes,type_id',
             'fileURL' => 'required|string',
             'author_id' => 'required|exists:authors,author_id',
-            'editedBy' => 'required|string',
+            'photo_path' => 'required|string',
         ]);
 
         $catalog = Catalog::create($request->all());
 
-        return redirect()->route('catalogs.index')
+        return redirect()->route('pages.index')
             ->with('success', 'Catalog entry created successfully.');
     }
 
@@ -46,7 +65,7 @@ class CatalogController extends Controller
     public function show($id)
     {
         $catalog = Catalog::find($id);
-        return view('catalogs.show', compact('catalog'));
+        return view('pages.catalogs', ['catalogs' => $catalog]);
     }
 
     // Show the form for editing the specified catalog entry.

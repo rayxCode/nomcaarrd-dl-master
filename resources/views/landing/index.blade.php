@@ -18,11 +18,11 @@
             <h4 class="text-center">eLibrary</h4>
             <h3 class="text-center mt-5">Read books, journals, articles, and more...</h3>
         </div>
-        <form action="/catalogs/" method="POST">
+        <form action="{{ route('catalogs.search') }}" method="GET">
             <div class="input-group mt-3">
-                <input type="text" class="form-control" placeholder="Search for a catalog...">
+                <input type="text" name="search" class="form-control" placeholder="Search for a catalog...">
                 <div class="input-group-append">
-                    <button class="btn btn-success" type="button">Search</button>
+                    <button class="btn btn-success" type="submit">Search</button>
                 </div>
             </div>
 
@@ -165,36 +165,50 @@
                 <h4 style="font-size: 1.5em">Recently Added Catalogs</h4>
                 <hr class="bg-dark" style="margin-top: -2px; height: 2px">
             </div>
-            <div class="d-flex ms-2">
+            @foreach ($rates as $index => $collection)
+            @if ($index < 5)
+            <div class="d-flex ms-2 mt-2">
                 <div>
-                    <img src="" alt="" class="img-fluid" style="width: 75px; height: 90px">
+                    <img src="{{$collection['photo_path']}}" alt="" class="img-fluid" style="width: 75px; height: 90px">
                 </div>
                 <div class="ms-3">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p class="text-dark" style="font-size: 16px; margin-top: -15px">De la Cruz, Juan D.</p>
-                    <p class="text-dark" style="font-size: 14px; margin-top: -15px"><i>a minute ago</i></p>
+                    <p>{{$collection['title']}}</p>
+                    <p class="text-dark" style="font-size: 16px; margin-top: -15px"> {{$collection['author_id']}}</p>
+                    <p class="text-dark" style="font-size: 14px; margin-top: -15px"><i>asdas</i></p>
                 </div>
             </div>
+            @else
+            @break
+        @endif
+        @endforeach
         </div>
         <div class="col-md-6 mb-4">
             <div>
                 <h4>Popular Catalogs</h4>
                 <hr class="bg-dark" style="margin-top: -2px; height: 2px">
             </div>
-            <div class="d-flex ms-2">
-                <div>
-                    <img src="" alt="" class="img-fluid" style="width: 75px; height: 90px">
-                </div>
-                <div class="ms-3">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <div class="d-flex">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                            <!-- SVG path -->
-                        </svg>
-                        <p style="margin-top: -.1rem">&nbsp 5</p>
+            @foreach ($rates as $index => $collection)
+            @if ($index < 5)
+            <a class="text-decoration-none text-black" href="/catalogs/{{$collection['catalog_id']}}">
+                <div class="d-flex ms-2 m-2">
+                    <div>
+                        <img src="{{ $collection['photo_path'] }}" alt="" class="img-fluid" style="width: 75px; height: 90px">
+                    </div>
+                    <div class="ms-3">
+                        <p>{{ $collection['title'] }}</p>
+                        <div class="d-flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                <!-- SVG path -->
+                            </svg>
+                            <p style="margin-top: -.1rem">&nbsp {{$collection['rating']}}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
+            @else
+                @break
+            @endif
+        @endforeach
         </div>
     </div>
 </div>

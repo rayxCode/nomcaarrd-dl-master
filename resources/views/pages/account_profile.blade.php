@@ -52,42 +52,63 @@
                     <hr class="bg-dark">
                 </div>
             {{-- start container for user profile account --}}
-            <div class="d-flex">
-                {{-- start form edit profile--}}
-                <form action="account/{{'id'}}/edit" method="POST">
-                   @csrf
-                    <div class="d-flex">
-                        <label for="" class="lbl">Username</label>
-                        <input type="text" placeholder="" class="form-control">
+            <div class="container">
+
+                <form action="account/{{auth()->user()->id}}/update" method="POST">
+                    @csrf
+                     <!-- Centered Circular avatar photo -->
+                    <div>
+                    <div class="avatar me-3 d-flex justify-content-center align-items-center" style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden;">
+                    <img src="{{auth()->user()->photo_path}}" alt="Avatar" class="image-fluid" style="width: 150px; height: 150px;">
                     </div>
-                    <div class="d-flex mt-2">
-                        <label for="" class="lbl ">Email</label>
-                        <input type="text" placeholder="" class="form-control">
                     </div>
-                    <div class="d-flex  mt-2">
-                        <label for="" class="lbl mt-2">Firstname</label>
-                        <input type="text" placeholder="" class="form-control">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="username" class="form-control" placeholder="{{ auth()->user()->name }}" disabled>
                     </div>
-                    <div class="d-flex mt-2">
-                        <label for="" class="lbl">Middlename</label>
-                        <input type="text" placeholder="" class="form-control">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" value="{{ auth()->user()->email }}">
                     </div>
-                    <div class="d-flex mt-2">
-                        <label for="" class="lbl ">Lastname</label>
-                        <input type="text" placeholder="" class="form-control">
+                    @php
+                    $firstname = '';
+                    $middlename = '';
+                    $lastname = '';
+
+                    $nameParts = explode(' ', auth()->user()->name);
+
+                    if (count($nameParts) >= 3) {
+                    $firstname = $nameParts[0];
+                    $middlename = $nameParts[1];
+                    $lastname = $nameParts[2];
+                    }
+                    @endphp
+                    <div class="mb-3">
+                        <label for="firstname" class="form-label">First Name</label>
+                        <input type="text" id="firstname" class="form-control" placeholder="Enter your first name" value="{{$firstname ? $firstname : " "}}">
                     </div>
-                    <div class="d-flex mt-2">
-                        <label for="" class="lbl ">Affialiation</label>
-                          <select class="form-control">
-                            <option value="1">sample 1</option>
-                            <option value="2">sample 2</option>
-                            <option value="3">sample 3</option>
-                            <option value="4">sample 4</option>
-                          </select>
+                    <div class="mb-3">
+                        <label for="middlename" class="form-label">Middle Name</label>
+                        <input type="text" id="middlename" class="form-control" placeholder="Enter your middle name" value="{{$middlename ? $middlename : " "}}">
                     </div>
+                    <div class="mb-3">
+                        <label for="lastname" class="form-label">Last Name</label>
+                        <input type="text" id="lastname" class="form-control" placeholder="Enter your last name" value="{{$lastname ? $lastname : " "}}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="affiliation" class="form-label">Affiliation</label>
+                        <select id="affiliation" class="form-select">
+                            <option selected>Select an option</option>
+                            <option value="1">Sample 1</option>
+                            <option value="2">Sample 2</option>
+                            <option value="3">Sample 3</option>
+                            <option value="4">Sample 4</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
-                {{-- end form edit profile --}}
             </div>
+
 
             {{-- end of container for user profile account --}}
             {{-- footer signature --}}

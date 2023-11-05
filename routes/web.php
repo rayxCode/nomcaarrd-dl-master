@@ -28,25 +28,40 @@ Route::get('/login', [LoginController::class, 'showLoginForm']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LogoutController::class, 'logout'])->name('auth.logout');
 Route::post('/signup', [RegisterController::class, 'register']);
+Route::get('/catalogs/{id}',[CatalogController::class, 'show']);
+Route::get('/search/search', [CatalogController::class, 'search'])->name('catalogs.search');
+
 
 
 
 Route::get('/', function () {
     $catalog = Catalog::find(1);
+    $ratedCatalog = Catalog::orderBy('rating', 'desc')->get();
+    $recent = Catalog::orderBy('created_at', 'desc')->get();
+
  // This is where elibrary fetch data from the database
-    return view('landing.index', ['catalogs' => $catalog]);
+    return view('landing.index', ['catalogs' => $catalog, 'rates' => $ratedCatalog, 'recents' => $recent]);
 })->name('home');
+
 Route::view('/login', 'pages.login')
 ->name('login');
+
 Route::view('/signup', 'pages.signup')
 ->name('signup');
+
 Route::view('/dashboard', 'pages.accounts')
 ->name('dashboard')->middleware('auth');
+
 Route::view('/bookmarks', 'pages.account_bookmarks')
 ->name('bookmarks')->middleware('auth');
+
 Route::view('/profiles', 'pages.account_profile')
 ->name('profile')->middleware('auth');
-Route::view('/catalogs', 'pages.catalogs')
-->name('catalogs');
-Route::view('/books', 'pages.books')
-->name('books');
+
+Route::get('/search', function(){
+    return view('pages.search');
+})->name('search');
+
+Route::get('/catalogs', function(){
+    return view('pages.catalogs');
+})->name('catalogs');
