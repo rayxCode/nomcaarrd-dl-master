@@ -22,7 +22,8 @@ return new class extends Migration
                 $table->string('fileURL');
                 $table->string('status');
                 // comments table was here
-                $table->float('rating');
+                $table->double('rating');
+                $table->double('nUserRated');
                 $table->string('photo_path');
                 $table->string('editedBy');
                 $table->timestamps();

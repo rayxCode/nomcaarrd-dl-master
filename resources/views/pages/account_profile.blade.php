@@ -57,7 +57,7 @@
                 <form action="account/{{auth()->user()->id}}/update" method="POST">
                     @csrf
                      <!-- Centered Circular avatar photo -->
-                    <div>
+                    <div class="">
                     <div class="avatar me-3 d-flex justify-content-center align-items-center" style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden;">
                     <img src="{{auth()->user()->photo_path}}" alt="Avatar" class="image-fluid" style="width: 150px; height: 150px;">
                     </div>

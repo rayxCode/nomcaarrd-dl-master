@@ -2,7 +2,8 @@
 
 @section('style')
     {{-- specific scripts here --}}
-<style>
+
+{{-- <style>
 input[type="text"],
 select.form-control {
   background: transparent;
@@ -18,7 +19,7 @@ select.form-control:focus {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-</style>
+</style> --}}
 @endsection
 
 @section('content')
@@ -39,10 +40,10 @@ select.form-control:focus {
         {{-- start first div --}}
         <div class="" style="width: 45em; height: 75em">
 
-        <form action="{{ route('catalogs.search') }}" method="GET">
+        <form action="{{ url('/search') }}" method="GET">
             <div class="input-group mt-3">
                 <label class="mt-2">Search:  &nbsp</label>
-                <input type="text" class="form-control" placeholder="{{$search}}">
+                <input type="text" class="form-control" placeholder="Search for catalogs..." name="search" value="{{ $search ?? ''}}">
                 <div class="input-group-append">
                     <button href={{'books'}} class="btn btn-success" type="button">Search</button>
                 </div>
@@ -50,7 +51,12 @@ select.form-control:focus {
         </form>
         <hr class="bg-dark">
         {{-- start data query here --}}
-        @foreach($catalogs as $index => $collection)
+        @if ($filteredCatalogs->isEmpty())
+        <div class="alert alert-info" role="alert">
+        No catalogs found matching your criteria.
+        </div>
+        @else
+        @foreach($filteredCatalogs as $index => $collection)
         <div class="ms-1 mt-2 bg-light rounded">
             <a href="/books" class="text-decoration-none text-black">
             <p style="font-size: .75em">SERIAL {{ (new DateTime($collection['publishedDate']))->format('Y') }} </p>
@@ -63,6 +69,7 @@ select.form-control:focus {
             </a>
         </div>
         @endforeach
+        @endif
         {{-- end data query --}}
         </div>
         {{-- end for first div --}}

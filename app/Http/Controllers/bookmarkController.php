@@ -3,45 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Models\Bookmark;
 
 class bookmarkController extends Controller
 {
-    //
-    public function index()
+    public function addBookmark(Request $request)
     {
-        // Retrieve all bookmarks
-        $bookmarks = Bookmark::all();
-        return view('bookmarks.index', compact('bookmarks'));
-    }
+        if (auth()->check()) {
+            $userId = auth()->user()->id;
+        } else {
+            // Handle the case where there is no authenticated user.
+            // You might redirect the user to a login page, show an error, etc.
+            return redirect('login');
+        }
 
-    public function show($id)
-    {
-        // Retrieve a specific bookmark
-        $bookmark = Bookmark::findOrFail($id);
-        return view('bookmarks.show', compact('bookmark'));
-    }
-
-    public function create()
-    {
-        // Show the form to create a new bookmark
-        return view('bookmarks.create');
-    }
-
-    public function store(Request $request)
-    {
+        $message = [
+            'catalog_id.required' => 'There\'s no catalog that exists like that',
+        ];
         // Validate the request
-        $request->validate([
+        $validatedData = $request->validate([
             'catalog_id' => 'required|exists:catalogs,catalog_id',
-            'users_id' => 'required|exists:users,users_id',
-            'editedBy' => 'required|string|max:255',
+            'users_id' => $userId,
         ]);
 
-        // Create a new bookmark
         Bookmark::create($request->all());
 
-        // Redirect to the bookmarks index
-        return redirect()->route('bookmarks.index');
-    }
+        // The rest of your code for creating a bookmark goes here
 
-    // Add other methods like edit, update, delete based on your requirements
+        return back()->with('success', 'Bookmark added!');
+    }
 }

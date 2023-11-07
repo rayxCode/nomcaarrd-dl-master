@@ -17,10 +17,9 @@
             {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
 
             <!-- CSS only -->
-            <link href="./styles/css/bootstrap.min.css" rel="stylesheet">
+            <link href="{{asset('')}}styles/css/bootstrap.min.css" rel="stylesheet">
             <!-- Font Awesome -->
-            <link href="./styles/css/all.min.css" rel="stylesheet">
-
+            <link href="{{asset('')}}styles/css/all.min.css" rel="stylesheet">
             @yield('style')
 
     </head>
@@ -35,7 +34,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
                          </svg>
-                <a href={{ Auth::check() ? 'dashboard' : 'login'}} class="text-decoration-none nav-link">
+                <a href={{url( Auth::check() ? 'dashboard' : 'login')}} class="text-decoration-none nav-link">
                      &nbsp {{Auth::check() ? $user['name'] : 'LOGIN'}}
                  </a>
                 </div>
@@ -51,6 +50,6 @@
     </body>
 
             <!-- JavaScript Bundle with Popper -->
-            <script src="./styles/js/bootstrap.bundle.js"></script>
+    <script src="{{asset('')}}styles/js/bootstrap.bundle.js"></script>
     @yield('script')
 </html>

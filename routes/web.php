@@ -6,6 +6,7 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\bookmarkController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Catalog;
 
@@ -28,8 +29,10 @@ Route::get('/login', [LoginController::class, 'showLoginForm']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LogoutController::class, 'logout'])->name('auth.logout');
 Route::post('/signup', [RegisterController::class, 'register']);
-Route::get('/catalogs/{id}',[CatalogController::class, 'show']);
-Route::get('/search/search', [CatalogController::class, 'search'])->name('catalogs.search');
+//Route::post('/catalogs/{id}',[CatalogController::class, 'show']);
+Route::get('/search', [CatalogController::class, 'search'])->name('catalog.search');
+Route::resource('/catalogs', CatalogController::class);
+Route::post('/bookmark/{id}', [bookmarkController::class, 'addBookmark']);
 
 
 
@@ -57,10 +60,6 @@ Route::view('/bookmarks', 'pages.account_bookmarks')
 
 Route::view('/profiles', 'pages.account_profile')
 ->name('profile')->middleware('auth');
-
-Route::get('/search', function(){
-    return view('pages.search');
-})->name('search');
 
 Route::get('/catalogs', function(){
     return view('pages.catalogs');

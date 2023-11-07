@@ -18,7 +18,7 @@
             <h4 class="text-center">eLibrary</h4>
             <h3 class="text-center mt-5">Read books, journals, articles, and more...</h3>
         </div>
-        <form action="{{ route('catalogs.search') }}" method="GET">
+        <form action="{{ url(route('catalog.search')) }}" method="GET">
             <div class="input-group mt-3">
                 <input type="text" name="search" class="form-control" placeholder="Search for a catalog...">
                 <div class="input-group-append">
@@ -32,32 +32,32 @@
 
             <div class="d-flex flex-wrap justify-content-center text-center">
                 <div class="form-check form-check-inline ms-4 mb-2">
-                    <input class="form-check-input" type="checkbox" id="paperType1" value="option1">
+                    <input class="form-check-input" type="checkbox" name="filter[]" id="paperType1" value="1">
                     <label class="form-check-label" for="paperType1">Books</label>
                 </div>
                 <!-- Add more paper types -->
                 <div class="form-check form-check-inline mb-2">
-                    <input class="form-check-input" type="checkbox" id="paperType2" value="option2">
+                    <input class="form-check-input" type="checkbox" name="filter[]" id="paperType2" value="2">
                     <label class="form-check-label" for="paperType2">Serials</label>
                 </div>
                 <div class="form-check form-check-inline mb-2">
-                    <input class="form-check-input" type="checkbox" id="paperType3" value="option3">
+                    <input class="form-check-input" type="checkbox" name="filter[]" id="paperType3" value="3">
                     <label class="form-check-label" for="paperType3">Journals</label>
                 </div>
                 <div class="form-check form-check-inline mb-2">
-                    <input class="form-check-input" type="checkbox" id="paperType4" value="option4">
+                    <input class="form-check-input" type="checkbox" name="filter[]" id="paperType4" value="4">
                     <label class="form-check-label" for="paperType4">Articles</label>
                 </div>
                 <div class="form-check form-check-inline mb-2">
-                    <input class="form-check-input" type="checkbox" id="paperType5" value="option5">
+                    <input class="form-check-input" type="checkbox" name="filter[]" id="paperType5" value="5">
                     <label class="form-check-label" for="paperType5">Printouts</label>
                 </div>
                 <div class="form-check form-check-inline mb-2">
-                    <input class="form-check-input" type="checkbox" id="paperType6" value="option6">
+                    <input class="form-check-input" type="checkbox" name="filter[]" id="paperType6" value="6">
                     <label class="form-check-label" for="paperType6">Thesis/Dissertation</label>
                 </div>
                 <div class="form-check form-check-inline mb-2">
-                    <input class="form-check-input" type="checkbox" id="paperType7" value="option7">
+                    <input class="form-check-input" type="checkbox" name="filter[]" id="paperType7" value="7">
                     <label class="form-check-label" for="paperType7">Reports</label>
                 </div>
             </div>

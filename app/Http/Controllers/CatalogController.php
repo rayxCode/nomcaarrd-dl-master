@@ -5,6 +5,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use App\Models\Catalog;
+use App\Models\Bookmark;
+
 
 class CatalogController extends Controller
 {
@@ -12,7 +14,8 @@ class CatalogController extends Controller
     public function search(Request $request)
     {
         // Fetch search query and selected filters
-        $search = $request->input('search');
+        $search = $request->input('search', '');
+        $filters = $request->input('filter', []);
         // Retrieve other filters as needed
 
         // Query builder to filter catalogs based on search and filters
@@ -24,13 +27,15 @@ class CatalogController extends Controller
         }
 
         // Apply other filters (add more as needed)
-        // $selectedFilters = $request->input('filter_name');
-        // $catalogs->whereIn('field_name', $selectedFilters);
+        if (!empty($filters)) {
+            $catalogs->whereIn('type_id', $filters); // 'paper_type' should be the column in your Catalog model that corresponds to these filters
+        }
 
         // Get the filtered results
-        $filteredCatalogs = $catalogs->get();
+        $filteredCatalogs = $catalogs->paginate(10);
 
-        return view('pages.search', ['catalogs' => $filteredCatalogs, 'search'=> $search]);
+
+        return view('pages.search', compact('filteredCatalogs', 'search'));
     }
 
     // Display a listing of the catalog.
@@ -65,7 +70,9 @@ class CatalogController extends Controller
     public function show($id)
     {
         $catalog = Catalog::find($id);
-        return view('pages.catalogs', ['catalogs' => $catalog]);
+        $userBookmarksCount = Bookmark::where('catalog_id', $catalog)->count();
+
+        return view('pages.catalogs', ['catalogs' => $catalog, 'bookmarkCount' => $userBookmarksCount]);
     }
 
     // Show the form for editing the specified catalog entry.
