@@ -32,7 +32,7 @@
 
                     <div class="mb-3">
                         <input type="email" class="form-control" id="email" name="email" autocomplete="off"
-                        placeholder="Email" required>
+                        placeholder="Email" value="{{old('email')}}" required>
                     </div>
 
                     <div class="mb-3">

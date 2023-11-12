@@ -9,6 +9,8 @@ class CatalogType extends Model
 {
     use HasFactory;
 
+    protected $table = "catalogtypes";
+
     protected $primaryKey = 'type_id';
 
     protected $fillable = [

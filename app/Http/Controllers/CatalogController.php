@@ -6,6 +6,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use App\Models\Catalog;
 use App\Models\Bookmark;
+use App\Models\CatalogType;
 
 
 class CatalogController extends Controller
@@ -70,9 +71,10 @@ class CatalogController extends Controller
     public function show($id)
     {
         $catalog = Catalog::find($id);
+        $catalogType = CatalogType::find($catalog->type_id);
         $userBookmarksCount = Bookmark::where('catalog_id', $catalog)->count();
 
-        return view('pages.catalogs', ['catalogs' => $catalog, 'bookmarkCount' => $userBookmarksCount]);
+        return view('pages.catalogs', ['catalogs' => $catalog, 'bookmarkCount' => $userBookmarksCount, 'type' => $catalogType]);
     }
 
     // Show the form for editing the specified catalog entry.

@@ -38,7 +38,7 @@ Route::post('/bookmark/{id}', [bookmarkController::class, 'addBookmark']);
 
 
 Route::get('/', function () {
-    $catalog = Catalog::find(1);
+    $catalog = Catalog::inRandomOrder()->take(4)->get();
     $ratedCatalog = Catalog::orderBy('rating', 'desc')->get();
     $recent = Catalog::orderBy('created_at', 'desc')->get();
 

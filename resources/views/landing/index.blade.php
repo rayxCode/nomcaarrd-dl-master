@@ -4,6 +4,17 @@
 @section('style')
     <!--- specific styles should be put here --->
     {{-- compile specific style class here for clean code --}}
+    <style>
+    .description {
+        max-width: 320px;
+        max-height: 150px; /* Set your maximum width and height */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4; /* Limit to maximum 4 lines */
+        -webkit-box-orient: vertical;
+    }
+    </style>
 @endsection
 
 @section('content')
@@ -75,81 +86,31 @@
         </div>
     <!-- remove dev to start query here -->
     <!-- 1st row -->
+
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-6 mb-4">
-                <div class="card p-1">
-                    <div class="d-flex">
-                        <div class="me-3">
-                            <img src="{{$catalogs['photo_path']}}" alt="cover_page" style="width: 120px; height: 150px">
-                        </div>
-                        <div>
-                            <p style="font-size: 1rem"> {{$catalogs['title']}}</p>
-                            <img src="" alt="" style="width: 10px; height: 10px;">
-                            <p style="font-size: 1rem">{{$catalogs['author_id']}}</p>
-                            <p class="multi-line" style="font-size: 1rem; text-align:justify">
-                               {{$catalogs['description']}}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 mb-4">
-                <div class="card p-3">
-                    <div class="d-flex">
-                        <div class="me-3">
-                            <img src="" alt="" class="img-fluid" style="width: 100px; height: 150px">
-                        </div>
-                        <div>
-                            <p style="font-size: 1rem">Lorem ipsum dolor</p>
-                            <img src="" alt="" style="width: 10px; height: 10px;">
-                            <p style="font-size: 1rem">Lorem ipsum dolor</p>
-                            <p class="multi-line" style="font-size: 1rem; text-align:justify">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam purus diam, finibus id posuere ut, pulvinar eu ipsum. Aliquam id felis pellentesque, gravida sem non, porta tortor.
-                            </p>
+            @foreach($catalogs as $catalog)
+                <div class="col-md-6 mb-4">
+                    <div class="card p-1">
+                        <div class="d-flex">
+                            <div class="me-3">
+                                <img src="{{ $catalog->photo_path }}" alt="cover_page" style="width: 120px; height: 150px">
+                            </div>
+                            <div>
+                                <p style="font-size: 1rem">{{ $catalog->title }}</p>
+                                <img src="" alt="" style="width: 10px; height: 10px;">
+                                <p style="font-size: 1rem"> {{ $catalog->author_id }}</p>
+                                <p class="description" style="font-size: 1rem; text-align:justify">
+                                     {{ $catalog->description }}
+                                <p class="text-center"> <a class="text-decoration-none text-black" href="/catalogs/{{$catalog->catalog_id}}">Read More...</a></p>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 mb-4">
-                <div class="card p-3">
-                    <div class="d-flex">
-                        <div class="me-3">
-                            <img src="" alt="" class="img-fluid" style="width: 100px; height: 150px">
-                        </div>
-                        <div>
-                            <p style="font-size: 1rem">Lorem ipsum dolor</p>
-                            <img src="" alt="" style="width: 10px; height: 10px;">
-                            <p style="font-size: 1rem">Lorem ipsum dolor</p>
-                            <p class="multi-line" style="font-size: 1rem; text-align:justify">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam purus diam, finibus id posuere ut, pulvinar eu ipsum. Aliquam id felis pellentesque, gravida sem non, porta tortor.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 mb-4">
-                <div class="card p-3">
-                    <div class="d-flex">
-                        <div class="me-3">
-                            <img src="" alt="" class="img-fluid" style="width: 100px; height: 150px">
-                        </div>
-                        <div>
-                            <p style="font-size: 1rem">Lorem ipsum dolor</p>
-                            <img src="" alt="" style="width: 10px; height: 10px;">
-                            <p style="font-size: 1rem">Lorem ipsum dolor</p>
-                            <p class="multi-line" style="font-size: 1rem; text-align:justify">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam purus diam, finibus id posuere ut, pulvinar eu ipsum. Aliquam id felis pellentesque, gravida sem non, porta tortor.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
-
     <br>
     <!-- end for query section-->
   </div>
