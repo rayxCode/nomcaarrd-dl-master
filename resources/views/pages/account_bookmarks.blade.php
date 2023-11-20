@@ -62,43 +62,15 @@
                         <th>Serial</th>
                     </tr>
                 </thead>
+                @foreach ($bookmarks as $bookmarked)
                 <tr>
-                    <td>1</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
+                    <td>{{$bookmarked->id}}</td>
+                    <td>{{$bookmarked->catalog->title}}</td>
+                    <td></td>
+                    <td>{{ (new DateTime($bookmarked->catalog->publishedDate))->format('Y') }}</td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                </tr>
+                @endforeach
 
-                <tr>
-                    <td>5</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                </tr>
             </table>
             {{-- end of table query here --}}
             {{-- footer signature --}}

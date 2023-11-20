@@ -75,7 +75,7 @@
                     $middlename = '';
                     $lastname = '';
 
-                    $nameParts = explode(' ', auth()->user()->name);
+                    $nameParts = explode(' ', auth()->user()->fullname);
 
                     if (count($nameParts) >= 3) {
                     $firstname = $nameParts[0];
@@ -99,10 +99,9 @@
                         <label for="affiliation" class="form-label">Affiliation</label>
                         <select id="affiliation" class="form-select">
                             <option selected>Select an option</option>
-                            <option value="1">Sample 1</option>
-                            <option value="2">Sample 2</option>
-                            <option value="3">Sample 3</option>
-                            <option value="4">Sample 4</option>
+                            @foreach ($aff as $option)
+                            <option value={{$option->affiliation_id}}>{{$option->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>

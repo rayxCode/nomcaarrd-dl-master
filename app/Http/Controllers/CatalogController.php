@@ -70,11 +70,11 @@ class CatalogController extends Controller
     // Display the specified catalog entry.
     public function show($id)
     {
-        $catalog = Catalog::find($id);
-        $catalogType = CatalogType::find($catalog->type_id);
-        $userBookmarksCount = Bookmark::where('catalog_id', $catalog)->count();
-
-        return view('pages.catalogs', ['catalogs' => $catalog, 'bookmarkCount' => $userBookmarksCount, 'type' => $catalogType]);
+        $catalogs = Catalog::find($id);
+        $type = CatalogType::find($catalogs->type_id);
+        $bookmarkCount = Bookmark::where('catalog_id', $catalogs->catalog_id)->count();
+        $ratedCatalogs = Catalog::orderBy('rating', 'desc')->take(5)->get();
+        return view('pages.catalogs', compact('catalogs', 'bookmarkCount', 'type', 'ratedCatalogs'));
     }
 
     // Show the form for editing the specified catalog entry.

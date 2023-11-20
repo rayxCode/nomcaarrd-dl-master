@@ -17,6 +17,7 @@ class Catalog extends Model
         'photo_path',
         'status',
         'editedBy',
+        'nUserRated',
         'author_id', // Added author_id
         'comment_id', // Added comment_id
         'rating',

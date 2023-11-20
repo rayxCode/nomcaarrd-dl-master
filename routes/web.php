@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
+
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\bookmarkController;
+use App\Models\Affiliation;
 use Illuminate\Support\Facades\Route;
 use App\Models\Catalog;
+use App\Models\Bookmark;
 
 
 /*
@@ -42,25 +43,30 @@ Route::get('/', function () {
     $ratedCatalog = Catalog::orderBy('rating', 'desc')->get();
     $recent = Catalog::orderBy('created_at', 'desc')->get();
 
- // This is where elibrary fetch data from the database
+    // This is where elibrary fetch data from the database
     return view('landing.index', ['catalogs' => $catalog, 'rates' => $ratedCatalog, 'recents' => $recent]);
 })->name('home');
 
 Route::view('/login', 'pages.login')
-->name('login');
+    ->name('login');
 
 Route::view('/signup', 'pages.signup')
-->name('signup');
+    ->name('signup');
 
 Route::view('/dashboard', 'pages.accounts')
-->name('dashboard')->middleware('auth');
+    ->name('dashboard')->middleware('auth');
 
-Route::view('/bookmarks', 'pages.account_bookmarks')
-->name('bookmarks')->middleware('auth');
+Route::get('/bookmarks', function(){
+    $bookmarks = Bookmark::with('catalog')->where('users_id', Auth()->user()->id)->get();
+    return view('pages.account_bookmarks', compact('bookmarks'));
+})->name('bookmarks')->middleware('auth');
 
-Route::view('/profiles', 'pages.account_profile')
-->name('profile')->middleware('auth');
+Route::get('/profiles', function () {
+    $aff = Affiliation::all();
+    return view('pages.account_profile', compact('aff'));
+})->name('profile')->middleware('auth');
 
-Route::get('/catalogs', function(){
+Route::get('/catalogs', function () {
+
     return view('pages.catalogs');
 })->name('catalogs');
