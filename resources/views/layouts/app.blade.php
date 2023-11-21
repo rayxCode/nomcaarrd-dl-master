@@ -43,7 +43,6 @@
     <main>
          <!-- Page Content -->
          @yield('content')
-
     </main>
 
 

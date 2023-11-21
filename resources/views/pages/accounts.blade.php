@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('pages.account_main')
 
-@section('style')
+@section('styles')
     {{-- specific style code here --}}
     <style>
         .stepper-wrapper {
@@ -81,46 +81,10 @@
     </style>
 @endsection
 
-@section('content')
-
+@section('layouts')
+<br>
+<br>
 {{-- start container for accounts here --}}
-<div>
-<div class="container-fluid" style="width: 62rem">
-    <div class="mt-3">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href={{'/'}} class="text-decoration-none">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page"> Accounts </li>
-          </ol>
-        </nav>
-  </div>
-    {{-- first div f --}}
-  <div class="d-flex justify-content-center">
-    {{-- second div for menus --}}
-    <div class="rounded mt-2" style="width:12rem">
-        <p class="mt-3 ms-2" >Account Setting</p>
-        <hr class="bg-dark" style="margin-top: -10px">
-        {{-- need to edit here for selected highlights  --}}
-        <div class="ms-2 text-black">
-            <p >
-                <a href={{'dashboard'}} class="text-decoration-none text-black-50">Dashboard</a>
-            </p>
-            <p>
-                <a href={{'profiles'}} class="text-decoration-none text-black-50">Edit Profile</a>
-            </p>
-            <p>
-                <a href={{'bookmarks'}} class="text-decoration-none text-black-50">Bookmarks</a>
-            </p>
-            <p>
-                <a href={{route('auth.logout')}} class="text-decoration-none text-black-50">Logout</a>
-            </p>
-        </div>
-    </div>
-    {{-- end for menu in second div display --}}
-    {{-- second div for display --}}
-    {{-- need to change and incorporate js for changing display and no needing to reload --}}
-    <div class=" ms-5 mt-4" style="width:50rem">
-        <br>
         {{-- number counts for dashboard --}}
         <div class="d-flex justify-content-center">
             <div class="text-center">
@@ -164,15 +128,6 @@
         <hr class="bg-dark">
 
         @include('includes.footer')
-    </div>
-
-  </div>
-  {{-- end second div --}}
-</div>
-{{-- end first div --}}
-</div>
-
-
 @endsection
 
 @section('script')

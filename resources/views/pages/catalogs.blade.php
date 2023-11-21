@@ -140,44 +140,47 @@
             {{-- second div center --}}
             <div class="rounded" style="width: 40rem">
                 <h3 class="ms-2 mt-3 text-justify">{{ $catalogs['title'] }}</h3>
+                <span class="d-flex" style="margin-top: -5px">
                 @php
-                $fullStars = floor($catalogs->rating);
-                $fractionalPart = $catalogs->rating - $fullStars;
-            @endphp
+                    $maxStars = 5;
+                    $fullStars = floor($catalogs->rating);
+                    $fr = $catalogs->rating - $fullStars;
+                @endphp
 
-            <!-- Full stars -->
-            @for ($i = 0; $i < $fullStars; $i++)
-                <img src="{{ asset('icons/icons8-star-filled-96.png') }}" alt=""
-                    style="width:1.25rem;height:1.25rem">
-            @endfor
+                <!-- Full stars -->
+                @for ($i = 0; $i < $fullStars; $i++)
+                    <img src="{{ asset('icons/icons8-star-filled-96.png') }}" alt=""
+                        style="width:1.25rem;height:1.25rem">
+                @endfor
 
-            <!-- Half star -->
-            @if ($fractionalPart >= 0.25 && $fractionalPart <= 0.75)
-                <img src="{{ asset('icons/icons8-star-half-filled-96.png') }}" alt=""
-                    style="width:1.25rem;height:1.25rem">
-            @endif
+                <!-- Half star -->
+                @if ($fr == 0.5)
+                    <img src="{{ asset('icons/icons8-star-half-filled-96.png') }}" alt=""
+                        style="width:1.25rem;height:1.25rem">
+                    <!-- Quarter filled star -->
+                @elseif($fr > 0.5 && $fr < 1.0)
+                    <img src="{{ asset('icons/icons8-star-quarter-filled-96.png') }}" alt=""
+                        style="width:1.25rem;height:1.25rem">
+                    <!-- Quarter empty star -->
+                @else
+                    <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
+                        style="width:1.25rem;height:1.25rem">
+                @endif
 
-            <!-- Quarter filled star -->
-            @if ($fractionalPart > 0.75)
-                <img src="{{ asset('icons/icons8-star-filled-96.png') }}" alt=""
-                    style="width:1.25rem;height:1.25rem">
-            @elseif ($fractionalPart > 0.5)
-                <img src="{{ asset('icons/icons8-star-quater-filed-96.png') }}" alt=""
-                    style="width:1.25rem;height:1.25rem">
-            @endif
-
-            <!-- Quarter empty star -->
-            @if ($fractionalPart < 0.5)
-                <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
-                    style="width:1.25rem;height:1.25rem">
-            @endif
-                {{$catalogs->rating}}
+                <!-- Empty stars to fill up to the max -->
+                @for ($i = $fullStars + 1; $i < $maxStars; $i++)
+                    <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
+                        style="width:1.25rem;height:1.25rem">
+                @endfor
+                <h5  style="margin-top: -.1rem">
+                &nbsp {{ $catalogs->rating }}
                 </h5>
+                </span>
                 <h5 class="ms-2 mt-3 text-justify">SUMMARY</h5>
                 <p class="mt-2 ms-5 justify-content-start" style="width: 88%"> {{ $catalogs['description'] }}</p>
                 <span class="ms-2 mt-2 d-flex" style="width: 88%">
                     <p class="flex-fill ms-1">Author(s): {{ $catalogs['author_id'] }}</p>
-                    <p> Published Date: {{ (new DateTime($catalogs['publishedDate']))->format('m/d/Y') }}</p>
+                    <p> Published Date: {{ (new DateTime($catalogs['publishedDate']))->format('m-d-Y') }}</p>
                 </span>
                 <br>
                 {{-- start comment section --}}
@@ -256,17 +259,47 @@
                     <p class="flex-fill">TOP PICKS FOR THE MONTH</p>
                 </span>
                 <hr class="bg-dark" style="margin-top: -5px">
-                @foreach ($ratedCatalogs as $catalog)
-                <span class="mx-auto" style="width: 18rem">
-                    <p class="text-truncate">{{ $catalog->title }}</p>
-                    <p style="margin-top: -15px">Juan dela Cruz </p>
-                    <span class="d-flex" style="margin-top: -10px">
-                        <img src="{{ asset('icons/icons8-star-filled-96.png') }}" alt=""
-                            style="width:1.25rem;height:1.25rem">
-                        <p style="margin-top: -.1rem"> &nbsp {{$catalog->rating}} </p>
+                @foreach ($ratedCatalogs as $catalogs)
+                    <span class="mx-auto" style="width: 18rem">
+                        <p class="text-truncate">{{ $catalogs->title }}</p>
+                        <p style="margin-top: -15px">Juan dela Cruz </p>
+                        <span class="d-flex" style="margin-top: -10px">
+                            @php
+                                $maxStars = 5;
+                                $fullStars = floor($catalogs->rating);
+                                $fr = $catalogs->rating - $fullStars;
+                            @endphp
 
+                            <!-- Full stars -->
+                            @for ($i = 0; $i < $fullStars; $i++)
+                                <img src="{{ asset('icons/icons8-star-filled-96.png') }}" alt=""
+                                    style="width:1.25rem;height:1.25rem">
+                            @endfor
+
+                            <!-- Half star -->
+                            @if ($fr == 0.5)
+                                <img src="{{ asset('icons/icons8-star-half-filled-96.png') }}" alt=""
+                                    style="width:1.25rem;height:1.25rem">
+                                <!-- Quarter filled star -->
+                            @elseif($fr > 0.5 && $fr < 1.0)
+                                <img src="{{ asset('icons/icons8-star-quarter-filled-96.png') }}" alt=""
+                                    style="width:1.25rem;height:1.25rem">
+                                <!-- Quarter empty star -->
+                            @else
+                                <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
+                                    style="width:1.25rem;height:1.25rem">
+                            @endif
+
+                            <!-- Empty stars to fill up to the max -->
+                            @for ($i = $fullStars + 1; $i < $maxStars; $i++)
+                                <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
+                                    style="width:1.25rem;height:1.25rem">
+                            @endfor
+
+                            <p style="margin-top: -.1rem"> &nbsp {{ $catalogs->rating }} </p>
+
+                        </span>
                     </span>
-                </span>
                 @endforeach
 
             </div>
