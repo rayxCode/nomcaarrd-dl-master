@@ -6,6 +6,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\bookmarkController;
+use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\UserController;
 use App\Models\Affiliation;
 use Illuminate\Support\Facades\Route;
 use App\Models\Catalog;
@@ -34,8 +36,9 @@ Route::post('/signup', [RegisterController::class, 'register']);
 Route::get('/search', [CatalogController::class, 'search'])->name('catalog.search');
 Route::resource('/catalogs', CatalogController::class);
 Route::post('/bookmark/{id}', [bookmarkController::class, 'addBookmark']);
+Route::post('/catalogs/{catalog_id}', [CommentsController::class, 'store']);
 
-
+    Route::post('/profiles/upload', [UserController::class, 'upload']);
 
 
 Route::get('/', function () {

@@ -86,10 +86,10 @@
         <br>
     </div> <!-- end of the first section--->
     <!--- Start of section 2 from the design --->
-    <div class="bg-light">
+    <div class="bg-white">
         <br>
         <div style="height: 20px"> </div> <!-- space for section 2 start container-->
-        <div class="container-fluid bg-white" style="width: 80%; border-radius:10px">
+        <div class="container-fluid" style="width: 80%; border-radius:10px">
             <div class="ms-2">
                 <h2>Explore various topics!...</h2>
                 <hr class="bg-dark" style="margin-top: -5px; height:2px;">
@@ -320,8 +320,8 @@
 </div>
 
 {{-- footer for landing page --}}
-<div class="container-fluid bg-light">
-<div class="row justify-content-center">
+<div class="container-fluid bg-dark text-white">
+<div class="row justify-content-center mx-auto" style="width: 80%">
 
     <div class="col-lg-3 col-md-6 col-sm-12 mt-2">
         <p>NOMCAARRD</p>
@@ -350,7 +350,21 @@
 </div>
 
 {{-- end footer queques --}}
-@include('includes.footer')
+        <div class="container-fluid bg-dark" style="margin-top: -10px">
+            <div class="d-flex mt-2 text-white-50">
+                <div class="justify-content-start flex-fill">
+                    <p class="text-left" style="font-size: 11px">
+                        <a href="" class="text-decoration-none"> Terms & Conditions  </a>
+                        |
+                    <a href="" class="text-decoration-none"> Privacy Policy </a></p>
+                </div>
+                <div class="">
+                    <p class="text-right" style="font-size: 11px">&copy @php
+                        echo date("Y");
+                    @endphp - NOMCAARRD eLibrary</p>
+                </div>
+            </div>
+        </div>
 </div>
 @endsection
 

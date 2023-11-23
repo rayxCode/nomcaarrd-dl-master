@@ -17,16 +17,15 @@
             {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
 
             <!-- CSS only -->
-            <link href="{{asset('')}}styles/css/bootstrap.min.css" rel="stylesheet">
+            <link href="{{asset('styles/css/bootstrap.min.css')}}" rel="stylesheet">
             <!-- Font Awesome -->
-            <link href="{{asset('')}}styles/css/all.min.css" rel="stylesheet">
+            <link href="{{asset('styles/css/all.min.css')}}" rel="stylesheet">
             @yield('style')
 
     </head>
     <body class="font-sans antialiased">
-    <!--- Navbar--->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
+            <!--- Navbar--->
+    <nav class="navbar navbar-light bg-light">
         <div class="d-flex ms-4">
         <a class="navbar-brand" href="/"> Placeholder Logo</a>
         </div>
@@ -40,7 +39,7 @@
                 </div>
         </div>
     </nav>
-    <main>
+    <main style="margin-block-start: -30px">
          <!-- Page Content -->
          @yield('content')
     </main>
@@ -49,6 +48,6 @@
     </body>
 
             <!-- JavaScript Bundle with Popper -->
-    <script src="{{asset('')}}styles/js/bootstrap.bundle.js"></script>
+    <script src="{{asset('styles/js/bootstrap.bundle.js')}}"></script>
     @yield('script')
 </html>

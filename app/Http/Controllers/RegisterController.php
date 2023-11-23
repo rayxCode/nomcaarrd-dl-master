@@ -46,7 +46,7 @@ public function register(Request $request)
 
     // Optionally, you can automatically login the user after registration
     auth()->login($user);
-    return redirect()->route('home')->with('success', 'You are now logged in!')->middleware(Auth);
+    return redirect()->route('home')->with('success', 'You are now logged in!');
 }
 
 }

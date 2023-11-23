@@ -56,15 +56,15 @@ select.form-control:focus {
         No catalogs found matching your criteria.
         </div>
         @else
-        @foreach($filteredCatalogs as $index => $collection)
+        @foreach($filteredCatalogs as $index => $catalogs)
         <div class="ms-1 mt-2 bg-light rounded">
-            <a href="/books" class="text-decoration-none text-black">
-            <p style="font-size: .75em">SERIAL {{ (new DateTime($collection['publishedDate']))->format('Y') }} </p>
+            <a href="{{url('/catalogs'. $catalogs->catalog_id)}}" class="text-decoration-none text-black">
+            <p style="font-size: .75em">SERIAL {{ (new DateTime($catalogs->publishedDate))->format('Y') }} </p>
             <h5 class="text-truncate" style="width: 95%; margin-top: -15px">{{$collection['title']}}</h5>
             <div class="d-flex">
-                <p class="" style="width: 95%; margin-top: -5px"> Author(s): {{$collection['author_id']}}</p>
-                <p class="ms-4 " style="width: 95%; margin-top: -5px">Type: {{$collection['type_id']}}</p>
-                <p class="ms-4" style="width: 95%; margin-top: -5px">Published: {{(new DateTime($collection['publishedDate']))->format('m/d/Y')}}</p>
+                <p class="" style="width: 95%; margin-top: -5px"> Author(s): {{$catalogs->author_id}}</p>
+                <p class="ms-4 " style="width: 95%; margin-top: -5px">Type: {{$catalogs->type_id}}</p>
+                <p class="ms-4" style="width: 95%; margin-top: -5px">Published: {{(new DateTime($catalogs->publishedDate))->format('m/d/Y')}}</p>
             </div>
             </a>
         </div>

@@ -26,25 +26,25 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid">
-        <div class="mt-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ '/' }}" class="text-decoration-none">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ 'dashboard' }}" class="text-decoration-none">Accounts</a></li>
-                </ol>
-            </nav>
-        </div>
+<br>
+<br>
+
+<div class="container-fluid d-flex flex-column">
+    <div class="mt-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ '/' }}" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ 'dashboard' }}" class="text-decoration-none">Accounts</a></li>
+            </ol>
+        </nav>
+    </div>
         <div class="d-flex justify-content-center">
             {{-- Menu Toggle Button --}}
-            <button id="menuButton" class="btn btn-link menu-toggle" style="border: none; background: none;">
-            </button>
-
             {{-- Second Div for Menus --}}
             <div class="rounded mt-2" id="menu-div">
-                <p class="mt-3 ms-2">Account Setting</p>
+                <p class="mt-3">Account Setting</p>
                 <hr class="bg-dark" style="margin-top: -10px">
-                <div class="ms-2 text-black">
+                <div class="text-black">
                     <p><a href="{{ 'dashboard' }}" class="text-decoration-none text-black-50">Dashboard</a></p>
                     <p><a href="{{ 'profiles' }}" class="text-decoration-none text-black-50">Edit Profile</a></p>
                     <p><a href="{{ 'bookmarks' }}" class="text-decoration-none text-black-50">Bookmarks</a></p>

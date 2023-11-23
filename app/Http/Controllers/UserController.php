@@ -54,8 +54,8 @@ class UserController extends Controller
             return redirect()->route('error.page')->with('error', 'User not found');
         }
 
-          // Create the 'name' from 'firstname', 'middlename', and 'lastname'
-          $name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
+        // Create the 'name' from 'firstname', 'middlename', and 'lastname'
+        $name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
 
         // Update the user's profile with the new data
         $user->name = $name;
@@ -92,6 +92,15 @@ class UserController extends Controller
         return redirect()->route('user.index');
     }
 
+    // app/Http/Controllers/AvatarController.php
+    public function upload(Request $request)
+    {
+        $file = $request->file('avatar');
+        $date = date("mdy");
+        $customName = 'u'.auth()->user()->id.$date.".".$file->getClientOriginalExtension();
+        $path = $file->storeAs('public/lib/users', $customName);
+
+        return response()->json(['filePath' => asset('storage/lib/users/' . $customName)]);
+    }
     // Add other methods like edit, update, delete based on your requirements
 }
-

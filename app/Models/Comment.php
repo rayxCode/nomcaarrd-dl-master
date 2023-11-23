@@ -13,6 +13,7 @@ class Comment extends Model
     protected $fillable = [
         'users_id',
         'catalog_id',
+        'comment',
         'editedBy',
         // Add other fields as needed
     ];

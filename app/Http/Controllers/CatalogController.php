@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Catalog;
 use App\Models\Bookmark;
 use App\Models\CatalogType;
-
+use App\Models\Comment;
+use App\Models\User;
 
 class CatalogController extends Controller
 {
@@ -74,7 +75,8 @@ class CatalogController extends Controller
         $type = CatalogType::find($catalogs->type_id);
         $bookmarkCount = Bookmark::where('catalog_id', $catalogs->catalog_id)->count();
         $ratedCatalogs = Catalog::orderBy('rating', 'desc')->take(5)->get();
-        return view('pages.catalogs', compact('catalogs', 'bookmarkCount', 'type', 'ratedCatalogs'));
+        $comments = Comment::with('user')->where('catalog_id', $catalogs->catalog_id)->paginate(10);
+        return view('pages.catalogs', compact('catalogs', 'bookmarkCount', 'type', 'ratedCatalogs','comments'));
     }
 
     // Show the form for editing the specified catalog entry.
