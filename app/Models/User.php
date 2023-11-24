@@ -3,14 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -18,10 +15,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
+        'firstname',
+        'middlename',
+        'lastname',
         'password',
-        'affiliation',
+        'affiliation_id',
+        'photo_path',
+        'access_level'
     ];
     protected $guarded = ['password', 'email'];
 
@@ -51,4 +53,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function affiliation()
+    {
+        return $this->hasOne(Affiliation::class, 'affiliation_id');
+    }
 }

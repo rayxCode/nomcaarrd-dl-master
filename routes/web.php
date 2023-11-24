@@ -4,7 +4,6 @@
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\bookmarkController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\UserController;
@@ -12,6 +11,8 @@ use App\Models\Affiliation;
 use Illuminate\Support\Facades\Route;
 use App\Models\Catalog;
 use App\Models\Bookmark;
+use App\Models\User;
+use App\Models\CatalogType;
 
 
 /*
@@ -30,15 +31,15 @@ use App\Models\Bookmark;
 
 Route::get('/login', [LoginController::class, 'showLoginForm']);
 Route::post('/login', [LoginController::class, 'login']);
-Route::get('/logout', [LogoutController::class, 'logout'])->name('auth.logout');
+Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 Route::post('/signup', [RegisterController::class, 'register']);
 //Route::post('/catalogs/{id}',[CatalogController::class, 'show']);
 Route::get('/search', [CatalogController::class, 'search'])->name('catalog.search');
 Route::resource('/catalogs', CatalogController::class);
 Route::post('/bookmark/{id}', [bookmarkController::class, 'addBookmark']);
 Route::post('/catalogs/{catalog_id}', [CommentsController::class, 'store']);
-
-    Route::post('/profiles/upload', [UserController::class, 'upload']);
+Route::post('/profiles/upload', [UserController::class, 'upload']);
+Route::post('account/update/{id}', [UserController::class, 'update']);
 
 
 Route::get('/', function () {
@@ -67,9 +68,30 @@ Route::get('/bookmarks', function(){
 Route::get('/profiles', function () {
     $aff = Affiliation::all();
     return view('pages.account_profile', compact('aff'));
-})->name('profile')->middleware('auth');
+})->name('profiles')->middleware('auth');
 
 Route::get('/catalogs', function () {
 
     return view('pages.catalogs');
 })->name('catalogs');
+
+Route::middleware(['checkAccessLevel:admin'])->group(function () {
+    // Your routes or controller actions here
+    Route::get('/index', function(){
+        $users = User::with('affiliation')->get('*');
+        $catalogs = Catalog::all();
+        $types = CatalogType::all();
+        $affs = Affiliation::all();
+        return view('admin.admin_users', compact('users', 'catalogs', 'types', 'affs'));
+    })->name('index');
+    Route::get('/affiliations', function(){
+        $affs = Affiliation::all();
+        return view('admin.admin_affiliations', compact('affs'));
+    })->name('affiliations');
+    Route::get('/catalogs', function(){
+        $catalogs = Catalog::with('type')->get('*');
+        return view('admin.admin_catalogs', compact('catalogs'));
+    })->name('catalog');
+});
+
+

@@ -35,10 +35,12 @@ public function register(Request $request)
     // Create the user
     $user = new User();
         $user->fill([
-            'name' => $name,
+            'username' => $name,
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
-            'affiliation' => 1,
+            'affiliation_id' => 1,
+            'photo_path' => 'avatars/avatar-sample1.png',
+            'access_level' => 1,
             // Add other fields as needed
         ]);
         // Save the user to the database

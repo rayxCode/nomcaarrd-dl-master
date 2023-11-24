@@ -15,11 +15,16 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password',);
 
         if (Auth::attempt($credentials)) {
             // Authentication was successful
-            return redirect()->route('dashboard'); // Redirect to the desired page after login
+            // Redirect to the desired page after login
+            if(auth()->user()->access_level == 1)
+            return redirect()->route('dashboard');
+            else
+            return redirect()->route('index');
+
         }
 
         // Authentication failed
@@ -29,6 +34,6 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('pages.login');
+        return redirect()->route('home');
     }
 }

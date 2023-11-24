@@ -60,7 +60,7 @@ select.form-control:focus {
         <div class="ms-1 mt-2 bg-light rounded">
             <a href="{{url('/catalogs'. $catalogs->catalog_id)}}" class="text-decoration-none text-black">
             <p style="font-size: .75em">SERIAL {{ (new DateTime($catalogs->publishedDate))->format('Y') }} </p>
-            <h5 class="text-truncate" style="width: 95%; margin-top: -15px">{{$collection['title']}}</h5>
+            <h5 class="text-truncate" style="width: 95%; margin-top: -15px">{{$catalogs->title}}</h5>
             <div class="d-flex">
                 <p class="" style="width: 95%; margin-top: -5px"> Author(s): {{$catalogs->author_id}}</p>
                 <p class="ms-4 " style="width: 95%; margin-top: -5px">Type: {{$catalogs->type_id}}</p>
@@ -77,49 +77,51 @@ select.form-control:focus {
         <div class="ms-3 mt-3" style="width: 20em">
             <span class="d-flex">
                 <p class="flex-fill">TOP PICKS FOR The MONTH</p>
-                <a class="text-decoration-none text-success"> see more...</a>
             </span>
             <hr class="bg-dark" style="margin-top: -5px">
-        <span class="mx-auto" style="width: 18rem">
-            <p class="text-truncate" >Lorem ipsum dolor et al. This is a recipe for cooking chicken</p>
-            <p style="margin-top: -15px">Juan dela Cruz </p>
-            <span class="d-flex" style="margin-top: -10px">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-                  </svg>
-                    <p style="margin-top: -.1rem"> &nbsp 5 </p>
+            @foreach ($ratedCatalogs as $catalogs)
+            <span class="mx-auto" style="width: 18rem">
+                <p class="text-truncate">{{ $catalogs->title }}</p>
+                <p style="margin-top: -15px">{{$catalogs->author}}</p>
+                <span class="d-flex" style="margin-top: -10px">
+                    @php
+                        $maxStars = 5;
+                        $fullStars = floor($catalogs->rating);
+                        $fr = $catalogs->rating - $fullStars;
+                    @endphp
+
+                    <!-- Full stars -->
+                    @for ($i = 0; $i < $fullStars; $i++)
+                        <img src="{{ asset('icons/icons8-star-filled-96.png') }}" alt=""
+                            style="width:1.25rem;height:1.25rem">
+                    @endfor
+
+                    <!-- Half star -->
+                    @if ($fr == 0.5)
+                        <img src="{{ asset('icons/icons8-star-half-filled-96.png') }}" alt=""
+                            style="width:1.25rem;height:1.25rem">
+                        <!-- Quarter filled star -->
+                    @elseif($fr > 0.5 && $fr < 1.0)
+                        <img src="{{ asset('icons/icons8-star-quarter-filled-96.png') }}" alt=""
+                            style="width:1.25rem;height:1.25rem">
+                        <!-- Quarter empty star -->
+                    @else
+                        <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
+                            style="width:1.25rem;height:1.25rem">
+                    @endif
+
+                    <!-- Empty stars to fill up to the max -->
+                    @for ($i = $fullStars + 1; $i < $maxStars; $i++)
+                        <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
+                            style="width:1.25rem;height:1.25rem">
+                    @endfor
+
+                    <p style="margin-top: -.1rem"> &nbsp {{ $catalogs->rating }} </p>
+
+                </span>
             </span>
-        </span>
-        <span class="mx-auto" style="width: 18rem">
-            <p class="text-truncate" >Lorem ipsum dolor et al. This is a recipe for cooking chicken</p>
-            <p style="margin-top: -15px">Juan dela Cruz </p>
-            <span class="d-flex" style="margin-top: -10px">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-                  </svg>
-                    <p style="margin-top: -.1rem"> &nbsp 5 </p>
-            </span>
-        </span>
-        <span class="mx-auto" style="width: 18rem">
-            <p class="text-truncate" >Lorem ipsum dolor et al. This is a recipe for cooking chicken</p>
-            <p style="margin-top: -15px">Juan dela Cruz </p>
-            <span class="d-flex" style="margin-top: -10px">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-                  </svg>
-                    <p style="margin-top: -.1rem"> &nbsp 5 </p>
-            </span>
-        </span>
-        <span class="mx-auto" style="width: 18rem">
-            <p class="text-truncate" >Lorem ipsum dolor et al. This is a recipe for cooking chicken</p>
-            <p style="margin-top: -15px">Juan dela Cruz </p>
-            <span class="d-flex" style="margin-top: -10px">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-                  </svg>
-                    <p style="margin-top: -.1rem"> &nbsp 5 </p>
-            </span>
-        </span>
+            @endforeach
+
         </div>
         {{-- END FOR DIV TOP PICKS FOR THE MONTH --}}
     </div>

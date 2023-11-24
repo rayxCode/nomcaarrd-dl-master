@@ -15,13 +15,11 @@ return new class extends Migration
                 $table->id('catalog_id');
                 $table->string('title')->unique();
                 $table->string('description');
-                // author_id was here
                 $table->dateTime('publishedDate');
                 $table->unsignedBigInteger('type_id');
                 $table->foreign('type_id')->references('type_id')->on('catalogTypes');
                 $table->string('fileURL');
                 $table->string('status');
-                // comments table was here
                 $table->double('rating');
                 $table->double('nUserRated');
                 $table->string('photo_path');

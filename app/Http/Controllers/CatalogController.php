@@ -33,11 +33,14 @@ class CatalogController extends Controller
             $catalogs->whereIn('type_id', $filters); // 'paper_type' should be the column in your Catalog model that corresponds to these filters
         }
 
+        //sets catalog top picks
+        $ratedCatalogs = Catalog::orderBy('rating', 'desc')->take(5)->get();
+
         // Get the filtered results
         $filteredCatalogs = $catalogs->paginate(10);
 
 
-        return view('pages.search', compact('filteredCatalogs', 'search'));
+        return view('pages.search', compact('filteredCatalogs', 'search', 'ratedCatalogs'));
     }
 
     // Display a listing of the catalog.

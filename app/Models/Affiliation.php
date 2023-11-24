@@ -15,4 +15,9 @@ class Affiliation extends Model
         'name',
         'editedBy',
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'affiliation_id');
+    }
 }

@@ -1,6 +1,6 @@
 @extends('pages.account_main')
 
-@section('styles')
+@section('style')
     {{-- specific scripts here --}}
     <style>
         .avatar-container {
@@ -31,30 +31,21 @@
         }
 
         .modal {
-            display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
+            max-width: 50%;
             max-height: 100%;
-            /* Set a maximum height */
-            background-color: rgba(0.5, 0.5, 0.5, 0.5);
-            justify-content: center;
-            align-items: center;
-            overflow-y: auto;
+            transform: translate(53%, 5%);
+            box-shadow: #000;
+
         }
 
         /* Rest of your styles remain the same */
-
-
         .modal-content {
-            width: 35%;
+            width: 25%;
             background-color: #fff;
             padding: 10px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0.5, 0.5, 0.5, 0.2);
-            overflow-y: auto;
             /* Add this to enable scrolling if needed */
         }
 
@@ -67,7 +58,7 @@
         }
 
         .avatar-icons li {
-            width: 30%;
+            width: 25%;
             /* Set to 30% to allow three avatars per row */
             box-sizing: border-box;
             /* Include padding and border in the width */
@@ -114,8 +105,7 @@
     <div class="container">
         {{-- Modal starts here --}}
         <div class="modal mx-auto">
-
-            <div class="modal-content mt-5 mx-auto p-2">
+            <div class="modal-content p-2">
                 <!-- Avatar preview container -->
                 <div class="avatar-preview text center">
                     <img class="avatarprev" src="{{ asset('/avatars/avatar-sample1.png') }}" alt="Selected Avatar">
@@ -159,86 +149,94 @@
             </div>
         </div>
         {{-- End for modal --}}
-        <form action="account/{{ auth()->user()->id }}/update" method="POST">
+        <form action="account/update/{{ auth()->user()->id }}" method="POST">
             @csrf
             {{-- Avatar icon --}}
+            @php
+                $pathFile = auth()->user()->photo_path;
+            @endphp
             <div>
-                <img class="avatar" id="avatar" src="{{ asset('/avatars/avatar-sample1.png') }}" style="width:150px; height:150px">
+                <img class="avatar" id="avatar" src="{{ asset($pathFile) }}" style="width:150px; height:150px">
+                <input type="hidden" id="photo_path" class="photo_path" name="photo_path"
+                    value="{{ asset('/avatars/avatar-sample1.png') }}">
             </div>
             <!-- Centered Circular avatar photo -->
 
+            @php
+                $fullname = auth()->user()->lastname . ' ' . auth()->user()->firstname . ' ' . auth()->user()->middlename;
+            @endphp
             <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" id="username" class="form-control" placeholder="{{ auth()->user()->name }}" disabled>
+                <label for="name" class="form-label">Username</label>
+                <input type="text" id="username" name="username" class="form-control"
+                    value="{{ auth()->user()->username }}">
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email"
+                <input type="email" id="email" name="email" class="form-control"
                     value="{{ auth()->user()->email }}">
             </div>
 
-            @php
-                $firstname = '';
-                $middlename = '';
-                $lastname = '';
-
-                $nameParts = explode(' ', auth()->user()->fullname);
-
-                if (count($nameParts) >= 3) {
-                    $firstname = $nameParts[0];
-                    $middlename = $nameParts[1];
-                    $lastname = $nameParts[2];
-                }
-            @endphp
             <div class="mb-3">
                 <label for="firstname" class="form-label">First Name</label>
-                <input type="text" id="firstname" class="form-control" placeholder="Enter your first name"
-                    value="{{ $firstname ? $firstname : ' ' }}">
+                <input type="text" id="firstname" name="firstname" class="form-control"
+                    placeholder="Enter your first name"
+                    value="{{ auth()->user()->firstname ? auth()->user()->firstname : old('firstname') }}">
             </div>
             <div class="mb-3">
                 <label for="middlename" class="form-label">Middle Name</label>
-                <input type="text" id="middlename" class="form-control" placeholder="Enter your middle name"
-                    value="{{ $middlename ? $middlename : ' ' }}">
+                <input type="text" id="middlename" name="middlename" class="form-control"
+                    placeholder="Enter your middle name"
+                    value="{{ auth()->user()->middlename ? auth()->user()->middlename : old('middlename') }}">
             </div>
             <div class="mb-3">
                 <label for="lastname" class="form-label">Last Name</label>
-                <input type="text" id="lastname" class="form-control" placeholder="Enter your last name"
-                    value="{{ $lastname ? $lastname : ' ' }}">
+                <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Enter your last name"
+                    value="{{ auth()->user()->lastname ? auth()->user()->lastname : old('lastname') }}">
             </div>
             <div class="mb-3">
                 <label for="affiliation" class="form-label">Affiliation</label>
-                <select id="affiliation" class="form-select">
-                    <option selected>Select an option</option>
+                <select id="affiliation" name="affiliation" class="form-select" va>
                     @foreach ($aff as $option)
-                        <option value={{ $option->affiliation_id }}>{{ $option->name }}</option>
+                        <option value={{ $option->affiliation_id }} @if ($option->affiliation_id == auth()->user()->affiliation_id) selected @endif>
+                            {{ $option->name }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="currentPassword" class="form-label">Current Password</label>
-                <input type="password" id="currentPassword" name="currentPassword" class="form-control"
-                    placeholder="Enter your current password">
-            </div>
+
             <div class="mb-3">
                 <label for="newPassword" class="form-label">New Password</label>
-                <input type="password" id="newPassword" name="newPassword" class="form-control"
-                    placeholder="Enter your new password">
+                <input type="password" id="password" name="password" class="form-control"
+                    placeholder="Enter your new password" required>
             </div>
             <div class="mb-3">
                 <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
-                    placeholder="Confirm your new password">
+                <input type="password" id="cfpassword" name="cfpassword" class="form-control"
+                    placeholder="Confirm your new password" required>
+            </div>
+            <div class="mb-3">
+                <label for="currentPassword" class="form-label">Current Password</label>
+                <input type="fpassword" id="currentPassword" name="currentPassword" class="form-control"
+                    placeholder="Enter your current password" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </div>
 
     {{-- end of container for user profile account --}}
     {{-- footer signature --}}
     <br>
+    <br>
     <hr class="bg-dark">
-
     @include('includes.footer')
 @endsection
 
@@ -251,6 +249,7 @@
         const modalContent = document.querySelector('.modal-content');
         const modalClose = document.querySelector('.modal-close');
         const avatarIcons = document.querySelectorAll('.avatar-icons li');
+        const photo_path = document.getElementById('photo_path');
 
         let avatarprev = document.querySelector('.avatarprev');
 
@@ -273,36 +272,44 @@
             const input = document.getElementById('avatarInput');
             const file = input.files[0];
 
-            // Create FormData and append the file
-            const formData = new FormData();
-            formData.append('avatar', file);
+            // checks file if any then proceeds with upload
+            if (file) {
+                // Create FormData and append the file
+                const formData = new FormData();
+                formData.append('avatar', file);
 
-            // Update avatar preview
-            document.querySelector('.avatarprev').src = URL.createObjectURL(file);
-            document.querySelector('.avatarprev').src = URL.createObjectURL(file);
+                // Update avatar preview
+                document.querySelector('.avatarprev').src = URL.createObjectURL(file);
+                // Send a POST request to the server
+                fetch('/profiles/upload', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Error uploading avatar: ' + response.status);
+                        }
+                    })
+                    .then(data => {
+                        // Set the avatar src to the uploaded image path
+                        const avatar = document.getElementById('avatar');
+                        avatar.src = data.filePath;
+                        // You can also handle other logic here if needed
+                    })
+                    .catch(error => {
+                        console.error('Error uploading avatar:', error);
 
-            // Send a POST request to the server
-            fetch('/profiles/upload', {
-                    method: 'POST',
-                    body: formData,
-                })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Error uploading avatar: ' + response.status);
-                    }
-                })
-                .then(data => {
-                    // Set the avatar src to the uploaded image path
-                    const avatar = document.getElementById('avatar');
-                    avatar.src = data.filePath;
+                    });
+            }
+            // proceed with default icons
+            else {
 
-                    // You can also handle other logic here if needed
-                })
-                .catch(error => {
-                    console.error('Error uploading avatar:', error);
-                });
+                avatar.src = avatarprev.src;
+                photo_path.value = avatarprev.src;
+            }
+
             modal.style.display = 'none';
         });
 

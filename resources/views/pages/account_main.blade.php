@@ -45,10 +45,10 @@
                 <p class="mt-3">Account Setting</p>
                 <hr class="bg-dark" style="margin-top: -10px">
                 <div class="text-black">
-                    <p><a href="{{ 'dashboard' }}" class="text-decoration-none text-black-50">Dashboard</a></p>
-                    <p><a href="{{ 'profiles' }}" class="text-decoration-none text-black-50">Edit Profile</a></p>
-                    <p><a href="{{ 'bookmarks' }}" class="text-decoration-none text-black-50">Bookmarks</a></p>
-                    <p><a href="{{ 'home' }}" class="text-decoration-none text-black-50">Logout</a></p>
+                    <p><a href="{{ route('dashboard') }}" class="text-decoration-none text-black-50">Dashboard</a></p>
+                    <p><a href="{{ route('profiles') }}" class="text-decoration-none text-black-50">Edit Profile</a></p>
+                    <p><a href="{{ route('bookmarks') }}" class="text-decoration-none text-black-50">Bookmarks</a></p>
+                    <p><a href="{{ route('auth.logout') }}" class="text-decoration-none text-black-50">Logout</a></p>
                 </div>
             </div>
 
