@@ -58,7 +58,7 @@ select.form-control:focus {
         @else
         @foreach($filteredCatalogs as $index => $catalogs)
         <div class="ms-1 mt-2 bg-light rounded">
-            <a href="{{url('/catalogs'. $catalogs->catalog_id)}}" class="text-decoration-none text-black">
+            <a href="{{url('/catalogs/'. $catalogs->catalog_id)}}" class="text-decoration-none text-black">
             <p style="font-size: .75em">SERIAL {{ (new DateTime($catalogs->publishedDate))->format('Y') }} </p>
             <h5 class="text-truncate" style="width: 95%; margin-top: -15px">{{$catalogs->title}}</h5>
             <div class="d-flex">
@@ -82,7 +82,7 @@ select.form-control:focus {
             @foreach ($ratedCatalogs as $catalogs)
             <span class="mx-auto" style="width: 18rem">
                 <p class="text-truncate">{{ $catalogs->title }}</p>
-                <p style="margin-top: -15px">{{$catalogs->author}}</p>
+                <p style="margin-top: -15px">{{$catalogs->author_id ? catalogs->author_id : ''}}</p>
                 <span class="d-flex" style="margin-top: -10px">
                     @php
                         $maxStars = 5;

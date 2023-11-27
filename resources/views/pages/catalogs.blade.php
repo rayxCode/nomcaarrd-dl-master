@@ -153,7 +153,7 @@
                         </div>
                         <div class="modal-body">
                             <embed src="{{ Storage::url('pdf/sample.pdf') }}" type="application/pdf" width="100%"
-                                height="100%" />
+                                height="95%" />
                         </div>
                     </div>
                 </div>

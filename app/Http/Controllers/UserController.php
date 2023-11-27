@@ -58,10 +58,6 @@ class UserController extends Controller
                     }
                 },
             ],
-            'password' => [
-                'required',
-                'min:8',
-            ],
         ]);
 
         if(!($request->input('password') === $request->input('cfpassword')))
