@@ -1,7 +1,19 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\bookmarkController;
+use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\UserController;
+use App\Models\Affiliation;
 use Illuminate\Support\Facades\Route;
+use App\Models\Catalog;
+use App\Models\Bookmark;
+use App\Models\User;
+use App\Models\CatalogType;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,16 +26,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// routes/web.php
+
+
+Route::get('/login', [LoginController::class, 'showLoginForm']);
+Route::post('/login', [LoginController::class, 'login']);
+Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
+Route::post('/signup', [RegisterController::class, 'register']);
+//Route::post('/catalogs/{id}',[CatalogController::class, 'show']);
+Route::get('/search', [CatalogController::class, 'search'])->name('catalog.search');
+Route::resource('/catalogs', CatalogController::class);
+Route::post('/bookmark/{id}', [bookmarkController::class, 'addBookmark']);
+Route::post('/catalogs/{catalog_id}', [CommentsController::class, 'store']);
+Route::post('/profiles/upload', [UserController::class, 'upload']);
+Route::post('account/update/{id}', [UserController::class, 'update']);
+
+
 Route::get('/', function () {
-<<<<<<< Updated upstream
     return view('landing.index');
-=======
-    $catalog = Catalog::inRandomOrder()->take(4)->get();
-    $ratedCatalog = Catalog::orderBy('rating', 'desc')->get();
-    $recent = Catalog::orderBy('created_at', 'desc')->get();
+    $catalogs = Catalog::inRandomOrder()->take(4)->get();
+    $rates = Catalog::orderBy('rating', 'desc')->get();
+    $recents = Catalog::orderBy('created_at', 'desc')->get();
 
     // This is where elibrary fetch data from the database
-    return view('landing.index', ['catalogs' => $catalog, 'rates' => $ratedCatalog, 'recents' => $recent]);
+    return view('landing.index', compact('catalogs', 'rates', 'recents'));
 })->name('home');
 
 Route::view('/login', 'pages.login')
@@ -60,7 +86,8 @@ Route::middleware(['checkAccessLevel:admin'])->group(function () {
         return view('admin.admin_users', compact('users', 'catalogs', 'types', 'affs'));
     })->name('users');
     Route::get('/affiliations', function(){
-        $user = auth()->user();
+    })->name('index');
+    Route::get('/affiliations', function(){
         $affs = Affiliation::all();
         return view('admin.admin_affiliations', compact('affs'));
     })->name('affiliations');
@@ -68,6 +95,6 @@ Route::middleware(['checkAccessLevel:admin'])->group(function () {
         $catalogs = Catalog::with('type')->get('*');
         return view('admin.admin_catalogs', compact('catalogs'));
     })->name('catalogs');
->>>>>>> Stashed changes
 });
+
 

@@ -4,7 +4,6 @@
     {{-- Specific styles here --}}
     <style>
         @media (max-width: 992px) {
-
             /* Styles for smaller screens */
             .menu-div {
                 display: none;
@@ -33,7 +32,6 @@
 @section('content')
     <br>
     <br>
-
     <div class="container-fluid d-flex flex-column">
         <div class="mt-3">
             <nav aria-label="breadcrumb">
@@ -43,6 +41,7 @@
                 </ol>
             </nav>
         </div>
+
         <div class="d-flex justify-content-center">
             {{-- Menu Toggle Button --}}
             {{-- Second Div for Menus --}}

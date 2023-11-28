@@ -67,10 +67,8 @@
                                     <td class="">{{ $user->affiliation->name }}</td>
                                 </tr>
                             @endforeach
-
                             <tbody>
                             </tbody>
-
                         </table>
                     </div>
                     <!-- /.card-body -->
@@ -90,5 +88,5 @@
                 console.log(data);
                 // You can pass the data to your controller using AJAX or any suitable method
             });
-        </script>
+        </scrip
     @endsection
