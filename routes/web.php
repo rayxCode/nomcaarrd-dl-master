@@ -43,12 +43,13 @@ Route::post('account/update/{id}', [UserController::class, 'update']);
 
 
 Route::get('/', function () {
-    $catalog = Catalog::inRandomOrder()->take(4)->get();
-    $ratedCatalog = Catalog::orderBy('rating', 'desc')->get();
-    $recent = Catalog::orderBy('created_at', 'desc')->get();
+    return view('landing.index');
+    $catalogs = Catalog::inRandomOrder()->take(4)->get();
+    $rates = Catalog::orderBy('rating', 'desc')->get();
+    $recents = Catalog::orderBy('created_at', 'desc')->get();
 
     // This is where elibrary fetch data from the database
-    return view('landing.index', ['catalogs' => $catalog, 'rates' => $ratedCatalog, 'recents' => $recent]);
+    return view('landing.index', compact('catalogs', 'rates', 'recents'));
 })->name('home');
 
 Route::view('/login', 'pages.login')
@@ -83,6 +84,8 @@ Route::middleware(['checkAccessLevel:admin'])->group(function () {
         $types = CatalogType::all();
         $affs = Affiliation::all();
         return view('admin.admin_users', compact('users', 'catalogs', 'types', 'affs'));
+    })->name('users');
+    Route::get('/affiliations', function(){
     })->name('index');
     Route::get('/affiliations', function(){
         $affs = Affiliation::all();
@@ -91,7 +94,7 @@ Route::middleware(['checkAccessLevel:admin'])->group(function () {
     Route::get('/catalogs', function(){
         $catalogs = Catalog::with('type')->get('*');
         return view('admin.admin_catalogs', compact('catalogs'));
-    })->name('catalog');
+    })->name('catalogs');
 });
 
 

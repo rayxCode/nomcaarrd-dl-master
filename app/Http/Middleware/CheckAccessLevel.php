@@ -17,7 +17,28 @@ class CheckAccessLevel
     {
         if (auth()->check() && auth()->user()->access_level !== 2) {
             return redirect('/');
+        }elseif(auth()->check() && auth()->user()->access_level >= 2)
+        {
+            return $next($request);
         }
-        return $next($request);
+        else{
+            return redirect('login');
+        }
+    }
+
+    /*     protected function redirectTo(Request $request): ?string
+    {
+
+        if (auth()->check() && auth()->user()->access_level !== 2) {
+            return redirect('/profile');
+        }
+        elseif (auth()->check() && auth()->user()->access_level > 2){
+            return redirect('/index');
+        }else{
+            return $request->expectsJson() ? null : route('login');
+        }
+
+
+    } */
     }
 }

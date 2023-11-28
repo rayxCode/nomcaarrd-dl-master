@@ -6,19 +6,23 @@
         @media (max-width: 992px) {
             /* Styles for smaller screens */
             .menu-div {
-                display: none; /* Hide the menu by default on small screens */
+                display: none;
+                /* Hide the menu by default on small screens */
             }
 
             .display-div {
-                width: 100%; /* Take full width on small screens */
+                width: 100%;
+                /* Take full width on small screens */
             }
 
             .menu-toggle {
-                display: block; /* Show the menu toggle on small screens */
+                display: block;
+                /* Show the menu toggle on small screens */
             }
 
             .breadcrumb {
-                font-size: 14px; /* Adjust font size for breadcrumbs on small screens */
+                font-size: 14px;
+                /* Adjust font size for breadcrumbs on small screens */
             }
         }
     </style>
@@ -26,18 +30,18 @@
 @endsection
 
 @section('content')
-<br>
-<br>
+    <br>
+    <br>
+    <div class="container-fluid d-flex flex-column">
+        <div class="mt-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ '/' }}" class="text-decoration-none">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ 'dashboard' }}" class="text-decoration-none">Accounts</a></li>
+                </ol>
+            </nav>
+        </div>
 
-<div class="container-fluid d-flex flex-column">
-    <div class="mt-3">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ '/' }}" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ 'dashboard' }}" class="text-decoration-none">Accounts</a></li>
-            </ol>
-        </nav>
-    </div>
         <div class="d-flex justify-content-center">
             {{-- Menu Toggle Button --}}
             {{-- Second Div for Menus --}}
@@ -45,10 +49,18 @@
                 <p class="mt-3">Account Setting</p>
                 <hr class="bg-dark" style="margin-top: -10px">
                 <div class="text-black">
-                    <p><a href="{{ route('dashboard') }}" class="text-decoration-none text-black-50">Dashboard</a></p>
-                    <p><a href="{{ route('profiles') }}" class="text-decoration-none text-black-50">Edit Profile</a></p>
-                    <p><a href="{{ route('bookmarks') }}" class="text-decoration-none text-black-50">Bookmarks</a></p>
-                    <p><a href="{{ route('auth.logout') }}" class="text-decoration-none text-black-50">Logout</a></p>
+                    <div>
+                        <p><a href="{{ route('dashboard') }}" class="text-decoration-none text-black-50">Dashboard</a></p>
+                    </div>
+                    <div>
+                        <p><a href="{{ route('profiles') }}" class="text-decoration-none text-black-50">Edit Profile</a></p>
+                    </div>
+                    <div>
+                        <p><a href="{{ route('bookmarks') }}" class="text-decoration-none text-black-50">Bookmarks</a></p>
+                    </div>
+                    <div>
+                        <p><a href="{{ route('auth.logout') }}" class="text-decoration-none text-black-50">Logout</a></p>
+                    </div>
                 </div>
             </div>
 
