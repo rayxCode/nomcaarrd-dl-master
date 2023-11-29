@@ -87,12 +87,6 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function create()
-    {
-        // Show the form to create a new user
-        return view('users.create');
-    }
-
     public function store(Request $request)
     {
         // Validate the request
@@ -102,7 +96,7 @@ class UserController extends Controller
             'middlename' => 'required|string|max:50',
             'lastname' => 'required|string|max:50',
             'password' => 'required|string|min:8',
-            'affiliation' => 'required|exists:affiliations , affiliation_id',
+            'affiliation' => 'required|exists:affiliations, affiliation_id',
             'email' => 'required|string|email|max:255|unique:users',
         ]);
 

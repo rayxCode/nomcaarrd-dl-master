@@ -32,7 +32,7 @@ use App\Models\CatalogType;
 Route::get('/login', [LoginController::class, 'showLoginForm']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
-Route::post('/signup', [RegisterController::class, 'register']);
+Route::post('/register/u/', [RegisterController::class, 'register'])->name('users.add');
 //Route::post('/catalogs/{id}',[CatalogController::class, 'show']);
 Route::get('/search', [CatalogController::class, 'search'])->name('catalog.search');
 Route::resource('/catalogs', CatalogController::class);
@@ -40,10 +40,10 @@ Route::post('/bookmark/{id}', [bookmarkController::class, 'addBookmark']);
 Route::post('/catalogs/{catalog_id}', [CommentsController::class, 'store']);
 Route::post('/profiles/upload', [UserController::class, 'upload']);
 Route::post('account/update/{id}', [UserController::class, 'update']);
+Route::resource('/users/u/', UserController::class);
 
 
 Route::get('/', function () {
-    return view('landing.index');
     $catalogs = Catalog::inRandomOrder()->take(4)->get();
     $rates = Catalog::orderBy('rating', 'desc')->get();
     $recents = Catalog::orderBy('created_at', 'desc')->get();

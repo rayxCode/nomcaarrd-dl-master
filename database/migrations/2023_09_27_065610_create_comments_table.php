@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('users_id')->references('id')->on('users');
             $table->unsignedBigInteger('catalog_id');
             $table->foreign('catalog_id')->references('catalog_id')->on('catalogs');
+            $table->double('rating');
             $table->string('comment');
             $table->string('editedBy');
             $table->timestamps();

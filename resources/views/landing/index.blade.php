@@ -108,7 +108,7 @@
                                             style="width: 120px; height: 150px">
                                     </div>
                                     <div>
-                                        <p style="font-size: 1rem">{{ $catalogs->title }}</p>
+                                        <p style="font-size: 1rem"></p>
                                         <div class="d-flex">
                                             <span class="d-flex" style="margin-top: -5px">
                                                 @php

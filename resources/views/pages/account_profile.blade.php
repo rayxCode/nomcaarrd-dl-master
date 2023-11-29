@@ -143,13 +143,13 @@
                 </button>
 
                 <div class="modal-footer mt-3 mx-auto">
-                    <button class="modal-close rounded-pill btn btn-secondary">Cancel</button>
                     <button class="ms-2 modal-button rounded-pill btn btn-success">Save</button>
+                    <button class="modal-close rounded-pill btn btn-secondary">Cancel</button>
                 </div>
             </div>
         </div>
         {{-- End for modal --}}
-        <form action="account/update/{{ auth()->user()->id }}" method="POST">
+        <form action="account/update/{{ auth()->user()->id }}" method="PUT">
             @csrf
             {{-- Avatar icon --}}
             @php
@@ -195,7 +195,7 @@
             </div>
             <div class="mb-3">
                 <label for="affiliation" class="form-label">Affiliation</label>
-                <select id="affiliation" name="affiliation" class="form-select" va>
+                <select id="affiliation" name="affiliation" class="form-select">
                     @foreach ($aff as $option)
                         <option value={{ $option->affiliation_id }} @if ($option->affiliation_id == auth()->user()->affiliation_id) selected @endif>
                             {{ $option->name }}</option>

@@ -27,7 +27,7 @@
                 @endif
 
                 <!-- Signup Form -->
-                <form method="POST" action="{{'signup'}}">
+                <form method="POST" action="{{route('users.add')}}">
                     @csrf
 
                     <div class="mb-3">

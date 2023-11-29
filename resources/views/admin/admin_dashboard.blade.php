@@ -26,7 +26,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button">
-                      <i class="bi bi-list-ul"></i>
+                        <i class="bi bi-list-ul"></i>
                     </a>
                 </li>
 
@@ -43,25 +43,30 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel mt-3 pb-2 mb-2 d-flex flex-column align-items-center text-center">
                     <div class="image mb-2">
-                        <img src="{{ auth()->user()->photo_path != null ? auth()->user()->photo_path : ''  }}" class="img-circle elevation-2 image-fluid"
-                            style="width: 70%; height: 70%" alt="User Image">
+                        <img src="{{ auth()->user()->photo_path != null ? auth()->user()->photo_path : '' }}"
+                            class="img-circle elevation-2 image-fluid" style="width: 70%; height: 70%" alt="User Image">
                     </div>
                     <div class="info">
-                        <p class="d-block"><b> Account: </b>{{ auth()->user()->username != null ? auth()->user()->username : ''}}</p>
-                        <p class="d-block" style="margin-top: -15px"><b> Account ID: </b>{{ auth()->user()->id != null ? auth()->user()->id: '' }}</p>
+                        <p class="d-block"><b> Account:
+                            </b>{{ auth()->user()->username != null ? auth()->user()->username : '' }}</p>
+                        <p class="d-block" style="margin-top: -15px"><b> Account ID:
+                            </b>{{ auth()->user()->id != null ? auth()->user()->id : '' }}</p>
                     </div>
                 </div>
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
                         <!-- Navbar Search -->
                         <li class="nav-item">
-                            <a href="{{route('users')}}" class="nav-links">
+                            <a href="{{ route('users') }}" class="nav-links">
+                                <div class="d-flex">
                                     <i class=" nav-icon bi-people-fill mt-2"></i>
                                     <p class="">User Accounts</p>
+                                </div>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('affiliations')}}" class="nav-links" >
+                            <a href="{{ route('affiliations') }}" class="nav-links">
                                 <div class="d-flex">
                                     <i class="bi bi-buildings-fill mt-2"></i>
                                     &nbsp <p class="ms-5 mt-2 d-block">Affiliations</p>
@@ -69,21 +74,21 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('affiliations')}}" class="nav-links" >
+                            <a href="{{ route('affiliations') }}" class="nav-links">
                                 <div class="d-flex">
-                                    <i class="bi bi-buildings-fill mt-2"></i>
+                                    <i class="bi bi-book-fill mt-2"></i>
                                     &nbsp <p class="ms-5 mt-2 d-block">Catalogs</p>
                                 </div>
                             </a>
                         </li>
-                        <a href="{{route('affiliations')}}" class="nav-links" >
+                        <a href="{{ route('affiliations') }}" class="nav-links">
                             <div class="d-flex">
-                                <i class="bi bi-buildings-fill mt-2"></i>
+                                <i class="bi bi-bookshelf mt-2"></i>
                                 &nbsp <p class="ms-5 mt-2 d-block">Catalog Types</p>
                             </div>
                         </a>
                         <li class="nav-item">
-                            <a href="{{url('/logout')}}" class="nav-links" >
+                            <a href="{{ url('/logout') }}" class="nav-links">
                                 <div class="d-flex collapse">
                                     <i class="bi bi-box-arrow-left mt-2"></i>
                                     &nbsp <p class="ms-5 mt-2 d-block">Logout</p>
