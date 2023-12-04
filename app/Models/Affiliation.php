@@ -18,6 +18,6 @@ class Affiliation extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class, 'affiliation_id');
+        return $this->hasMany(User::class);
     }
 }

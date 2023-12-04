@@ -15,12 +15,12 @@ class Author extends Model
     ];
 
     // Relationships
-    public function user()
+    public function users()
     {
         return $this->belongsTo(User::class, 'users_id');
     }
 
-    public function catalog()
+    public function catalogs()
     {
         return $this->belongsTo(Catalog::class, 'catalog_id');
     }

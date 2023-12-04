@@ -1,111 +1,172 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('admin.admin_dashboard')
+@section('styles')
+    <style>
+        .modal {
+            position: fixed;
+            max-width: 100%;
+            max-height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            box-shadow: #000;
+            display: none;
+        }
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NOMCAARRD eLibrary - Administrator</title>
+        /* Rest of your styles remain the same */
+        .modal-content {
+            position: fixed;
+            max-width: 40%;
+            min-width: 270px;
+            transform: translate(80%, 45%);
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(15, 15, 15, 0.2);
+            /* Add this to enable scrolling if needed */
+        }
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ asset('styles/css/fontstye.css') }}">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('styles/datatables/css/reponsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('styles/datatables/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('styles/datatables/css/button.bootstrap4.min.css') }}">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('styles/css/adminlte.min.css') }}">
-    @yield('styles')
-</head>
+        .v1 {
+            opacity: 50%;
+            border: 1px solid rgb(0, 0, 0, .5);
+            width: 1px;
+            height: 400px;
+        }
 
-<body class="hold-transition sidebar-mini">
-    <div class="wrapper">
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-list" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
-                        </svg>
-                    </a>
-                </li>
+        .modal-button:hover {
+            background-color: rgb(60, 85, 60);
+        }
 
-            </ul>
-        </nav>
-        <!-- /.navbar -->
+        .model-close:hover {
+            background-color: rgb(70, 70, 70);
+            color: white;
+        }
 
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
+        .btnAction {
+            min-width: 45px;
+        }
 
-            <!-- Sidebar -->
-            <div class="sidebar text-white">
-                <!-- Sidebar user (optional) -->
-                <div class="user-panel mt-3 pb-2 mb-2 d-flex flex-column align-items-center text-center">
-                    <div class="image mb-2">
-                        <img src="{{ asset($user->photo_path) }}" class="img-circle elevation-2 image-fluid"
-                            style="width: 70%; height: 70%" alt="User Image">
+        .displayError {
+            position: fixed;
+            transform: translate(100%, 15%);
+        }
+    </style>
+@endsection
+
+@section('admin-layouts')
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
                     </div>
-                    <div class="info">
-                        <p class="d-block"><b> Account: </b>{{ $user->username }}</p>
-                        <p class="d-block" style="margin-top: -15px"><b> Account ID: </b>{{ $user->id }}</p>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                            <li class="breadcrumb-item active">Catalogs</li>
+                        </ol>
                     </div>
                 </div>
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
-                        <!-- Navbar Search -->
-                        <li class="nav-item">
-                            <a href="" class="nav-links">
-                                <div class="">
-                                    <p>User Accounts</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-links">Affiliations</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-links">Catalogs</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-links">Catalog Types </a>
-                        </li>
-                        <!-- Notifications Dropdown Menu -->
-
-                    </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- Start of modal for new catalog-->
+        <div class="modal mx-auto" id="modal">
+            <div class="modal-content p-3">
+                <form action="{{ route('users.add') }}" method="POST">
+                    @csrf
+                    <div>
+                        <label for="name" class="form-label mt-2">
+                            <p>Affiliaton Name </p>
+                        </label>
+                        <input class="form-control rounded-pill" id="name" style="width: 50%dd" type="text"
+                            name="type" placeholder="Enter new affiliate name" required />
+                    </div>
+                    <div class="modal-footer mt-3 mx-auto d-flex">
+                        <button type="submit" class="ms-2  modal-button rounded-pill btn btn-success "
+                            onclick="closeModal()" style="width: 120px">
+                            Add
+                        </button>
+                </form>
+                <button class="modal-close rounded-pill btn btn-secondary " onclick="closeModal()" style="width: 120px">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- end of modal -->
+    <section class="content">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title mt-2">Catalogs</h3>
+                <div class="d-flex justify-content-end">
+                    <button class="ms-3 btn btn-success" type="submit" id="onClickModal">
+                        <i class="bi bi-plus-square"></i>
+                        Add new Catalog
+                    </button>
+                </div>
             </div>
 
-            <!-- /.sidebar -->
-        </aside>
-        <!-- Main content -->
-        @yield('admin-layouts')
-        <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
-    <footer class="main-footer mt-3">
-        @include('includes.footer')
-    </footer>
-    </div>
-    <!-- ./wrapper -->
-    <!-- DataTables  & Plugins -->
-    <script src="{{ asset('styles/js/jquery.js') }}"></script>
-    <script src="{{ asset('styles/datatables/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('styles/datatables/js/button.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('styles/datatables/js/responsive.bootstrap4.min.js') }}"></script>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="dataTable" class="table table-bordered">
+                    <thead>
 
-    <!-- AdminLTE App -->
-    <script src="{{ asset('styles/js/adminlte.min.js') }}"></script>
-    <!-- Jquery -->
-    <script src="{{ asset('styles/js/jquery.js') }}"></script>
-    @yield('scripts')
-    <!-- Page specific script -->
-    <script></script>
-</body>
+                        <tr>
+                            <th>Catalog Title</th>
+                            <th>Author(s)</th>
+                            <th>Type</th>
+                            <th>Published Date</th>
+                            <th>Serial</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($catalogs as $catalog)
+                            <tr>
+                                <td id="id">{{ $catalog->title }}</td>
+                                <td>{{ $catalog->author_id->name ?? '' }}</td>
+                                <td>{{ $catalog->type->name }}</td>
+                                <td>{{ (new DateTime($catalog->created_at))->format('F d, Y') }}</td>
+                                <td>{{ (new DateTime($catalog->created_at))->format('Y') }}</td>
+                                <td class="d-flex">
+                                    <form action="{{ route('edit', $catalog->catalog_id) }}" method="post">
+                                        @csrf
+                                        <button class="p-2 btn btn-primary btnAction" type="submit">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </form>
+                                    &nbsp;
+                                    <form action="{{ route('destroy', $catalog->catalog_id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="p-2 btn btn-danger btnAction" type="submit">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
 
-</html>
+                    </tbody>
+                </table>
+                <div class="container">
+                    <p> {{ $catalogs->links('pagination::bootstrap-5') }} </p>
+                </div>
+            </div>
+            <!-- /.card-body -->
+
+        </div>
+        <!-- /.card -->
+    </section>
+    <!-- /.container-fluid -->
+@endsection
+
+@section('scripts')
+    <script>
+        document.getElementById('onClickModal').addEventListener('click', function() {
+            document.getElementById("modal").style.display = "block";
+        });
+
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+    </script>
+@endsection

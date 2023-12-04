@@ -56,6 +56,11 @@ class User extends Authenticatable
 
     public function affiliation()
     {
-        return $this->hasOne(Affiliation::class, 'affiliation_id');
+        return $this->belongsTo(Affiliation::class, 'affiliation_id');
+    }
+
+    public function authors()
+    {
+        return $this->hasOne(Author::class);
     }
 }

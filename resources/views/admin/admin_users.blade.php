@@ -3,8 +3,7 @@
 @section('styles')
     <style>
         .selected {
-            background-color: #1b7e2c;
-            color: white;
+            background-color: #b9b9b9;
             /* Add your preferred highlight color */
         }
 
@@ -46,7 +45,7 @@
         }
 
         .btnAction {
-            min-width: 65px;
+            min-width: 45px;
         }
 
         .displayError {
@@ -87,15 +86,13 @@
     @endif
 
     <!-- Content Wrapper. Contains page content -->
+    <!-- Start of modal for new user-->
     <div class="modal mx-auto" id="modal">
         <div class="modal-content p-3">
             <form action="{{ route('users.add') }}" method="POST">
                 @csrf
                 <div class="d-flex">
                     <div style="width: 49%;" class="p-2">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" placeholder="Username" name="username" class="form-control" />
-                        <br />
                         <label for="firstname" class="form-label">Firstname</label>
                         <input type="text" placeholder="Firstname" name="firstname" class="form-control" />
                         <br />
@@ -104,13 +101,15 @@
                         <br />
                         <label for="lastname" class="form-label">Lastname</label>
                         <input type="text" placeholder="Lastname" name="lastname" class="form-control" />
+                        <br>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" placeholder="Email" name="email" class="form-control" />
                     </div>
                     &nbsp;
                     <div class="v1 ms-2"></div>
                     &nbsp;
                     <div class="ms-2 p-2" style="width: 49%;">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="text" placeholder="Email" name="email" class="form-control" />
+
                         <label for="affiliation" class="form-label">Affiliation</label>
                         <br>
                         <select id="affiliation" name="affiliation" class="form-select rounded p-2" style="width: 100%">
@@ -127,19 +126,19 @@
                     </div>
                 </div>
 
-                <div class="modal-footer mt-3 mx-auto">
-                    <button type="submit" class="ms-2 modal-button rounded-pill btn btn-success" onclick="closeModal()"
-                        style="width: 150px;">
-                        Save
+                <div class="modal-footer mt-3 mx-auto d-flex">
+                    <button type="submit" class="ms-2  modal-button rounded-pill btn btn-success " onclick="closeModal()"
+                        style="width: 120px">
+                        Add
                     </button>
             </form>
-            <button class="modal-close rounded-pill btn btn-secondary" onclick="closeModal()" style="width: 150px;">
+            <button class="modal-close rounded-pill btn btn-secondary " onclick="closeModal()" style="width: 120px">
                 Cancel
             </button>
         </div>
-
     </div>
     </div>
+    <!-- end of modal -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -158,24 +157,12 @@
         </section>
         <section class="content">
             <div class="card">
-
                 <div class="card-header">
-                    <h3 class="card-title mt-2">Users Table</h3>
+                    <h3 class="card-title mt-2">Users</h3>
                     <div class="d-flex justify-content-end">
-                        <button class="ms-3 btn btn-success" type="submit" onclick="onClickListenerBtn()">
+                        <button class="ms-3 btn btn-success" type="submit" id="onClickModal">
                             <i class="bi bi-plus-square"></i>
                             Create new user
-                        </button>
-                        &nbsp;
-                        <button class="p-2 btn btn-primary btnAction d-flex" type="submit" onclick="onClickEdit()"
-                            id="selectUpdate">
-                            <i class="bi bi-pencil-square"></i>
-                            Edit
-                        </button>
-                        &nbsp;
-                        <button class="ms-3 p-2 btn btn-danger btnAction" type="submit">
-                            <i class="bi bi-trash-fill"></i>
-                            Delete
                         </button>
                     </div>
                 </div>
@@ -184,19 +171,18 @@
                 <div class="card-body">
                     <table id="dataTable" class="table table-bordered">
                         <thead>
-
                             <tr>
                                 <th>User ID</th>
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Full Name</th>
                                 <th>Affiliation</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
-                        <form action="">
-                            @csrf
+                        <tbody>
                             @foreach ($users as $user)
-                                <tr onclick="selectRows()">
+                                <tr>
                                     <td id="id">{{ $user->id }}</td>
                                     <td>{{ $user->username }}</td>
                                     <td>{{ $user->email }}</td>
@@ -205,12 +191,29 @@
                                     @endphp
                                     <td>{{ $fullname ? $fullname : 'N/A' }}</td>
                                     <td>{{ $user->affiliation->name }}</td>
+                                    <td class="d-flex">
+                                        <form action="{{ route('edit', $user->id) }}" method="POST">
+                                            @csrf
+                                            <button class="p-2 btn btn-primary btnAction" type="submit">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                        </form>
+                                        &nbsp;
+                                        <form action="{{ route('destroy', $user->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="ms-3 p-2 btn btn-danger btnAction" type="submit">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @endforeach
-                        </form>
-                        <tbody>
                         </tbody>
                     </table>
+                    <div class="container">
+                        <p> {{ $users->links('pagination::bootstrap-5') }} </p>
+                    </div>
                 </div>
                 <!-- /.card-body -->
 
@@ -221,31 +224,12 @@
     @endsection
     @section('scripts')
         <script>
-            $('#dataTable tbody').on('click', 'td', function() {
-                var tr = $(this).closest('tr');
-                tr.toggleClass('selected').siblings().removeClass('selected');
-
-
-                var data = tr.hasClass('selected') ? tr.find('td#id').text() : null;
-                // You can pass the data to your controller using AJAX or any suitable method
-            });
-
-            function onClickListenerBtn() {
+            document.getElementById('onClickModal').addEventListener('click', function() {
                 document.getElementById("modal").style.display = "block";
-            }
+            });
 
             function closeModal() {
                 document.getElementById("modal").style.display = "none";
             }
-
-            function onClickEdit() {
-
-                    alert('hello')
-
-            }
-
-
-            // var selectedRow = document.querySelector('tr.selected');
-            //var tdValue = selectedRow.querySelector('td:').textContent;
         </script>
     @endsection

@@ -1,5 +1,4 @@
 @extends('admin.admin_dashboard')
-
 @section('styles')
     <style>
         .modal {
@@ -52,85 +51,91 @@
 @endsection
 
 @section('admin-layouts')
-    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Affiliations</li>
+                            <li class="breadcrumb-item active">Types</li>
                         </ol>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
         </section>
-        <!-- Start of modal for new affiliation-->
-        <div class="modal mx-auto" id="modal">
-            <div class="modal-content p-3">
-                <form action="{{ route('users.add') }}" method="POST">
-                    @csrf
-                    <div >
-                        <label for="name" class="form-label mt-2"><p>Affiliaton Name   </p></label>
-                        <input class="form-control rounded-pill" id="name" style="width: 50%dd" type="text" name="type" placeholder="Enter new affiliate name" required/>
-                    </div>
-                    <div class="modal-footer mt-3 mx-auto d-flex">
-                        <button type="submit" class="ms-2  modal-button rounded-pill btn btn-success " onclick="closeModal()" style="width: 120px">
-                            Add
-                        </button>
+              <!-- Start of modal for new types-->
+              <div class="modal mx-auto" id="modal">
+                <div class="modal-content p-3">
+                    <form action="{{ route('users.add') }}" method="POST">
+                        @csrf
+                        <div>
+                            <label class="form-label mt-2">
+                                <p>ADD TYPE </p>
+                            </label>
+                            <br>
+                            <label for="name" class="form-label mt-2">
+                                <p>Type Name </p>
+                            </label>
+                            <input class="form-control rounded-pill" id="name"  type="text"
+                                name="type" placeholder="Enter new type name" required />
+                        </div>
+                        <div class="modal-footer mt-3 mx-auto d-flex">
+                            <button type="submit" class="ms-2  modal-button rounded-pill btn btn-success "
+                                onclick="closeModal()" style="width: 120px">
+                                Add
+                            </button>
                     </form>
                     <button class="modal-close rounded-pill btn btn-secondary " onclick="closeModal()" style="width: 120px">
                         Cancel
                     </button>
-                    </div>
-
-
+                </div>
             </div>
         </div>
         <!-- end of modal -->
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title mt-2">Affiliations</h3>
+                    <h3 class="card-title mt-2">Types</h3>
                     <div class="d-flex justify-content-end">
-                        <button class="ms-3 btn btn-success" type="submit" onclick="onClickListenerBtn()">
+                        <button class="ms-3 btn btn-success" type="submit" id="onClickModal"">
                             <i class="bi bi-plus-square"></i>
-                            Add new Affiliation
+                            Add Catalog Type
                         </button>
                     </div>
                 </div>
+
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped">
+                    <table id="dataTable" class="table table-bordered">
                         <thead>
+
                             <tr>
-                                <th>ID</th>
-                                <th>Affiliation Name</th>
+                                <th>Type ID</th>
+                                <th>Name</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($affs as $aff)
+                            @foreach ($types as $type)
                                 <tr>
-                                    <td>{{ $aff->affiliation_id }}</td>
-                                    <td>{{ $aff->name }}</td>
+                                    <td id="id">{{ $type->type_id }}</td>
+                                    <td>{{ $type->name ?? '' }}</td>
                                     <td class="d-flex">
-                                        <form action="{{ route('edit', $aff->affiliation_id) }}" method="POST">
+                                        <form action="{{ route('edit', $type->type_id) }}" method="post">
                                             @csrf
                                             <button class="p-2 btn btn-primary btnAction" type="submit">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
                                         </form>
                                         &nbsp;
-                                        <form action="{{ route('destroy', $aff->affiliation_id) }}" method="POST">
+                                        <form action="{{ route('destroy', $type->type_id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="ms-3 p-2 btn btn-danger btnAction" type="submit">
+                                            <button class="p-2 btn btn-danger btnAction" type="submit">
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </form>
@@ -141,21 +146,22 @@
                         </tbody>
                     </table>
                     <div class="container">
-                        <p> {{ $affs->links('pagination::bootstrap-5') }} </p>
+                        <p> {{ $types->links('pagination::bootstrap-5') }} </p>
                     </div>
-
                 </div>
                 <!-- /.card-body -->
+
             </div>
             <!-- /.card -->
         </section>
         <!-- /.container-fluid -->
     @endsection
+
     @section('scripts')
         <script>
-            function onClickListenerBtn() {
+            document.getElementById('onClickModal').addEventListener('click', function() {
                 document.getElementById("modal").style.display = "block";
-            }
+            });
 
             function closeModal() {
                 document.getElementById("modal").style.display = "none";

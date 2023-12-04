@@ -25,7 +25,7 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+                    <a class="nav-link" data-widget="pushmenu" id="burger" href="#" role="button">
                         <i class="bi bi-list-ul"></i>
                     </a>
                 </li>
@@ -35,7 +35,7 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="height: 100%">
             <!-- Brand Logo -->
 
             <!-- Sidebar -->
@@ -43,7 +43,7 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel mt-3 pb-2 mb-2 d-flex flex-column align-items-center text-center">
                     <div class="image mb-2">
-                        <img src="{{ auth()->user()->photo_path != null ? auth()->user()->photo_path : '' }}"
+                        <img src="{{ auth()->user()->photo_path != null ?  asset(auth()->user()->photo_path) : '' }}"
                             class="img-circle elevation-2 image-fluid" style="width: 70%; height: 70%" alt="User Image">
                     </div>
                     <div class="info">
@@ -61,7 +61,7 @@
                             <a href="{{ route('users') }}" class="nav-links">
                                 <div class="d-flex">
                                     <i class=" nav-icon bi-people-fill mt-2"></i>
-                                    <p class="">User Accounts</p>
+                                    <p class=" mt-2 d-block">User Accounts</p>
                                 </div>
                             </a>
                         </li>
@@ -74,14 +74,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('affiliations') }}" class="nav-links">
+                            <a href="{{ route('catalogs_index') }}" class="nav-links">
                                 <div class="d-flex">
                                     <i class="bi bi-book-fill mt-2"></i>
                                     &nbsp <p class="ms-5 mt-2 d-block">Catalogs</p>
                                 </div>
                             </a>
                         </li>
-                        <a href="{{ route('affiliations') }}" class="nav-links">
+                        <a href="{{ route('types_index') }}" class="nav-links">
                             <div class="d-flex">
                                 <i class="bi bi-bookshelf mt-2"></i>
                                 &nbsp <p class="ms-5 mt-2 d-block">Catalog Types</p>
@@ -114,19 +114,20 @@
     </footer>
     </div>
     <!-- ./wrapper -->
+
+</body>
     <!-- DataTables  & Plugins -->
-    <script src="{{ asset('styles/js/jquery.js') }}"></script>
-    <script src="{{ asset('styles/datatables/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('styles/datatables/js/button.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('styles/datatables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('styles/datatables/js/datatables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('styles/datatables/js/datatables.responsive.min.js') }}"></script>
     <script src="{{ asset('styles/datatables/js/responsive.bootstrap4.min.js') }}"></script>
 
     <!-- AdminLTE App -->
     <script src="{{ asset('styles/js/adminlte.min.js') }}"></script>
     <!-- Jquery -->
-    <script src="{{ asset('styles/js/jquery.js') }}"></script>
+    <script src="{{ asset('styles/js/jQuery.js') }}"></script>
+
     @yield('scripts')
     <!-- Page specific script -->
-    <script></script>
-</body>
 
 </html>

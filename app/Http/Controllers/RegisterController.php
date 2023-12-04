@@ -35,7 +35,7 @@ public function register(Request $request)
     // Create the user
     $user = new User();
         $user->fill([
-            'username' => $name,
+            'username' => $request->input('username')!=null ? $request->input('username') : $name,
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
             'affiliation_id' => $request->input('affiliation')!=null ? $request->input('affiliation') : 1,

@@ -149,8 +149,9 @@
             </div>
         </div>
         {{-- End for modal --}}
-        <form action="account/update/{{ auth()->user()->id }}" method="PUT">
+        <form action="account/update/{{ auth()->user()->id }}" method="post">
             @csrf
+            @method('PUT')
             {{-- Avatar icon --}}
             @php
                 $pathFile = auth()->user()->photo_path;
