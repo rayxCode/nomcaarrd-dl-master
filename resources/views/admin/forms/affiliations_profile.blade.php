@@ -26,30 +26,61 @@
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title mt-2">Affiliations</h3>
+                    <h3 class="card-title mt-2">Affiliation Profile</h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('updateAd', $selectUser->id) }}" method="POST">
+                    <form action="{{ route('affiliation.update', $edit->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="d-flex">
-                            <label for=""></label>
-                            <input type="text">
-                            <label for=""></label>
-                            <input type="text">
+                            <label for="name" class="form-label mt-1"> Name &nbsp;</label>
+                            <input type="text" id="name" name="name" class="form-control rounded ms-2"
+                                value="{{ isset($edit->name) ? $edit->name : old('') }}">
                         </div>
                         <div class="modal-footer mt-3 mx-auto">
                             <button type="submit" class="ms-2 modal-button rounded-pill btn btn-success"
                                 style="width: 150px;">
                                 Save
                             </button>
-                        </div>
                     </form>
+                    <a href="{{ route('affiliations') }}" class="ms-2 modal-button rounded-pill btn btn-success"
+                        style="width: 150px;">
+                        Back
+                    </a>
                 </div>
             </div>
-        </section>
+    </div>
+    </section>
     </div>
 @endsection
 
 @section('scripts')
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                title: "Validation Error!",
+                html: `<ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>`,
+                icon: "error"
+            });
+        </script>
+    @endif
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: "Success!",
+                text: "{!! htmlspecialchars(session('success')) !!}",
+                icon: "success"
+            });
+
+            // Add a delay of 2 seconds (2000 milliseconds) before redirecting
+            setTimeout(function() {
+                window.location.href = "{{ route('affiliations') }}";
+            }, 2000);
+        </script>
+    @endif
 @endsection

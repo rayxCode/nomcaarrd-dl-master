@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Author extends Model
 {
-    protected $primaryKey = 'author_id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
+        'name',
         'users_id',
         'catalog_id',
         'editedBy',
@@ -17,11 +18,11 @@ class Author extends Model
     // Relationships
     public function users()
     {
-        return $this->belongsTo(User::class, 'users_id');
+        return $this->belongsTo(User::class, 'id');
     }
 
     public function catalogs()
     {
-        return $this->belongsTo(Catalog::class, 'catalog_id');
+        return $this->belongsTo(Catalog::class, 'id');
     }
 }

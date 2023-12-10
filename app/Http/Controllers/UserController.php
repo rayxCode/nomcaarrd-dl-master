@@ -96,10 +96,6 @@ class UserController extends Controller
         $request->validate([
             'username' => 'required',
             'email' => 'required|email',
-            'firstname' => 'required',
-            'middlename' => 'required',
-            'lastname' => 'required',
-            'affiliation' => 'required',
         ]);
 
 
@@ -107,22 +103,25 @@ class UserController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return redirect()->back()->session()->flash('error', 'User not found!');
+            return redirect()->back()->with('error', 'User not found!');
         }
 
-        // Create the 'name' from 'firstname', 'middlename', and 'lastname'
+        // Updates the 'name' from 'firstname', 'middlename', and 'lastname'
+        $fullname = $request->input('lastname').", ".$request->input('firstname')." ".$request->input('middlename');
         // Update the user's profile with the new data
         $user->username = $request->input('username');
+        $user->fullname =
         $user->firstname = $request->input('firstname');
         $user->middlename = $request->input('middlename');
         $user->lastname = $request->input('lastname');
-        $user->affiliation = $request->input('affiliation');
+        $user->affiliation_id = $request->input('affiliation')?? $user->affiliation_id;
         if ($request->input('password'))
             $user->password = bcrypt($request->input('password'));
         $user->access_level = $request->input('access_level');
+        $user->editedBy = auth()->user()->username;
         $user->update();
         // Redirect back to the profile page or a success page
-        return view('admin.admin_users');
+        return redirect()->back()->with('success', 'User profile edited successfully!');
     }
 
     // app/Http/Controllers/AvatarController.php

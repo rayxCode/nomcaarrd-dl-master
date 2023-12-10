@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Catalog extends Model
 {
-    protected $primaryKey = 'catalog_id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'title',
         'description',
         'publishedDate',
+        'authors',
         'type_id',
         'fileURL',
         'photo_path',
@@ -23,19 +24,28 @@ class Catalog extends Model
         'rating',
     ];
 
+    protected $casts = [
+        'authors' => 'json',
+    ];
+
+
     // Relationships
-    public function type()
+    public function types()
     {
         return $this->belongsTo(CatalogType::class, 'type_id');
     }
 
-    public function author()
+    public function authors()
     {
-        return $this->hasMany(Author::class, 'author_id');
+        return $this->hasMany(Author::class, 'id');
     }
 
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'comment_id');
+        return $this->hasMany(Comment::class, 'id');
+    }
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class, 'catalog_id');
     }
 }

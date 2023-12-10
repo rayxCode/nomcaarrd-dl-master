@@ -12,18 +12,19 @@ return new class extends Migration
     public function up(): void
     {
             Schema::create('catalogs', function (Blueprint $table) {
-                $table->id('catalog_id');
+                $table->id();
                 $table->string('title')->unique();
+                $table->json('authors')->nullable();
                 $table->string('description');
                 $table->dateTime('publishedDate');
                 $table->unsignedBigInteger('type_id');
-                $table->foreign('type_id')->references('type_id')->on('catalogTypes');
+                $table->foreign('type_id')->references('id')->on('catalogTypes');
                 $table->string('fileURL');
-                $table->string('status');
-                $table->double('rating');
-                $table->double('nUserRated');
+                $table->string('status')->nullable();
+                $table->double('rating')->default(0);
+                $table->double('nUserRated')->default(0);;
                 $table->string('photo_path');
-                $table->string('editedBy');
+                $table->string('editedBy')->nullable();;
                 $table->timestamps();
             });
     }

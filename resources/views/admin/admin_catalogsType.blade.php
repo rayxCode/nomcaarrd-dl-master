@@ -1,4 +1,4 @@
-@extends('admin.admin_dashboard')
+@extends('admin.admin_master')
 @section('styles')
     <style>
         .modal {
@@ -70,18 +70,18 @@
               <!-- Start of modal for new types-->
               <div class="modal mx-auto" id="modal">
                 <div class="modal-content p-3">
-                    <form action="{{ route('users.add') }}" method="POST">
+                    <span class="container" >
+                        <p style="margin-left: -10px"><b>ADD TYPE </b> </p>
+                        <hr style="margin-top: -10px">
+                    </span>
+                    <form action="{{ route('types.store') }}" method="POST">
                         @csrf
                         <div>
-                            <label class="form-label mt-2">
-                                <p>ADD TYPE </p>
-                            </label>
-                            <br>
                             <label for="name" class="form-label mt-2">
                                 <p>Type Name </p>
                             </label>
                             <input class="form-control rounded-pill" id="name"  type="text"
-                                name="type" placeholder="Enter new type name" required />
+                                name="name" placeholder="Enter new type name" required />
                         </div>
                         <div class="modal-footer mt-3 mx-auto d-flex">
                             <button type="submit" class="ms-2  modal-button rounded-pill btn btn-success "
@@ -103,14 +103,14 @@
                     <div class="d-flex justify-content-end">
                         <button class="ms-3 btn btn-success" type="submit" id="onClickModal"">
                             <i class="bi bi-plus-square"></i>
-                            Add Catalog Type
+                            Add Type
                         </button>
                     </div>
                 </div>
 
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="dataTable" class="table table-bordered">
+                    <table id="dataTable" class="table table-bordered table-striped">
                         <thead>
 
                             <tr>
@@ -122,17 +122,14 @@
                         <tbody>
                             @foreach ($types as $type)
                                 <tr>
-                                    <td id="id">{{ $type->type_id }}</td>
+                                    <td id="id">{{ $type->id }}</td>
                                     <td>{{ $type->name ?? '' }}</td>
                                     <td class="d-flex">
-                                        <form action="{{ route('edit', $type->type_id) }}" method="post">
-                                            @csrf
-                                            <button class="p-2 btn btn-primary btnAction" type="submit">
+                                            <a href="{{ route('types.show', $type->id) }}" class="p-2 btn btn-primary btnAction" type="submit">
                                                 <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                        </form>
+                                            </a>
                                         &nbsp;
-                                        <form action="{{ route('destroy', $type->type_id) }}" method="post">
+                                        <form action="{{ route('types.destroy', $type->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button class="p-2 btn btn-danger btnAction" type="submit">

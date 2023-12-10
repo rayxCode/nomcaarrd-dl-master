@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::create('catalogTypes', function (Blueprint $table) {
-            $table->id('type_id');
-            $table->string('name');
-            $table->string('editedBy');
+        Schema::create('authors_catalogs', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('author_id')->nullable()->constrained();
+            $table->foreignId('catalog_id')->constrained();
             $table->timestamps();
-          });
+        });
     }
 
     /**
@@ -25,7 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
-        Schema::dropIfExists('catalogType');
+        Schema::dropIfExists('authors_catalogs');
     }
 };

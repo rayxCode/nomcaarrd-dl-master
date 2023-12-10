@@ -8,13 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class CatalogType extends Model
 {
     use HasFactory;
+    protected $table = 'catalogtypes';
 
-    protected $table = "catalogtypes";
-
-    protected $primaryKey = 'type_id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'name',
         'editedBy',
     ];
+
+    public function catalogs(){
+        return $this->hasMany(Catalog::class);
+    }
 }

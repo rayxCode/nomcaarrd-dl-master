@@ -13,9 +13,9 @@ return new class extends Migration
     {
         //
         Schema::create('affiliations', function (Blueprint $table) {
-            $table->id('affiliation_id');
+            $table->id();
             $table->string('name');
-            $table->string('editedBy');
+            $table->string('editedBy')->nullable();;
             $table->timestamps();
         });
     }

@@ -9,6 +9,8 @@ class Bookmark extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'catalog_id',
         'users_id',
@@ -17,11 +19,11 @@ class Bookmark extends Model
 
     public function catalog()
     {
-        return $this->belongsTo(Catalog::class, 'catalog_id');
+        return $this->belongsTo(Catalog::class, 'id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'users_id');
+        return $this->belongsTo(User::class, 'id');
     }
 }

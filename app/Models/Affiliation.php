@@ -9,7 +9,7 @@ class Affiliation extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'affiliation_id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'name',

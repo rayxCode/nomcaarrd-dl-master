@@ -19,20 +19,12 @@ class bookmarkController extends Controller
             return redirect('login');
         }
 
-        $message = [
-            'catalog_id.required' => 'There\'s no catalog that exists like that',
-        ];
-        // Validate the request
-        $validatedData = $request->validate([
-            'catalog_id' => 'required|exists:catalogs,catalog_id', // assuming 'catalogs' table has 'id' column
-        ]);
-
         $userId = Auth::id();
 
         $bookmark = Bookmark::create([
-            'catalog_id' => $validatedData['catalog_id'],
+            'catalog_id' => $id,
             'users_id' => $userId,
-            'editedBy' => ' ',
+            'editedBy' => " ",
         ]);
 
         $bookmark->save();
@@ -43,6 +35,15 @@ class bookmarkController extends Controller
 
     public function showBookmark($id){
         $bookmarks = Bookmark::where('users_id', auth()->user()->id);
+        return view('pages.account_bookmarks', compact('bookmarks'));
+    }
+    public function destroy($id){
+        $bookmarks = Bookmark::where('catalog_id', $id)->where('users_id', auth()->user()->id);
+        return redirect()->back();
+    }
+
+    public function clearAllBookmarks($id)
+    {
 
     }
 }

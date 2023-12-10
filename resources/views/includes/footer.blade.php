@@ -2,7 +2,7 @@
 {{-- start footer div --}}
 <!-- footer div -->
         <div class="container-fluid">
-            <div class="d-flex mt-2 text-black-50">
+            <div class="d-flex mt-2 {{request()->routeIs('home')? 'text-white':'text-black-50'}}" id="footerDiv">
                 <div class="justify-content-start flex-fill">
                     <p class="text-left" style="font-size: 11px">
                         <a href="" class="text-decoration-none"> Terms & Conditions  </a>

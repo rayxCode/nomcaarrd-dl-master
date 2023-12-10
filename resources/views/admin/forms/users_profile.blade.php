@@ -1,8 +1,5 @@
 @extends('admin.admin_dashboard')
 @section('styles')
-    <style>
-
-    </style>
 @endsection
 
 @section('admin-layouts')
@@ -26,7 +23,7 @@
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title mt-2">Users Table</h3>
+                    <h3 class="card-title mt-2">Edit User Profile</h3>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('updateAd', $selectUser->id) }}" method="POST">
@@ -39,17 +36,20 @@
                                     name="username" class="form-control" />
                                 <br>
                                 <label for="firstname" class="form-label">Firstname</label>
-                                <input type="text" value="{{ $selectUser->firstname }}" placeholder="Firstname"
-                                    name="firstname" class="form-control" />
+                                <input type="text"
+                                    value="{{ isset($selectUser->firstname) ? $selectUser->firstname : old('firstname') }}"
+                                    placeholder="Firstname" id="firstname" name="firstname" class="form-control" />
                                 <br />
                                 <label for="middlename" class="form-label">Middlename</label>
-                                <input type="text" value="{{ $selectUser->middlename }}" placeholder="Middlename"
-                                    name="middlename" class="form-control" />
+                                <input type="text"
+                                    value="{{ isset($selectUser->middlename) ? $selectUser->middlename : old('middlename') }}"
+                                    placeholder="Middlename" name="middlename" id="middlename" class="form-control" />
                                 <br />
                                 <label for="lastname" class="form-label">Lastname</label>
-                                <input type="text" value="{{ $selectUser->lastname }}" placeholder="Lastname"
-                                    name="lastname" class="form-control" />
-                                <br/>
+                                <input type="text"
+                                    value="{{ isset($selectUser->lastname) ? $selectUser->lastname : old('lastname') }}"
+                                    placeholder="Lastname" name="lastname" id="lastname" class="form-control" />
+                                <br />
                                 <label for="email" class="form-label">Email</label>
                                 <input type="text" value="{{ $selectUser->email }}" placeholder="Email" name="email"
                                     class="form-control" />
@@ -60,10 +60,9 @@
                             <div class="ms-2 p-2" style="width: 49%;">
                                 <label for="affiliation" class="form-label">Affiliation</label>
                                 <select id="affiliation" name="affiliation" class="form-select rounded p-2"
-                                style="width: 100%">
+                                    style="width: 100%">
                                     @foreach ($affs as $option)
-                                        <option value={{ $option->affiliation_id }}
-                                            @if ($option->affiliation_id == $selectUser->affiliation_id) selected @endif>
+                                        <option value={{ $option->id }} @if ($option->id == $selectUser->affiliation_id) selected @endif>
                                             {{ $option->name }}</option>
                                     @endforeach
                                 </select>
@@ -94,19 +93,21 @@
                                 <br>
                                 <br>
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" name="password" class="form-control" required />
+                                <input type="password" name="password" class="form-control" />
                                 <br>
                                 <label for="cfpassword" class="form-label">Confirm Password</label>
-                                <input type="password" name="password_confirmation"class="form-control" required />
+                                <input type="password" name="password_confirmation"class="form-control" />
                             </div>
                         </div>
-
                         <div class="modal-footer mt-3 mx-auto">
                             <button type="submit" class="ms-2 modal-button rounded-pill btn btn-success"
                                 style="width: 150px;">
                                 Save
                             </button>
                     </form>
+                    <a href="{{route('users')}}" type="submit" class="ms-2 modal-button rounded-pill btn btn-success" style="width: 150px;">
+                        Back
+                    </a>
                 </div>
             </div>
         </section>

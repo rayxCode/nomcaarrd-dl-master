@@ -20,19 +20,19 @@
         <caption><i>Current list for bookmarked books</i></caption>
         <thead style="font-size: 12px">
             <tr>
-                <th>No.</th>
                 <th>Title</th>
                 <th>Author</th>
                 <th>Serial</th>
             </tr>
         </thead>
         @foreach ($bookmarks as $bookmarked)
+        <a href="{{route('catalogs.show', $catalogs->id)}}" style="text-decoration: none; color:black">
             <tr>
-                <td>{{ $bookmarked->id }}</td>
                 <td>{{ $bookmarked->catalog->title }}</td>
-                <td></td>
+                <td>{{ $bookmarked->catalog->authors}}</td>
                 <td>{{ (new DateTime($bookmarked->catalog->publishedDate))->format('Y') }}</td>
             </tr>
+        </a>
         @endforeach
 
     </table>

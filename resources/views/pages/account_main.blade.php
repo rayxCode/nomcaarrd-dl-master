@@ -4,6 +4,7 @@
     {{-- Specific styles here --}}
     <style>
         @media (max-width: 992px) {
+
             /* Styles for smaller screens */
             .menu-div {
                 display: none;
@@ -49,15 +50,36 @@
                 <p class="mt-3">Account Setting</p>
                 <hr class="bg-dark" style="margin-top: -10px">
                 <div class="text-black">
-                    <div>
-                        <p><a href="{{ route('dashboard') }}" class="text-decoration-none text-black-50">Dashboard</a></p>
-                    </div>
-                    <div>
-                        <p><a href="{{ route('profiles') }}" class="text-decoration-none text-black-50">Edit Profile</a></p>
-                    </div>
-                    <div>
-                        <p><a href="{{ route('bookmarks') }}" class="text-decoration-none text-black-50">Bookmarks</a></p>
-                    </div>
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+                        <li>
+                            <div>
+                                <p><a href="{{ route('dashboard') }}"
+                                        class="text-decoration-none text-black-50">Dashboard</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <p><a href="{{ route('profiles') }}" class="text-decoration-none text-black-50">Edit
+                                        Profile</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <p><a href="{{ route('bookmarks') }}"
+                                        class="text-decoration-none text-black-50">Bookmarks</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <p><a href="{{ route('bookmarks') }}"
+                                        class="text-decoration-none text-black-50">Bookmarks</a></p>
+                            </div>
+                        </li>
+                    </ul>
+
+
+
                     <div>
                         <p><a href="{{ route('auth.logout') }}" class="text-decoration-none text-black-50">Logout</a></p>
                     </div>
@@ -79,5 +101,20 @@
             document.querySelector('menu-div').style.display =
                 (document.querySelector('menu-div').style.display === 'none') ? 'block' : 'none';
         });
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuItems = document.querySelectorAll('#btnMenu');
+
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove the 'active' class from all menu items
+                    menuItems.forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    // Add the 'active' class to the clicked menu item
+                    this.classList.add('active');
+                });
+            });
+        });
     </script>
+    @yield('scripts')
 @endsection

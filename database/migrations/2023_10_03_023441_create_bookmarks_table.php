@@ -16,9 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('catalog_id');
             $table->foreign('catalog_id')->references('catalog_id')->on('catalogs')->onDelete('cascade');
             $table->unsignedBigInteger('users_id');
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')->onDelete('cascade');
+            $table->string('editedBy')->nullable();
             $table->timestamps();
-            $table->string('editedBy');
+
         });
     }
 

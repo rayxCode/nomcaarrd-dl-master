@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
                 $table->id();
+                $table->int('access_level');
+                $table->string('email')->unique();
                 $table->string('password');
-                $table->string('userame');
+                $table->string('username');
+                $table->varchar('fullname', 50);
                 $table->varchar('firstname', 50);
                 $table->varchar('middlename', 50);
                 $table->varchar('lastname', 50);
                 $table->unsignedBigInteger('affiliation_id')->default(1);
-                $table->foreign('affiliation_id')->references('affiliation_id')->on('affiliations');
-                $table->string('email')->unique();
+                $table->foreign('affiliation_id')->references('id')->on('affiliations');
                 $table->string('photo_path');
-                $table->int('access_level');
                 $table->string('editedBy')->nullable();
                 $table->timestamps();
             });

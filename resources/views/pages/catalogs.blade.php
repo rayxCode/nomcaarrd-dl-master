@@ -53,35 +53,53 @@
             z-index: 9999;
             opacity: 0;
         }
+
+        .rating {
+            unicode-bidi: bidi-override;
+            direction: rtl;
+            display: inline-block;
+            position: relative;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            cursor: pointer;
+            width: 1em;
+            font-size: 1.25em;
+            color: #ccc;
+            float: right;
+        }
+
+        .rating label:before {
+            content: '★';
+            padding: 0.2em;
+            font-size: 1.25em;
+            color: #252525;
+            transition: color 0.2s;
+        }
+
+        .rating input:checked~label:before,
+        .rating label:hover:before {
+            color: #FFD700;
+        }
+
+        .rating:not(:checked) label:hover:before {
+            color: #252525;
+        }
+
+        .rating input:checked+label:hover:before,
+        .rating input:checked~label:hover:before {
+            color: #FFD700;
+        }
+
+        .rating label:hover~label:before {
+            color: #FFD700;
+        }
     </style>
 @endsection
-@if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-@endif
-
-@if ($errors->any())
-    <div class="toast show position-fixed top-0 end-0 m-3" style="z-index: 1050">
-        <div class="toast-header bg-danger text-white">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>
-            <strong class="me-auto">Error</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-@endif
-
-
 @section('content')
     {{-- put code here --}}
     <br>
@@ -91,7 +109,7 @@
         <div class="ms-2 mt-4">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/" style="text-decoration: none">Home</a></li>
                     <li class="breadcrumb-item">Catalogs</li>
                     <li class="breadcrumb-item active" aria-current="page"></li>
                 </ol>
@@ -100,13 +118,15 @@
         <div class="row mt-4 justify-content-center">
             {{-- first div left side --}}
             <div class="text-center" style="width: 15rem">
-                <img src="{{ asset($catalogs->photo_path) }}" alt="" style="width: 13em; height: 17em">
-                <p class="mt-3" style="font-size: 14px"><i> {{ $bookmarkCount }} added this to bookmark </i></p>
-                <p class="mt-3"> Type: {{ $type->name }}</p>
-                <form action="{{ url('/bookmark/' . $catalogs['catalog_id']) }}" method="POST">
+                <img src="{{ asset('storage' . $catalogs->photo_path) }}" alt="" style="width: 13em; height: 17em">
+                <p class="mt-3" style="font-size: 14px"><i> {{ $bookmarkCount->count() }} added this to bookmark </i></p>
+                <p class="mt-3"> Type: {{ $catalogs->types->name }}</p>
+                <form
+                    action="{{ $count > 0 ? route('bookmark.destroy', $catalogs->id) : route('bookmark.store', $catalogs->id) }}"
+                    method="POST">
                     @csrf
-                    <input type="hidden" name="catalog_id" value="{{ $catalogs['catalog_id'] }}">
 
+                    <input type="hidden" name="catalog_id" value="{{ $catalogs->id }}">
                     <button class="btn bg-success rounded-pill text-white" style="width: 88%" id="addBookmarkBtn"
                         type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -116,7 +136,8 @@
                             <path
                                 d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1z" />
                         </svg>
-                        Add to Bookmark </button>
+
+                        {{ $count > 0 ? 'Bookmarked' : 'Add to Bookmarks' }} </button>
 
                 </form>
 
@@ -137,7 +158,8 @@
                             <path
                                 d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
                         </svg>
-                        <a class="text-decoration-none text-white" href="{{ asset($catalogs->fileURL) }}" download> Download
+                        <a class="text-decoration-none text-white" href="{{ asset('storage' . $catalogs->fileURL) }}" download>
+                            Download
                             PDF</a> </button>
                 @endauth
 
@@ -152,7 +174,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <embed src="{{ Storage::url('pdf/sample.pdf') }}" type="application/pdf" width="100%"
+                            <embed src="{{ asset('storage' . $catalogs->fileURL) }}" type="application/pdf" width="100%"
                                 height="95%" />
                         </div>
                     </div>
@@ -161,12 +183,13 @@
             <!--End of modal -->
             {{-- second div center --}}
             <div class="rounded" style="width: 40rem">
-                <h3 class="ms-2 mt-3 text-justify">{{ $catalogs['title'] }}</h3>
+                <h3 class="ms-2 mt-3 text-justify">{{ $catalogs->title }}</h3>
                 <span class="d-flex" style="margin-top: -5px">
                     @php
                         $maxStars = 5;
-                        $fullStars = floor($catalogs->rating);
-                        $fr = $catalogs->rating - $fullStars;
+                        $rating = $catalogs->rating;
+                        $fullStars = floor($rating);
+                        $fr = $rating - $fullStars;
                     @endphp
 
                     <!-- Full stars -->
@@ -194,122 +217,155 @@
                         <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
                             style="width:1.25rem;height:1.25rem">
                     @endfor
-                    <h5 style="margin-top: -.1rem">
-                        &nbsp {{ $catalogs->rating }}
-                    </h5>
+                    <p class="ms-2" style="margin-top: -.1rem"> <i>{{ $catalogs->rating }} out of
+                            {{ $catalogs->nUserRated }} Reviews</i></p>
                 </span>
                 <h5 class="ms-2 mt-3 text-justify">SUMMARY</h5>
-                <p class="mt-2 ms-5 justify-content-start" style="width: 88%"> {{ $catalogs->description }}</p>
-                <span class="ms-2 mt-2 d-flex" style="width: 88%">
-                    <p class="flex-fill ms-1">Author(s): {{ $catalogs->author_id }}</p>
-                    <p> Published Date: {{ (new DateTime($catalogs->publishedDate))->format('m-d-Y') }}</p>
+                <p class="mt-2 ms-5 justify-content-start" style="width: 95%"> {{ $catalogs->description }}</p>
+                <span class="ms-2 mt-2 d-flex" style="width: 95%">
+                    @php
+                        $authors = $catalogs->authors;
+
+                        if (is_array($authors)) {
+                            // If $authors is an array, apply htmlspecialchars to each element
+                            $authorsArray = array_map('htmlspecialchars', $authors);
+                            // Now $authorsArray contains each element sanitized
+                            $output = implode(', ', $authorsArray);
+                        } else {
+                            // If $authors is not an array, treat it as a single string
+                            $output = htmlspecialchars($authors);
+                        }
+                    @endphp
+                    <p class="flex-fill ms-1">Author(s): {{ $output }}</p>
+                    <p> Published Date: {{ (new DateTime($catalogs->publishedDate))->format('F d, Y') }}</p>
                 </span>
                 <br>
                 {{-- start comment section --}}
                 <div>
                     @auth
+                        @if($comments->where('users_id', auth()->user()->id)->count() > 0)
+                        @else
+
                         {{-- comment form start --}}
                         <div id='form'>
                             <div class="row">
                                 <div class="col-md-12">
                                     <Label class="ms-1"><b>Leave a comment </b></Label>
                                     <hr class="bg-dark" style="margin-top: -1px">
-                                    <span class="d-flex mt-1">
-                                        <img class="bg-info rounded-circle" src="" alt=""
-                                            style="width: 2.5rem; height: 2.5rem">
-                                        <p class="mt-2 ms-3"><b>{{ auth()->user()->name }} </b></p>
-                                    </span>
-
-                                    <form action="{{ url('catalogs/'. $catalogs->catalog_id)}}"
-                                        method="POST">
+                                    <form action="{{ route('comment') }}" method="POST">
                                         @csrf
-                                        <input type="hidden" name="catalog_id" value="{{ $catalogs->catalog_id }}">
-                                        <div id="comment-message" class="form-row">
-                                            <textarea name = "comment" placeholder = "Message" id = "comment" style="width: 100%; height: 5rem"></textarea>
+                                        <div class="d-flex">
+                                            <p class="form-label mt-2"> <i> Write a review... </i></p>
+                                            <input type="hidden" id="id" name="id"
+                                                value="{{ $catalogs->id }}">
+                                            <div class="rating ms-3">
+                                                <input type="radio" id="star1" name="rating" value="5.0" />
+                                                <label for="star1"> </label>
+                                                <input type="radio" id="star2" name="rating" value="4.0" />
+                                                <label for="star2"> </label>
+                                                <input type="radio" id="star3" name="rating" value="3.0" />
+                                                <label for="star3"> </label>
+                                                <input type="radio" id="star4" name="rating" value="2.0" />
+                                                <label for="star4"> </label>
+                                                <input type="radio" id="star5" name="rating" value="1.0" />
+                                                <label for="star5"> </label>
+                                            </div>
                                         </div>
-                                        <a href="#">
-                                            <input class="btn btn-success float-end rounded-pill" type="submit"
-                                                name="submit" id="commentSubmit" value="Comment">
-                                        </a>
+                                        <div id="comment-message" class="form-row">
+                                            <textarea class="rounded" name = "comment" placeholder="Write a review..." id = "comment"
+                                                style="width: 100%; height: 5rem"></textarea>
+                                        </div>
+
+                                        <button class="btn btn-success float-end rounded-pill" type="submit" name="submit"
+                                            id="commentSubmit"> Submit </button>
                                     </form>
+
                                 </div>
                             </div>
                         </div>
-                        {{-- end for comment form --}}
+                        @endif
                     @endauth
+                    {{-- end for comment form --}}
+
                     <br>
                     <h5><i> Comments </i> </h5>
                     <hr>
                     {{-- start for comment section details --}}
-                    <div>
-                        @foreach ($comments as $comment)
-                                    <div class="commenterImage">
-                                        <img src="http://placekitten.com/50/50" />
-                                    </div>
+                    <div class="container">
+                        @if ($comments != null)
+                            @foreach ($comments as $comment)
+                                <div class="d-flex mt-1">
                                     <div class="commentText">
-                                        <p class="ms-1"><b>{{$comment->user->name}}</b> </p>
-                                        <p class="ms-1 justify-content-start">{{ $comment->comment }}</p>
-                                        <p style="margin-inline-start: 35px; margin-top: -5px; font-size: 10; color: rgb(105, 105, 105); font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">on
-                                            {{ (new DateTime($comment->created_at))->format('F d, Y h:i A') }}</p>
+                                        @php
+                                            $maxStars = 5;
+                                            $fullStars = floor($comment->rating);
+                                            $fr = $comment->rating - $fullStars;
+                                        @endphp
+                                        <!-- Full stars -->
+                                        @for ($i = 0; $i < $fullStars; $i++)
+                                            <img src="{{ asset('icons/icons8-star-filled-96.png') }}" alt=""
+                                                style="width:1.25rem;height:1.1rem">
+                                        @endfor
+
+                                        <!-- Half star -->
+                                        @if ($fr == 0.5)
+                                            <img src="{{ asset('icons/icons8-star-half-filled-96.png') }}" alt=""
+                                                style="width:1.25rem;height:1.1rem">
+                                            <!-- Quarter filled star -->
+                                        @elseif($fr > 0.5 && $fr < 1.0)
+                                            <img src="{{ asset('icons/icons8-star-quarter-filled-96.png') }}"
+                                                alt="" style="width:1.25rem;height:1.1rem">
+                                            <!-- Quarter empty star -->
+                                        @else
+                                            <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
+                                                style="width:1.25rem;height:1.1rem">
+                                        @endif
+
+                                        <!-- Empty stars to fill up to the max -->
+                                        @for ($i = $fullStars + 1; $i < $maxStars; $i++)
+                                            <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
+                                                style="width:1.25rem;height:1.1rem">
+                                        @endfor
+                                        <div class="d-flex">
+                                            <p class="ms-1"><b>{{ $comment->user->username }}</b> </p>
+                                            <p
+                                                style="margin-inline-start: 10px; margin-top: 6px; font-size: 11px; color: rgb(105, 105, 105); font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+                                                on
+                                                @php
+                                                    $createdAt = \Carbon\Carbon::parse($comment->created_at);
+                                                    $now = \Carbon\Carbon::now();
+                                                    $diffInSeconds = $now->diffInSeconds($createdAt);
+                                                    $diffInMinutes = $now->diffInMinutes($createdAt);
+                                                    $diffInDays = $now->diffInDays($createdAt);
+                                                @endphp
+
+                                                @if ($diffInSeconds < 60)
+                                                    {{ $diffInMinutes }} seconds ago
+                                                @elseif($diffInMinutes < 60)
+                                                    {{ $diffInMinutes }} minutes ago
+                                                @elseif ($diffInDays < 1)
+                                                    {{ $createdAt->diffForHumans() }}
+                                                @elseif ($diffInDays <= 7)
+                                                    {{ $createdAt->format('F d, Y') }}
+                                                @else
+                                                    {{ $createdAt->format('F d, Y') }}
+                                                @endif
+                                            </p>
+                                        </div>
+                                        <p class="ms-1 justify-content-start" style="">{{ $comment->comment }}</p>
                                     </div>
-                        @endforeach
+                                </div>
+                            @endforeach
+                        @else
+                            <p class="text-center"> <i> This catalog has no reviews yet... </i> </p>
+                        @endif
                     </div>
                     {{-- end for comment section details --}}
                 </div>
                 {{-- end for comment section --}}
             </div>
             {{-- end second div center  --}}
-            {{-- third div right - TOP PICKS FOR THE MONTH  --}}
-            <div style="width: 25%" class="flexible-div">
-                <span class="d-flex">
-                    <p class="flex-fill">TOP PICKS FOR THE MONTH</p>
-                </span>
-                <hr class="bg-dark" style="margin-top: -5px">
-                @foreach ($ratedCatalogs as $catalogs)
-                    <span class="mx-auto" style="width: 18rem">
-                        <p class="text-truncate">{{ $catalogs->title }}</p>
-                        <p style="margin-top: -15px">Juan dela Cruz </p>
-                        <span class="d-flex" style="margin-top: -10px">
-                            @php
-                                $maxStars = 5;
-                                $fullStars = floor($catalogs->rating);
-                                $fr = $catalogs->rating - $fullStars;
-                            @endphp
-
-                            <!-- Full stars -->
-                            @for ($i = 0; $i < $fullStars; $i++)
-                                <img src="{{ asset('icons/icons8-star-filled-96.png') }}" alt=""
-                                    style="width:1.25rem;height:1.25rem">
-                            @endfor
-
-                            <!-- Half star -->
-                            @if ($fr == 0.5)
-                                <img src="{{ asset('icons/icons8-star-half-filled-96.png') }}" alt=""
-                                    style="width:1.25rem;height:1.25rem">
-                                <!-- Quarter filled star -->
-                            @elseif($fr > 0.5 && $fr < 1.0)
-                                <img src="{{ asset('icons/icons8-star-quarter-filled-96.png') }}" alt=""
-                                    style="width:1.25rem;height:1.25rem">
-                                <!-- Quarter empty star -->
-                            @else
-                                <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
-                                    style="width:1.25rem;height:1.25rem">
-                            @endif
-
-                            <!-- Empty stars to fill up to the max -->
-                            @for ($i = $fullStars + 1; $i < $maxStars; $i++)
-                                <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
-                                    style="width:1.25rem;height:1.25rem">
-                            @endfor
-
-                            <p style="margin-top: -.1rem"> &nbsp {{ $catalogs->rating }} </p>
-
-                        </span>
-                    </span>
-                @endforeach
-
-            </div>
-            {{-- end third div right --}}
+            @include('utility.topPicksForMonth')
         </div>
     </div>
 
@@ -333,20 +389,6 @@
                 });
             }, 500); // alerts will start to fade in 0.5 seconds after the page loads
         };
-
-        @if ($errors->any())
-            <script >
-                window.addEventListener('DOMContentLoaded', (event) => {
-                    var toastElList = [].slice.call(document.querySelectorAll('.toast'))
-                    var toastList = toastElList.map(function(toastEl) {
-                        // Creates a Bootstrap toast instance for each toast element
-                        return new bootstrap.Toast(toastEl)
-                    });
-                    // Shows the toast
-                    toastList.forEach(toast => toast.show());
-                });
-        @endif
-
 
         function openPdfModal() {
             document.getElementById('pdfModal').style.display = 'block';

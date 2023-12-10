@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('catalogs', function (Blueprint $table) {
-            //
-            $table->unsignedBigInteger('author_id')->nullable();
-            $table->foreign('author_id')->references('id')->on('authors');
-        });
+        //
+        Schema::create('catalogTypes', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('editedBy')->nullable();;
+            $table->timestamps();
+          });
     }
 
     /**
@@ -23,8 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('catalogs', function (Blueprint $table) {
-            //
-        });
+        //
+        Schema::dropIfExists('catalogType');
     }
 };
