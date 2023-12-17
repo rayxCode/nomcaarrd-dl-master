@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Bookmark;
 
+use function Pest\Laravel\delete;
 
 class bookmarkController extends Controller
 {
-    public function addBookmark(Request $request, $id)
+    public function store(Request $request, $id)
     {
         if (auth()->check()) {
             $userId = auth()->user()->id;
@@ -33,17 +34,27 @@ class bookmarkController extends Controller
         return back()->with('success', 'Bookmark added!');
     }
 
-    public function showBookmark($id){
+    public function index()
+    {
         $bookmarks = Bookmark::where('users_id', auth()->user()->id);
         return view('pages.account_bookmarks', compact('bookmarks'));
     }
-    public function destroy($id){
+    public function destroy($id)
+    {
         $bookmarks = Bookmark::where('catalog_id', $id)->where('users_id', auth()->user()->id);
         return redirect()->back();
     }
 
     public function clearAllBookmarks($id)
     {
+        // Find all bookmarks for the given user ID
+        $bookmarks = Bookmark::findorFail('users_id');
 
+        // Delete each bookmark
+        foreach ($bookmarks as $bookmark) {
+            $bookmark->delete();
+        }
+
+        return redirect()->back()->with('success', "Bookmarks cleared.");
     }
 }

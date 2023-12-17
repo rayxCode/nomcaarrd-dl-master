@@ -73,4 +73,17 @@
 
 @section('scripts')
    <!--- specific scripts should be put here --->
+   @if (session('success'))
+   <script>
+       Swal.fire({
+           title: "Oops...",
+           text: "{!! htmlspecialchars(session('info')) !!}",
+           icon: "warning"
+       });
+       delay = setTimeout(() => {
+
+       }, 3000);
+       windows.location.href="{{route('home')}}";
+   </script>
+@endif
 @endsection

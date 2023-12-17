@@ -21,7 +21,7 @@
     @yield('styles')
     <style>
         #btnMenu.active {
-            background-color: rgba(26, 26, 26, 0.589);
+            background-color: rgba(26, 26, 26, 0.5);
             font-weight: bolder;
         }
 
@@ -45,7 +45,6 @@
                         <i class="bi bi-list-ul"></i>
                     </a>
                 </li>
-
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -60,7 +59,7 @@
                 <div class="user-panel mt-3 mb-2 d-flex flex-column align-items-center text-center">
                     <div class="image mb-2">
                         <img src="{{ auth()->user()->photo_path != null ? asset(auth()->user()->photo_path) : '' }}"
-                            class="img-circle elevation-2 image-fluid" style="width: 70%; height: 70%" alt="User Image">
+                            class="img-circle elevation-2 image-fluid" style="width: 100px; height: 100px" alt="User Image">
                     </div>
                     <div class="info">
                         <p class="d-block"><b> Account:
@@ -77,15 +76,16 @@
                             <a href="{{ route('catalogs_review') }}" class="nav-links">
                                 <div class="d-flex">
                                     <i class=" nav-icon bi bi-files mt-2" style="padding-right: 10px"></i>
-                                    <p class=" mt-2 d-block"> Review Documents</p>
+                                    <p class=" mt-2 d-block" style="font-size: 1.02em"> Review Documents</p>
                                 </div>
                             </a>
                         </li>
-                        <li class="nav-item p-1 {{ request()->routeIs('users') ? 'active' : '' }}" id="btnMenu">
+                        @if(auth()->user()->access_level == 3)
+                        <li class=" p-1 {{ request()->routeIs('users') ? 'active' : '' }}" id="btnMenu">
                             <a href="{{ route('users') }}" class="nav-links">
                                 <div class="d-flex ">
                                     <i class=" nav-icon bi-people-fill mt-2" style="padding-right: 10px"></i>
-                                    <p class=" mt-2 d-block">User Accounts</p>
+                                    <p class=" mt-2 d-block" style="font-size: 1.02em">User Accounts</p>
 
                                 </div>
                             </a>
@@ -95,7 +95,7 @@
                             <a href="{{ route('affiliations') }}" class="nav-links">
                                 <div class="d-flex">
                                     <i class="bi bi-buildings-fill mt-2" style="padding-right: 10px"></i>
-                                    &nbsp <p class=" mt-2 d-block">Affiliations</p>
+                                    &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Affiliations</p>
 
                                 </div>
                             </a>
@@ -105,7 +105,7 @@
                             <a href="{{ route('catalogs_index') }}" class="nav-links">
                                 <div class="d-flex">
                                     <i class="bi bi-book-fill mt-2" style="padding-right: 10px"></i>
-                                    &nbsp <p class="mt-2 d-block">Catalogs</p>
+                                    &nbsp <p class="mt-2 d-block" style="font-size: 1.02em">Catalogs</p>
 
                                 </div>
                             </a>
@@ -115,7 +115,7 @@
                             <a href="{{ route('types_index') }}" class="nav-links">
                                 <div class="d-flex">
                                     <i class="bi bi-bookshelf mt-2" style="padding-right: 10px"></i>
-                                    &nbsp <p class=" mt-2 d-block">Catalog Types</p>
+                                    &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Catalog Types</p>
 
                                 </div>
                             </a>
@@ -124,15 +124,16 @@
                             <a href="{{ route('edit', auth()->user()->id) }}" class="nav-links">
                                 <div class="d-flex">
                                     <i class="bi bi-person-bounding-box mt-2" style="padding-right: 10px"></i>
-                                    <p class=" mt-2 d-block"> User Profile </p>
+                                    <p class=" mt-2 d-block" style="font-size: 1.02em">User Profile </p>
                                 </div>
                             </a>
                         </li>
+                        @endif
                         <li class="nav-item p-2" id="btnMenu">
                             <a href="{{ route('auth.logout') }}" class="nav-links">
                                 <div class="d-flex collapse">
                                     <i class="bi bi-box-arrow-left mt-2" style="padding-right: 10px"></i>
-                                    &nbsp <p class=" mt-2 d-block">Logout</p>
+                                    &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Logout</p>
                                 </div>
                             </a>
                         </li>
@@ -204,20 +205,7 @@
     </script>
 @endif
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const menuItems = document.querySelectorAll('#btnMenu');
 
-        menuItems.forEach(item => {
-            item.addEventListener('click', function() {
-                // Remove the 'active' class from all menu items
-                menuItems.forEach(item => {
-                    item.classList.remove('active');
-                });
-                // Add the 'active' class to the clicked menu item
-                this.classList.add('active');
-            });
-        });
-    });
 </script>
 
 </html>

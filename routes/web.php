@@ -32,13 +32,10 @@ use App\Models\CatalogType;
 
 Route::get('/login', [LoginController::class, 'showLoginForm']);
 Route::post('/login', [LoginController::class, 'login']);
-Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
-Route::post('/register/u/', [RegisterController::class, 'register'])->name('users.add');
-//Route::post('/catalogs/{id}',[CatalogController::class, 'show']);
+
+Route::post('/register/u/', [RegisterController::class, 'register'])->name('users.add');;
 Route::get('/search', [CatalogController::class, 'search'])->name('catalog.search');
 Route::resource('/catalogs', CatalogController::class);
-
-Route::resource('/bookmark', bookmarkController::class)->middleware('auth');
 Route::post('/catalogs/c/comments', [CommentsController::class, 'store'])->name('comment');
 Route::post('/profiles/upload', [UserController::class, 'upload']);
 Route::put('account/{id}/update', [UserController::class, 'update'])->name('update');
@@ -60,18 +57,26 @@ Route::view('/login', 'pages.login')
 Route::view('/signup', 'pages.signup')
     ->name('signup');
 
-Route::view('/dashboard', 'pages.accounts')
-    ->name('dashboard')->middleware('auth');
-
-Route::get('/profiles', function () {
-    $aff = Affiliation::all();
-    return view('pages.account_profile', compact('aff'));
-})->name('profiles')->middleware('auth');
-
 Route::get('/catalogs', function () {
 
     return view('pages.catalogs');
 })->name('catalogs');
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/u/profiles', function () {
+        $aff = Affiliation::all();
+        return view('pages.account_profile', compact('aff'));
+    })->name('profiles');
+    Route::view('/u/profiles/dashboard', 'pages.accounts')
+    ->name('dashboard');
+    Route::get('/u/profiles/addCatalog', function(){
+        $types = CatalogType::all();
+        return view('pages.account_addCatalog', compact('types'));})->name('addCatalog');
+    Route::resource('/u/profiles/bookmarks', bookmarkController::class);
+    Route::delete('/u/profiles/bookmarks/{id}/clear', [BookmarkController::class, 'clearAllBookmarks'])->name('bookmarks.clearAll');
+    Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
+});
 
 Route::middleware(['checkAccessLevel:admin'])->group(function () {
     // Your routes or controller actions here

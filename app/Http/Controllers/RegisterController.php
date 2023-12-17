@@ -48,7 +48,7 @@ public function register(Request $request)
 
     // Optionally, you can automatically login the user after registration
     auth()->login($user);
-    return redirect()->back()->$request->session()->flash('success', 'Account registration complete!');
+    return redirect()->back()->with('success', 'Account registration complete!');
 }
 
 }

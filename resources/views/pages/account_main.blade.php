@@ -33,56 +33,57 @@
 @section('content')
     <br>
     <br>
-    <div class="container-fluid d-flex flex-column">
-        <div class="mt-3">
+    <div class="wrapper d-flex flex-column">
+        <div style="container d-flex justify-content-end">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ '/' }}" class="text-decoration-none">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ 'dashboard' }}" class="text-decoration-none">Accounts</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url('/') }}" class="text-decoration-none">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class="text-decoration-none">Account Settings</a></li>
                 </ol>
             </nav>
         </div>
 
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center" >
+
             {{-- Menu Toggle Button --}}
             {{-- Second Div for Menus --}}
-            <div class="rounded mt-2" id="menu-div">
+            <div class="rounded mt-2" id="menu-div" style="width: 180px ">
                 <p class="mt-3">Account Setting</p>
                 <hr class="bg-dark" style="margin-top: -10px">
-                <div class="text-black">
+                <div class="text-black" style="margin-block-start: -15px">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-                        <li>
-                            <div>
+                        <li id="btnMenu" class="p-1 {{ request()->routeIs('dashboard') ? 'active' : '' }}"   >
+                            <div class="ms-1" style="margin-block-start: 10px">
                                 <p><a href="{{ route('dashboard') }}"
                                         class="text-decoration-none text-black-50">Dashboard</a></p>
                             </div>
                         </li>
-                        <li>
-                            <div>
+                        <li id="btnMenu" class="pl-1 {{ request()->routeIs('profiles') ? 'active' : '' }}">
+                            <div class="ms-1" style="margin-block-start: 10px">
                                 <p><a href="{{ route('profiles') }}" class="text-decoration-none text-black-50">Edit
                                         Profile</a></p>
                             </div>
                         </li>
-                        <li>
-                            <div>
-                                <p><a href="{{ route('bookmarks') }}"
+                        <li id="btnMenu"  class="p-1 {{ request()->routeIs('addCatalog') ? 'active' : '' }}">
+                            <div class="ms-1" style="margin-block-start: 10px">
+                                <p><a href="{{ route('addCatalog') }}"
+                                        class="text-decoration-none text-black-50">Submit a catalog</a></p>
+                            </div>
+                        </li>
+                        <li id="btnMenu"  class="p-1 {{ request()->routeIs('bookmarks.index') ? 'active' : '' }}">
+                            <div class="ms-1" style="margin-block-start: 10px">
+                                <p><a href="{{ route('bookmarks.index') }}"
                                         class="text-decoration-none text-black-50">Bookmarks</a></p>
                             </div>
                         </li>
-                        <li>
-                            <div>
-                                <p><a href="{{ route('bookmarks') }}"
-                                        class="text-decoration-none text-black-50">Bookmarks</a></p>
+                        <li id="btnMenu" class="p-1">
+                            <div class="ms-1" style="margin-block-start: 10px">
+                                <p><a href="{{ route('auth.logout') }}" class="text-decoration-none text-black-50">Logout</a></p>
                             </div>
                         </li>
                     </ul>
 
-
-
-                    <div>
-                        <p><a href="{{ route('auth.logout') }}" class="text-decoration-none text-black-50">Logout</a></p>
-                    </div>
                 </div>
             </div>
 
@@ -96,25 +97,5 @@
 
 @section('script')
     {{-- Specific scripts here --}}
-    <script>
-        document.getElementById('menuButton').addEventListener('click', function() {
-            document.querySelector('menu-div').style.display =
-                (document.querySelector('menu-div').style.display === 'none') ? 'block' : 'none';
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            const menuItems = document.querySelectorAll('#btnMenu');
-
-            menuItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // Remove the 'active' class from all menu items
-                    menuItems.forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    // Add the 'active' class to the clicked menu item
-                    this.classList.add('active');
-                });
-            });
-        });
-    </script>
     @yield('scripts')
 @endsection

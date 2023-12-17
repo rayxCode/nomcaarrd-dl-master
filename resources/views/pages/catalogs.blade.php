@@ -104,7 +104,7 @@
     {{-- put code here --}}
     <br>
     {{-- Container for the three sections --}}
-    <div class="container-fluid" style="max-width: 75rem;">
+    <div class="container-fluid" style="max-width: 75rem; min-height: 100vh">
         {{-- Navigation breadcrumb --}}
         <div class="ms-2 mt-4">
             <nav aria-label="breadcrumb">

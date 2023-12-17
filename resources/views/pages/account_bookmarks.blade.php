@@ -10,8 +10,10 @@
             <p class="text-black-50">Bookmarks </p>
         </div>
         <div class="">
-            <button class="btn btn-link text-decoration-none" style="border: none; background: none;" rel=""
-                href="#">Clear</button>
+            <form action="{{route('bookmarks.clearAll', auth()->user()->id)}}" method="post">
+            <button type="submit" class="btn btn-link text-decoration-none" style="border: none; background: none;" rel="">Clear
+            </button>
+            </form>
         </div>
     </div>
     {{-- start table query here  --}}
@@ -49,4 +51,5 @@
 
 @section('script')
     {{-- specific scripts here --}}
+    @include('utility.sweetAlert2')
 @endsection

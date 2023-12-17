@@ -22,7 +22,20 @@
     <link href="{{ asset('styles/css/all.min.css') }}" rel="stylesheet">
     @yield('style')
 
+    <style>
+        #btnMenu.active {
+            background-color: rgba(0,0,0, 0.4);
+            font-weight: bolder;
+        }
 
+        #btnMenu:hover {
+            background-color: rgba(0, 0, 0, .2);
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1em;
+            /* Change this to the desired text color */
+        }
+    </style>
 </head>
 
 <body class="font-sans antialiased">
@@ -36,7 +49,7 @@
                 <img src="{{ Auth::check() ? asset(auth()->user()->photo_path) : asset('avatars/avatar-placeholder.png') }}"
                     style="width:2.2rem;height:2rem;">
             </div>
-            <a href="{{ url(Auth::check() ? (auth()->user()->access_level < 2 ? 'dashboard' : 'index') : 'login') }}"
+            <a href="{{ url(Auth::check() ? (auth()->user()->access_level < 2 ? '/u/profiles/dashboard' : 'index') : 'login') }}"
                 class="text-decoration-none nav-link mt-3">
 
                 &nbsp <b> {{ Auth::check() ? $user->username : 'LOGIN' }} </b>
@@ -48,43 +61,10 @@
         @yield('content')
     </main>
 
-    <!-- Sweet alert2-->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
+
     <!-- JavaScript Bundle with Popper -->
     <script src="{{ asset('styles/js/bootstrap.bundle.js') }}"></script>
-    @if ($errors->any())
-        <script>
-            Swal.fire({
-                title: "Validation Error!",
-                html: `<ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>`,
-                icon: "error"
-            });
-        </script>
-    @endif
-
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                title: "Success!",
-                text: "{!! htmlspecialchars(session('success')) !!}",
-                icon: "success"
-            });
-        </script>
-    @endif
-
-    @if (session('info'))
-        <script>
-            Swal.fire({
-                title: "Oops...",
-                text: "{!! htmlspecialchars(session('info')) !!}",
-                icon: "warning"
-            });
-        </script>
-    @endif
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
     @yield('script')
 </body>
 

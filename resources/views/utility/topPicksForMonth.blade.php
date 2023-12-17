@@ -1,11 +1,12 @@
 {{-- third div right - TOP PICKS FOR THE MONTH  --}}
-<div style="width: 250px;" class="flexible-div ms-2 mt-1">
+<div style="width: 250px; " class="flexible-div  ms-2 mt-1 pl-3 ">
     <span class="d-flex" >
-        <div class="container bg-success text-white" style="margin-left: -5px; align-items:center;">
-            <p class="flex-fill" style="margin-inline-start: -5px;"> <b>TOP PICKS FOR THE MONTH </b></p>
+        <div class="container bg-success text-white  rounded" style="margin-left: -5px; align-items:center;">
+            <p class="flex-fill text-center" style="margin-block-start: 15px"> <b>TOP PICKS FOR THE MONTH </b></p>
         </div>
         <hr class="bg-dark" style="margin-top: -5px">
     </span>
+    <br>
 
     @foreach ($ratedCatalogs as $catalogs)
         <a href="{{ route('catalogs.show', $catalogs->id) }}" style="text-decoration: none; color:black;">
@@ -24,7 +25,8 @@
                         $output = htmlspecialchars($authors);
                     }
                 @endphp
-                <p style="margin-top: -15px">{{$output}} </p>
+                <p style="margin-top: -15px">Author(s): {{$output}} </p>
+                <p style="margin-top: -15px">Type: {{$catalogs->types->name}} </p>
                 <span class="d-flex" style="margin-top: -10px">
                     @php
                         $maxStars = 5;
