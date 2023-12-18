@@ -80,7 +80,6 @@
                                 </div>
                             </a>
                         </li>
-                        @if(auth()->user()->access_level == 3)
                         <li class=" p-1 {{ request()->routeIs('users') ? 'active' : '' }}" id="btnMenu">
                             <a href="{{ route('users') }}" class="nav-links">
                                 <div class="d-flex ">
@@ -128,7 +127,6 @@
                                 </div>
                             </a>
                         </li>
-                        @endif
                         <li class="nav-item p-2" id="btnMenu">
                             <a href="{{ route('auth.logout') }}" class="nav-links">
                                 <div class="d-flex collapse">

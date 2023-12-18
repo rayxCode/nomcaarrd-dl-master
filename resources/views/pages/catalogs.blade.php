@@ -122,7 +122,7 @@
                 <p class="mt-3" style="font-size: 14px"><i> {{ $bookmarkCount->count() }} added this to bookmark </i></p>
                 <p class="mt-3"> Type: {{ $catalogs->types->name }}</p>
                 <form
-                    action="{{ $count > 0 ? route('bookmark.destroy', $catalogs->id) : route('bookmark.store', $catalogs->id) }}"
+                    action="{{ $count > 0 ? route('bookmark.destroy', $catalogs->id) : route('bookmarks.store', $catalogs->id) }}"
                     method="POST">
                     @csrf
 

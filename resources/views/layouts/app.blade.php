@@ -42,16 +42,15 @@
     <!--- Navbar--->
     <nav class="navbar navbar-light bg-light">
         <div class="d-flex ms-4">
-            <a class="navbar-brand" href="/"> Placeholder Logo</a>
+        <img src="{{asset('bg/logo22.png')}}" alt="" srcset="" style="width:170px; height:60px">
         </div>
         <div class="d-flex justify-content-end" style="margin-inline-end: 2%">
             <div class="mt-2 border-black rounded-circle">
                 <img src="{{ Auth::check() ? asset(auth()->user()->photo_path) : asset('avatars/avatar-placeholder.png') }}"
                     style="width:2.2rem;height:2rem;">
             </div>
-            <a href="{{ url(Auth::check() ? (auth()->user()->access_level < 2 ? '/u/profiles/dashboard' : 'index') : 'login') }}"
+            <a href="{{ url(Auth::check() ?  'index' : 'login') }}"
                 class="text-decoration-none nav-link mt-3">
-
                 &nbsp <b> {{ Auth::check() ? $user->username : 'LOGIN' }} </b>
             </a>
         </div>
