@@ -15,10 +15,10 @@ class ReviewController extends Controller
     }
     public function search(Request $request)
     {
-        $query = $request->input('query');
+        $search= $request->input('search', '');
 
-        $catalogs = Catalog::where('title', 'like', '%' . $query . '%')->get();
+        $catalogs = Catalog::where('title', 'like', '%' . $search . '%')->get();
 
-        return response()->json($catalogs);
+        return view('reviewer.review_catalogs', compact('catalogs'));
     }
 }

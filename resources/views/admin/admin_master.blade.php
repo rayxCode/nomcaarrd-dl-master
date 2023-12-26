@@ -35,7 +35,7 @@
 </head>
 
 <body class="hold-transition sidebar-mini">
-    <div class="wrapper">
+    <div class="">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -50,107 +50,106 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="height: 100%">
-            <!-- Brand Logo -->
-
-            <!-- Sidebar -->
-            <div class="container sidebar text-white">
-                <!-- Sidebar user (optional) -->
-                <div class="user-panel mt-3 mb-2 d-flex flex-column align-items-center text-center">
-                    <div class="image mb-2">
-                        <img src="{{ auth()->user()->photo_path != null ? asset(auth()->user()->photo_path) : '' }}"
-                            class="img-circle elevation-2 image-fluid" style="width: 100px; height: 100px" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <p class="d-block"><b> Account:
-                            </b>{{ auth()->user()->username != null ? auth()->user()->username : '' }}</p>
-                        <p class="d-block" style="margin-top: -15px"><b> Account ID:
-                            </b>{{ auth()->user()->id != null ? auth()->user()->id : '' }}</p>
-                    </div>
+        <aside class="main-sidebar sidebar-dark-primary elevation-4 text-white">
+            <!-- Sidebar user (optional) -->
+            <div class="user-panel mt-3 mb-2 d-flex flex-column align-items-center text-center">
+                <div class="image mb-2">
+                    <img src="{{ auth()->user()->photo_path != null ? asset(auth()->user()->photo_path) : '' }}"
+                        class="img-circle elevation-2 image-fluid" style="width: 100px; height: 100px" alt="User Image">
                 </div>
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
-                        <!-- Navbar Search -->
-                        <li class="nav-item p-2 {{ request()->routeIs('catalogs_review') ? 'active' : '' }}" id="btnMenu">
-                            <a href="{{ route('catalogs_review') }}" class="nav-links">
+                <div class="info">
+                    <p class="d-block"><b> Account:
+                        </b>{{ auth()->user()->username != null ? auth()->user()->username : '' }}</p>
+                </div>
+            </div>
+            <nav class="mt-2 " style="height:105vh">
+                <ul class="nav nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Navbar Search -->
+                    <li class="nav-item p-2 {{ request()->routeIs('index') ? 'active' : '' }}" id="btnMenu">
+                        <a href="{{ route('index') }}" class="nav-links text-white">
+                            <div class="d-flex">
+                                <i class=" nav-icon bi bi-house-door-fill mt-2" style="padding-right: 10px"></i>
+                                <p class=" mt-2 d-block" style="font-size: 1.02em"> Dashboard</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item p-2 {{ request()->routeIs('catalogs_review') ? 'active' : '' }}" id="btnMenu">
+                        <form action="{{ route('searchCatalog')}}" method="GET">
+                            <button type="submit" style="text-decoration: none">
+                            <a href="" class="nav-links text-white">
                                 <div class="d-flex">
                                     <i class=" nav-icon bi bi-files mt-2" style="padding-right: 10px"></i>
                                     <p class=" mt-2 d-block" style="font-size: 1.02em"> Review Documents</p>
                                 </div>
                             </a>
-                        </li>
-                        <li class=" p-1 {{ request()->routeIs('users') ? 'active' : '' }}" id="btnMenu">
-                            <a href="{{ route('users') }}" class="nav-links">
-                                <div class="d-flex ">
-                                    <i class=" nav-icon bi-people-fill mt-2" style="padding-right: 10px"></i>
-                                    <p class=" mt-2 d-block" style="font-size: 1.02em">User Accounts</p>
+                        </button>
+                        </form>
+                    </li>
+                    <li class="nav-item p-2 {{ request()->routeIs('users') ? 'active' : '' }}" id="btnMenu">
+                        <a href="{{ route('users') }}" class="nav-links text-white">
+                            <div class="d-flex ">
+                                <i class=" nav-icon bi-people-fill mt-2" style="padding-right: 10px"></i>
+                                <p class=" mt-2 d-block" style="font-size: 1.02em">User Accounts</p>
 
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item p-1 {{ request()->routeIs('affiliations') ? 'active' : '' }}"
-                            id="btnMenu">
-                            <a href="{{ route('affiliations') }}" class="nav-links">
-                                <div class="d-flex">
-                                    <i class="bi bi-buildings-fill mt-2" style="padding-right: 10px"></i>
-                                    &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Affiliations</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item p-2 {{ request()->routeIs('affiliations') ? 'active' : '' }}" id="btnMenu">
+                        <a href="{{ route('affiliations') }}" class="nav-links text-white">
+                            <div class="d-flex">
+                                <i class="bi bi-buildings-fill mt-2" style="padding-right: 10px"></i>
+                                &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Affiliations</p>
 
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item p-1 {{ request()->routeIs('catalogs_index') ? 'active' : '' }}"
-                            id="btnMenu">
-                            <a href="{{ route('catalogs_index') }}" class="nav-links">
-                                <div class="d-flex">
-                                    <i class="bi bi-book-fill mt-2" style="padding-right: 10px"></i>
-                                    &nbsp <p class="mt-2 d-block" style="font-size: 1.02em">Catalogs</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item p-2 {{ request()->routeIs('catalogs_index') ? 'active' : '' }}" id="btnMenu">
+                        <a href="{{ route('catalogs_index') }}" class="nav-links text-white">
+                            <div class="d-flex">
+                                <i class="bi bi-book-fill mt-2" style="padding-right: 10px"></i>
+                                &nbsp <p class="mt-2 d-block" style="font-size: 1.02em">Catalogs</p>
 
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item p-1 {{ request()->routeIs('types_index') ? 'active' : '' }}"
-                            id="btnMenu">
-                            <a href="{{ route('types_index') }}" class="nav-links">
-                                <div class="d-flex">
-                                    <i class="bi bi-bookshelf mt-2" style="padding-right: 10px"></i>
-                                    &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Catalog Types</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item p-2 {{ request()->routeIs('types_index') ? 'active' : '' }}" id="btnMenu">
+                        <a href="{{ route('types_index') }}" class="nav-links text-white">
+                            <div class="d-flex">
+                                <i class="bi bi-bookshelf mt-2" style="padding-right: 10px"></i>
+                                &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Catalog Types</p>
 
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item p-2 {{ request()->routeIs('edit') ? 'active' : '' }}" id="btnMenu">
-                            <a href="{{ route('edit', auth()->user()->id) }}" class="nav-links">
-                                <div class="d-flex">
-                                    <i class="bi bi-person-bounding-box mt-2" style="padding-right: 10px"></i>
-                                    <p class=" mt-2 d-block" style="font-size: 1.02em">User Profile </p>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item p-2" id="btnMenu">
-                            <a href="{{ route('auth.logout') }}" class="nav-links">
-                                <div class="d-flex collapse">
-                                    <i class="bi bi-box-arrow-left mt-2" style="padding-right: 10px"></i>
-                                    &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Logout</p>
-                                </div>
-                            </a>
-                        </li>
-                        <!-- Dropdown Menu -->
-                    </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
-            </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item p-2 {{ request()->routeIs('edit') ? 'active' : '' }}" id="btnMenu">
+                        <a href="{{ route('edit', auth()->user()->id) }}" class="nav-links text-white">
+                            <div class="d-flex">
+                                <i class="bi bi-gear-fill mt-2" style="padding-right: 10px"></i>
+                                <p class=" mt-2 d-block" style="font-size: 1.02em">Settings</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item p-2" id="btnMenu">
+                        <a href="{{ route('auth.logout') }}" class="nav-links text-white">
+                            <div class="d-flex collapse">
+                                <i class="bi bi-box-arrow-left mt-2" style="padding-right: 10px"></i>
+                                &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Logout</p>
+                            </div>
+                        </a>
+                    </li>
+                    <!-- Dropdown Menu -->
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
             <!-- /.sidebar -->
         </aside>
         <!-- Main content -->
         <!-- Content Wrapper. Contains page content -->
-            @yield('admin-layouts')
+        @yield('admin-layouts')
         <!-- /.content -->
 
         <!-- /.content-wrapper -->
-        <footer>
-            @include('includes.footer')
-        </footer>
+
     </div>
     <!-- ./wrapper -->
 </body>
@@ -202,8 +201,6 @@
         });
     </script>
 @endif
-<script>
-
-</script>
+<script></script>
 
 </html>

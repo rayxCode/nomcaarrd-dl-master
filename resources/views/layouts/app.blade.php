@@ -38,7 +38,7 @@
     </style>
 </head>
 
-<body class="font-sans antialiased">
+<body class="heltivica antialiased">
     <!--- Navbar--->
     <nav class="navbar navbar-light bg-light">
         <div class="d-flex ms-4">
@@ -49,7 +49,7 @@
                 <img src="{{ Auth::check() ? asset(auth()->user()->photo_path) : asset('avatars/avatar-placeholder.png') }}"
                     style="width:2.2rem;height:2rem;">
             </div>
-            <a href="{{ url(Auth::check() ?  'index' : 'login') }}"
+            <a href="{{ route(Auth::check() ?  (auth()->user()->access_level >= 2 ? 'index': 'dashboard') : 'login') }}"
                 class="text-decoration-none nav-link mt-3">
                 &nbsp <b> {{ Auth::check() ? $user->username : 'LOGIN' }} </b>
             </a>

@@ -10,7 +10,7 @@ use function Pest\Laravel\delete;
 
 class bookmarkController extends Controller
 {
-    public function store(Request $request, $id)
+    public function store(Request $request)
     {
         if (auth()->check()) {
             $userId = auth()->user()->id;
@@ -23,7 +23,7 @@ class bookmarkController extends Controller
         $userId = Auth::id();
 
         $bookmark = Bookmark::create([
-            'catalog_id' => $id,
+            'catalog_id' => $request->input('catalog_id'),
             'users_id' => $userId,
             'editedBy' => " ",
         ]);
@@ -36,13 +36,17 @@ class bookmarkController extends Controller
 
     public function index()
     {
-        $bookmarks = Bookmark::where('users_id', auth()->user()->id);
-        return view('pages.account_bookmarks', compact('bookmarks'));
+        $bookmarks = Bookmark::where('users_id', auth()->user()->id)->get();
+        $count = $bookmarks->count();
+
+        return view('pages.account_bookmarks', compact('bookmarks', 'count'));
     }
     public function destroy($id)
     {
         $bookmarks = Bookmark::where('catalog_id', $id)->where('users_id', auth()->user()->id);
-        return redirect()->back();
+        $bookmarks->delete();
+        $count = Bookmark::where('catalog_id', $id)->count();
+        return redirect()->back()->with('success', 'Bookmarked removed.')->with('count', $count);
     }
 
     public function clearAllBookmarks($id)

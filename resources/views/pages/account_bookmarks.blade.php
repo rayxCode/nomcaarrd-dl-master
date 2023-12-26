@@ -11,6 +11,7 @@
         </div>
         <div class="">
             <form action="{{route('bookmarks.clearAll', auth()->user()->id)}}" method="post">
+            @method('DELETE')
             <button type="submit" class="btn btn-link text-decoration-none" style="border: none; background: none;" rel="">Clear
             </button>
             </form>
@@ -28,10 +29,23 @@
             </tr>
         </thead>
         @foreach ($bookmarks as $bookmarked)
-        <a href="{{route('catalogs.show', $catalogs->id)}}" style="text-decoration: none; color:black">
+        <a href="{{route('catalogs.show', $bookmarked->catalog_id)}}" style="text-decoration: none; color:black">
             <tr>
                 <td>{{ $bookmarked->catalog->title }}</td>
-                <td>{{ $bookmarked->catalog->authors}}</td>
+                @php
+                $authors = $bookmarked->catalog->authors;
+
+                if (is_array($authors)) {
+                    // If $authors is an array, apply htmlspecialchars to each element
+                    $authorsArray = array_map('htmlspecialchars', $authors);
+                    // Now $authorsArray contains each element sanitized
+                    $output = implode(', ', $authorsArray);
+                } else {
+                    // If $authors is not an array, treat it as a single string
+                    $output = htmlspecialchars($authors);
+                }
+            @endphp
+                <td>{{ $output}}</td>
                 <td>{{ (new DateTime($bookmarked->catalog->publishedDate))->format('Y') }}</td>
             </tr>
         </a>

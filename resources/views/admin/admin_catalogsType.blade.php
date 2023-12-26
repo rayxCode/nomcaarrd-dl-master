@@ -94,7 +94,7 @@
                     </button>
                 </div>
             </div>
-        </div>
+    </div>
         <!-- end of modal -->
         <section class="content">
             <div class="card">
@@ -152,6 +152,7 @@
             <!-- /.card -->
         </section>
         <!-- /.container-fluid -->
+
     @endsection
 
     @section('scripts')

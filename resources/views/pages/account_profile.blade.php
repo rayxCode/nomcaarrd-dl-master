@@ -32,16 +32,17 @@
 
         .modal {
             position: fixed;
-            max-width: 50%;
+            max-width: 500px;
+            min-width: 500px;
             max-height: 100%;
-            transform: translate(53%, 5%);
+            transform: translate(80%, 5%);
             box-shadow: #000;
 
         }
 
         /* Rest of your styles remain the same */
         .modal-content {
-            width: 25%;
+            width: 100%;
             background-color: #fff;
             padding: 10px;
             border-radius: 10px;

@@ -37,7 +37,10 @@ public function register(Request $request)
         $user->fill([
             'username' => $request->input('username')!=null ? $request->input('username') : $name,
             'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
+            // change this later on
+             # 'password' => bcrypt($request->input('password')),
+            //
+            'password' => $request->input('password'),
             'affiliation_id' => $request->input('affiliation')!=null ? $request->input('affiliation') : 1,
             'photo_path' => 'avatars/avatar-sample1.png',
             'access_level' => 1,
@@ -48,7 +51,7 @@ public function register(Request $request)
 
     // Optionally, you can automatically login the user after registration
     auth()->login($user);
-    return redirect()->back()->with('success', 'Account registration complete!');
+    return redirect()->route('home')->with('success', 'Account registration complete!');
 }
 
 }

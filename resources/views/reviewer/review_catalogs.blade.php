@@ -25,8 +25,11 @@
                     <h3 class="card-title mt-2">Pending catalogs</h3>
                     <div class="d-flex justify-content-end mt-1">
                         <label for="searchInput" class="pr-2 mt-1"> Search: </label>
+
+                        <form action="{{route('searchCatalog')}}" method="POST" style="width: 35%">
                         <input type="text" class="form-control rounded-pill" name="searchInput" id="searchInput"
-                            style="width: 35%" placeholder="Search catalogs...">
+                            placeholder="Search catalogs...">
+                        </form>
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -46,17 +49,21 @@
                                     <td id="id">{{ $catalog->title }}</td>
                                     <td>{{ $catalog->types->name }}</td>
                                     <td>{{ $catalog->description }}</td>
-                                    <td class="d-flex">
-                                        <a href="{{ route('catalogs.edit', $catalog->id) }}"
-                                            class="p-2 btn btn-primary btnAction" type="submit">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
+                                    <td class="d-flex" style="min-width: 230px">
+                                        <form action="{{ route('catalogs.destroy', $catalog->id) }}" method="post">
+                                            @csrf
+                                            @method('')
+                                            <a href="{{ route('catalogs.edit', $catalog->id) }}"
+                                                class="p-2 btn btn-success btnAction" type="submit">
+                                                <i class="bi bi-check-circle-fill"></i> Approve
+                                            </a>
+                                        </form>
                                         &nbsp;
                                         <form action="{{ route('catalogs.destroy', $catalog->id) }}" method="post">
                                             @csrf
-                                            @method('DELETE')
+                                            @method('')
                                             <button class="p-2 btn btn-danger btnAction" type="submit">
-                                                <i class="bi bi-trash-fill"></i>
+                                                <i class="bi bi-x-circle-fill"></i> Declined
                                             </button>
                                         </form>
                                     </td>
@@ -112,5 +119,23 @@
                     });
                 }
             });
+    // jQuery is used here for simplicity, but you can use vanilla JavaScript or other libraries
+    $(document).ready(function () {
+        $('#searchInput').on('input', function () {
+            var searchValue = $(this).val();
+
+            $.ajax({
+                url: '{{ route('searchCatalog') }}',
+                method: 'GET',
+                data: { search: searchValue },
+                success: function (data) {
+                    $('#catalogs-container').html(data);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
         </script>
     @endsection

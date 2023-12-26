@@ -3,29 +3,6 @@
 @section('style')
     {{-- Specific styles here --}}
     <style>
-        @media (max-width: 992px) {
-
-            /* Styles for smaller screens */
-            .menu-div {
-                display: none;
-                /* Hide the menu by default on small screens */
-            }
-
-            .display-div {
-                width: 100%;
-                /* Take full width on small screens */
-            }
-
-            .menu-toggle {
-                display: block;
-                /* Show the menu toggle on small screens */
-            }
-
-            .breadcrumb {
-                font-size: 14px;
-                /* Adjust font size for breadcrumbs on small screens */
-            }
-        }
     </style>
     @yield('styles')
 @endsection

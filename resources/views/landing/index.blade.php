@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('style')
-
     <!--- specific styles should be put here --->
     {{-- compile specific style class here for clean code --}}
     <style>
@@ -16,10 +15,12 @@
             /* Limit to maximum 4 lines */
             -webkit-box-orient: vertical;
         }
-        ul{
+
+        ul {
             list-style-type: none;
         }
-        li{
+
+        li {
             margin-left: -20px;
         }
     </style>
@@ -94,39 +95,36 @@
                                         <div class="d-flex">
                                             <span class="d-flex" style="margin-top: -5px">
                                                 @php
-                                                    $maxStars = 5;
-                                                    $fullStars = floor($catalogs->rating);
-                                                    $fr = $catalogs->rating - $fullStars;
+                                                    $rating = $catalogs->rating;
+                                                    $fullStars = floor($rating);
+                                                    $remainingStars = 5 - $fullStars;
+                                                    $fractionalPart = $rating - $fullStars;
                                                 @endphp
 
                                                 <!-- Full stars -->
                                                 @for ($i = 0; $i < $fullStars; $i++)
-                                                    <img src="{{ asset('icons/icons8-star-filled-96.png') }}" alt=""
-                                                        style="width:1.25rem;height:1.25rem">
+                                                    <img src="{{ asset('icons/icons8-star-filled-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
                                                 @endfor
 
-                                                <!-- Half star -->
-                                                @if ($fr == 0.5)
-                                                    <img src="{{ asset('icons/icons8-star-half-filled-96.png') }}"
-                                                        alt="" style="width:1.25rem;height:1.25rem">
-                                                    <!-- Quarter filled star -->
-                                                @elseif($fr > 0.5 && $fr < 1.0)
-                                                    <img src="{{ asset('icons/icons8-star-quarter-filled-96.png') }}"
-                                                        alt="" style="width:1.25rem;height:1.25rem">
-                                                    <!-- Quarter empty star -->
-                                                @else
-                                                    <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
-                                                        style="width:1.25rem;height:1.25rem">
+                                                <!-- Fractional stars -->
+                                                @if ($fractionalPart > 0)
+                                                    @if ($fractionalPart < 0.5 && $fractionalPart >= 0.1)
+                                                        <img src="{{ asset('icons/icons8-star-quarter-empty-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
+                                                    @elseif ($fractionalPart == 0.5)
+                                                        <img src="{{ asset('icons/icons8-star-half-filled-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
+                                                    @elseif ($fractionalPart > 0.6 && $fractionalPart < 1)
+                                                        <img src="{{ asset('icons/icons8-star-quarter-filled-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
+                                                    @endif
                                                 @endif
 
                                                 <!-- Empty stars to fill up to the max -->
-                                                @for ($i = $fullStars + 1; $i < $maxStars; $i++)
-                                                    <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
-                                                        style="width:1.25rem;height:1.25rem">
+                                                @for ($i = 0; $i < $remainingStars; $i++)
+                                                    <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
                                                 @endfor
-                                                <h5 style="margin-top: -.1rem">
+
+                                                <p style="margin-top: -.1rem">
                                                     &nbsp {{ $catalogs->rating }}
-                                                </h5>
+                                                </p>
                                             </span>
                                         </div>
                                         @php
@@ -185,36 +183,33 @@
                                         <div class="d-flex">
                                             <span class="d-flex" style="margin-top: -5px">
                                                 @php
-                                                    $maxStars = 5;
-                                                    $fullStars = floor($catalogs->rating);
-                                                    $fr = $catalogs->rating - $fullStars;
+                                                    $rating = $catalogs->rating;
+                                                    $fullStars = floor($rating);
+                                                    $remainingStars = 5 - $fullStars;
+                                                    $fractionalPart = $rating - $fullStars;
                                                 @endphp
 
                                                 <!-- Full stars -->
                                                 @for ($i = 0; $i < $fullStars; $i++)
-                                                    <img src="{{ asset('icons/icons8-star-filled-96.png') }}"
-                                                        alt="" style="width:1.25rem;height:1.25rem">
+                                                    <img src="{{ asset('icons/icons8-star-filled-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
                                                 @endfor
 
-                                                <!-- Half star -->
-                                                @if ($fr == 0.5)
-                                                    <img src="{{ asset('icons/icons8-star-half-filled-96.png') }}"
-                                                        alt="" style="width:1.25rem;height:1.25rem">
-                                                    <!-- Quarter filled star -->
-                                                @elseif($fr > 0.5 && $fr < 1.0)
-                                                    <img src="{{ asset('icons/icons8-star-quarter-filled-96.png') }}"
-                                                        alt="" style="width:1.25rem;height:1.25rem">
-                                                    <!-- Quarter empty star -->
-                                                @else
-                                                    <img src="{{ asset('icons/icons8-star-empty-96.png') }}"
-                                                        alt="" style="width:1.25rem;height:1.25rem">
+                                                <!-- Fractional stars -->
+                                                @if ($fractionalPart > 0)
+                                                    @if ($fractionalPart < 0.5 && $fractionalPart >= 0.1)
+                                                        <img src="{{ asset('icons/icons8-star-quarter-empty-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
+                                                        @elseif ($fractionalPart == 0.5)
+                                                        <img src="{{ asset('icons/icons8-star-half-filled-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
+                                                    @elseif ($fractionalPart > 0.6 && $fractionalPart < 1)
+                                                        <img src="{{ asset('icons/icons8-star-quarter-filled-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
+                                                    @endif
                                                 @endif
 
                                                 <!-- Empty stars to fill up to the max -->
-                                                @for ($i = $fullStars + 1; $i < $maxStars; $i++)
-                                                    <img src="{{ asset('icons/icons8-star-empty-96.png') }}"
-                                                        alt="" style="width:1.25rem;height:1.25rem">
+                                                @for ($i = 0; $i < $remainingStars; $i++)
+                                                    <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
                                                 @endfor
+
                                                 <p style="margin-top: -.1rem">
                                                     &nbsp {{ $catalogs->rating }}
                                                 </p>
@@ -282,37 +277,33 @@
                                     <div class="d-flex">
                                         <span class="d-flex" style="margin-top: -5px">
                                             @php
-                                                $maxStars = 5;
                                                 $rating = $catalogs->rating;
                                                 $fullStars = floor($rating);
-                                                $fr = $rating - $fullStars;
+                                                $remainingStars = 5 - $fullStars;
+                                                $fractionalPart = $rating - $fullStars;
                                             @endphp
 
                                             <!-- Full stars -->
                                             @for ($i = 0; $i < $fullStars; $i++)
-                                                <img src="{{ asset('icons/icons8-star-filled-96.png') }}"
-                                                    alt="" style="width:1.25rem;height:1.25rem">
+                                                <img src="{{ asset('icons/icons8-star-filled-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
                                             @endfor
 
-                                            <!-- Half star -->
-                                            @if ($fr == 0.5)
-                                                <img src="{{ asset('icons/icons8-star-half-filled-96.png') }}"
-                                                    alt="" style="width:1.25rem;height:1.25rem">
-                                                <!-- Quarter filled star -->
-                                            @elseif($fr > 0.5 && $fr < 1.0)
-                                                <img src="{{ asset('icons/icons8-star-quarter-filled-96.png') }}"
-                                                    alt="" style="width:1.25rem;height:1.25rem">
-                                                <!-- Quarter empty star -->
-                                            @else
-                                                <img src="{{ asset('icons/icons8-star-empty-96.png') }}"
-                                                    alt="" style="width:1.25rem;height:1.25rem">
+                                            <!-- Fractional stars -->
+                                            @if ($fractionalPart > 0)
+                                                @if ($fractionalPart < 0.5 && $fractionalPart >= 0.1)
+                                                    <img src="{{ asset('icons/icons8-star-quarter-empty-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
+                                                    @elseif ($fractionalPart == 0.5)
+                                                    <img src="{{ asset('icons/icons8-star-half-filled-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
+                                                @elseif ($fractionalPart > 0.6 && $fractionalPart < 1)
+                                                    <img src="{{ asset('icons/icons8-star-quarter-filled-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
+                                                @endif
                                             @endif
 
                                             <!-- Empty stars to fill up to the max -->
-                                            @for ($i = $fullStars + 1; $i < $maxStars; $i++)
-                                                <img src="{{ asset('icons/icons8-star-empty-96.png') }}"
-                                                    alt="" style="width:1.25rem;height:1.25rem">
+                                            @for ($i = 0; $i < $remainingStars; $i++)
+                                                <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt="" style="width:1.25rem;height:1.25rem">
                                             @endfor
+
                                             <p style="margin-top: -.1rem">
                                                 &nbsp {{ $catalogs->rating }}
                                             </p>
@@ -381,9 +372,15 @@
     <div class="col-lg-3 col-md-6 col-sm-12 mt-2">
         <p>HOW TO REACH US</p>
         <ul>
-            <li><p>nomcaarrd.sample@gmail.com</p></li>
-            <li><p>OR CONTACT US</p></li>
-            <li><P>+63 999 287 7281</P></li>
+            <li>
+                <p>nomcaarrd.sample@gmail.com</p>
+            </li>
+            <li>
+                <p>OR CONTACT US</p>
+            </li>
+            <li>
+                <P>+63 999 287 7281</P>
+            </li>
         </ul>
     </div>
 
@@ -399,4 +396,5 @@
 
 @section('scripts')
 <!--- specific scripts should be put here --->
+@include('utility.sweetAlert2')
 @endsection

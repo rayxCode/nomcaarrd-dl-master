@@ -13,7 +13,7 @@
             <!-- Login Form -->
             <div class="card ">
                 <div class="card-header text-center d-flex flex-column align-items-center mt-2">
-                    <img src="path/to/logo.png" alt="Logo" class="img-fluid" style="width:200px; height 200px">
+                    <img src="{{asset('bg/logo22.png')}}" alt="Logo" class="img-fluid" style="width:200px; height 200px">
                     <h4 class="mt-3">NOMCAARRD eLibrary</h4>
                 </div>
                 <div class="card-body">

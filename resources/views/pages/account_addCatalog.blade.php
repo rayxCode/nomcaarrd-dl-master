@@ -4,6 +4,20 @@
     label{
         min-width: 100px;
     }
+    #authors-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .author-tag {
+            margin: 5px;
+            padding: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
 </style>
 @endsection
 
@@ -18,7 +32,6 @@
         <div class="card-body">
             <form action="{{ route('catalogs.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @method('PUT')
                 <div class="container">
                     <div class="d-flex p-1">
                         <label for="title" class="mt-2 form-label">Title: &nbsp; </label>
@@ -31,7 +44,7 @@
                             <div style="width: 100%">
                                 <input class="form-control rounded p-1" id="authorInput" type="text"
                                     placeholder="Add author(s)" onkeydown="addAuthor(event)" />
-                                <div id="authors-container">
+                                <div id="authors-container" class="mt-1">
                                     <!-- Authors will be added here dynamically -->
                                 </div>
                                 <!-- Hidden input field for authors -->
@@ -126,4 +139,5 @@
             authorsInputField.value = JSON.stringify(authorsArray);
         }
     </script>
+@include('utility.sweetAlert2')
 @endsection

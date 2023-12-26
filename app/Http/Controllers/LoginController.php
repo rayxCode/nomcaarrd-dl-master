@@ -27,7 +27,7 @@ class LoginController extends Controller
         }
 
         // Authentication failed
-       return redirect()->back()->withErrors('errors', 'Authentication failed')->withInput();
+       return redirect()->back()->withErrors('error', 'Authentication failed')->withInput();
     }
 
     public function logout()

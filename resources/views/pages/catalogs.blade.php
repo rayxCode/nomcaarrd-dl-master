@@ -122,10 +122,12 @@
                 <p class="mt-3" style="font-size: 14px"><i> {{ $bookmarkCount->count() }} added this to bookmark </i></p>
                 <p class="mt-3"> Type: {{ $catalogs->types->name }}</p>
                 <form
-                    action="{{ $count > 0 ? route('bookmark.destroy', $catalogs->id) : route('bookmarks.store', $catalogs->id) }}"
+                    action="{{ $count >= 1 ? route('bookmarks.destroy', $catalogs->id) : route('bookmarks.store', $catalogs->id) }}"
                     method="POST">
                     @csrf
-
+                    @if ($count >= 1)
+                        @method('DELETE')
+                    @endif
                     <input type="hidden" name="catalog_id" value="{{ $catalogs->id }}">
                     <button class="btn bg-success rounded-pill text-white" style="width: 88%" id="addBookmarkBtn"
                         type="submit">
@@ -213,7 +215,7 @@
                     @endif
 
                     <!-- Empty stars to fill up to the max -->
-                    @for ($i = $fullStars + 1; $i < $maxStars; $i++)
+                    @for ($i = $fullStars; $i < $maxStars; $i++)
                         <img src="{{ asset('icons/icons8-star-empty-96.png') }}" alt=""
                             style="width:1.25rem;height:1.25rem">
                     @endfor
@@ -398,4 +400,5 @@
             document.getElementById('pdfModal').style.display = 'none';
         }
     </script>
+    @include('utility.sweetAlert2')
 @endsection

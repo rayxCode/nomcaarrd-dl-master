@@ -202,10 +202,13 @@ class CatalogController extends Controller
 
     public function searchCatalog(Request $request)
     {
-        $query = $request->input('query');
+        $search= $request->input('search', '');
+        $catalogs = Catalog::query();
 
-        $catalogs = Catalog::where('title', 'like', '%' . $query . '%')->get();
+       if($search){
+        $catalogs->where('title', 'like', '%' . $search. '%')->paginate(10);
+       }
 
-        return response()->json($catalogs);
+        return redirect()->route('catalogs_review')->with(['catalogs' => $catalogs]);
     }
 }

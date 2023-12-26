@@ -79,7 +79,7 @@
 @endsection
 
 @section('admin-layouts')
-    <div class="content-wrapper">
+<div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
@@ -176,10 +176,11 @@
                     <h3 class="card-title mt-2">Catalogs </h3>
 
                 <div class="d-flex justify-content-end">
-                    <input type="text" class="form-control rounded-pill" name="searchInput" id="searchInput"
-                        style="width: 35%" placeholder="Search catalogs...">
-                        &nbsp;
-                    <button class="ms-3 btn btn-success" type="submit" id="onClickModal">
+                <form action="{{route('searchCatalog')}}" method="GET" style="width:35%; height: 40px">
+                    <input type="text" class="form-control rounded-pill" name="search" id="searchInput" placeholder="Search catalogs...">
+                </form>
+                &nbsp;
+                    <button class="btn btn-success" type="submit" id="onClickModal">
                         <i class="bi bi-plus-square"></i>
                         Add
                     </button>
@@ -241,11 +242,10 @@
                     </tbody>
                 </table>
                 <div class="container">
-                    <p> {{ $catalogs->links('pagination::bootstrap-5') }} </p>
+                    <p> {{ $catalogs->->appends(['search' => $search])->links('pagination::bootstrap-5') }} </p>
                 </div>
             </div>
             <!-- /.card-body -->
-
         </div>
         <!-- /.card -->
     </section>
@@ -300,40 +300,5 @@
             const authorsArray = Array.from(authorsContainer.children).map(author => author.textContent.replace(' × ', ''));
             authorsInputField.value = JSON.stringify(authorsArray);
         }
-
-        $(document).ready(function() {
-            $('#searchInput').on('input', function() {
-                // Get the search query from the input
-                var query = $(this).val();
-
-                // Make an AJAX request to the search route
-                $.ajax({
-                    url: '/index/review',
-                    method: 'GET',
-                    data: {
-                        query: query
-                    },
-                    success: function(response) {
-                        // Update the table content with the search results
-                        updateTable(response);
-                    },
-                    error: function(error) {
-                        console.error(error);
-                    }
-                });
-            });
-
-            // Function to update the table content
-            function updateTable(data) {
-                var table = $('#dataTable');
-                table.empty(); // Clear the table
-
-                // Add the new rows based on the search results
-                data.forEach(function(catalog) {
-                    var row = '<tr><td>' + catalog.name + '</td><td>' + catalog.description + '</td></tr>';
-                    table.append(row);
-                });
-            }
-        });
     </script>
 @endsection
