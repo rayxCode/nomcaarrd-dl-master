@@ -17,7 +17,7 @@ class CheckAccessLevel
     {
         if (auth()->check()) {
 
-            if (auth()->user()->access_level >= 2) {
+            if (auth()->user()->access_level > 1) {
                 return $next($request);
             }
             else

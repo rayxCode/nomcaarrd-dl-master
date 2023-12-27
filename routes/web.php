@@ -7,6 +7,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\bookmarkController;
 use App\Http\Controllers\catalogTypeController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use App\Models\Affiliation;
@@ -30,7 +31,6 @@ use App\Models\CatalogType;
 // routes/web.php
 
 Route::post('/login', [LoginController::class, 'login']);
-
 Route::post('/register/u/', [RegisterController::class, 'register'])->name('users.add');;
 Route::get('/search', [CatalogController::class, 'search'])->name('catalog.search');
 Route::resource('/catalogs', CatalogController::class);
@@ -91,22 +91,9 @@ Route::middleware(['checkAccessLevel:admin'])->group(function () {
 
 
     //index dashboard page
-    Route::get('/index/dashboard', function(){
-        $userCounts = User::count();
-        $catalogCounts= Catalog::count();
-        $pending = Catalog::where('status', 0)->count();
-        $affiliationCounts = Affiliation::count();
-        return view('admin.admin_dashboard', compact('userCounts',
-        'catalogCounts', 'pending', 'affiliationCounts'));
-    })->name('index');
+    Route::get('/index/dashboard', [Controller::class, 'index'])->name('index');
 
-    Route::view('/u/edit', function () {
-        $id = auth()->user()->id;
-        $selectUser = User::with('affiliation')->find($id);
-        $affs = Affiliation::all();
-
-        return view('admin.edit_users', compact('selectUser', 'affs'));
-    })->name('settings');
+    Route::get('/u/edit/{id}', [UserController::class, 'edit'])->name('settings');
 
     //index review page
     Route::get('/index/review', function(){

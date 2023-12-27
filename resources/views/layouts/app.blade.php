@@ -49,7 +49,7 @@
                 <img src="{{ Auth::check() ? asset(auth()->user()->photo_path) : asset('avatars/avatar-placeholder.png') }}"
                     style="width:2.2rem;height:2rem;">
             </div>
-            <a href="{{ route(Auth::check() ?  (auth()->user()->access_level >= 2 ? 'dashboard': 'dashboard_profile') : 'login') }}"
+            <a href="{{ route(Auth::check() ?  (auth()->user()->access_level >= 2 ? 'index': 'dashboard_profile') : 'login') }}"
                 class="text-decoration-none nav-link mt-3">
                 &nbsp <b> {{ Auth::check() ? $user->username : 'LOGIN' }} </b>
             </a>
