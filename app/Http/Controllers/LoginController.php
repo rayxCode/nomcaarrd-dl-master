@@ -23,7 +23,7 @@ class LoginController extends Controller
             if(auth()->user()->access_level == 1)
             return redirect()->route('dashboard');
             else
-            return redirect()->route('users');
+            return redirect()->route('index');
         }
 
         // Authentication failed

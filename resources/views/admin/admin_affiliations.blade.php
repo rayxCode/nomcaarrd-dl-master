@@ -74,7 +74,7 @@
                     <p style="margin-left: -10px"><b>ADD AFFILIATE </b> </p>
                     <hr style="margin-top: -10px">
                 </span>
-                <form id="popForm" action="{{ route('affiliation.create') }}" method="POST">
+                <form id="popForm" action="{{ route('affiliation.store') }}" method="POST">
                     @csrf
                     <div>
                         <label for="type" class="form-label mt-2">

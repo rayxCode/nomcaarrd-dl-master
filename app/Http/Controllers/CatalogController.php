@@ -48,15 +48,18 @@ class CatalogController extends Controller
     }
 
     // Edit a selected listing in catalogs.
-    public function indexUpdate($id)
+    public function index()
     {
+        $catalogs = Catalog::orderBy('title')->with('types')->paginate(10);
+        $catalogs->appends(['sort' => 'title']);
+        $types = CatalogType::all();
+        return view('admin.admin_catalogs', compact('catalogs', 'types'));
     }
 
 
     // Store a newly created catalog entry in storage.
     public function store(Request $request)
     {
-
         // Validate the incoming request with any necessary rules
         $validator =  Validator::make($request->all(), [
             'title' => 'required|string|max:255',

@@ -177,6 +177,7 @@
 
                 <div class="d-flex justify-content-end">
                 <form action="{{route('searchCatalog')}}" method="GET" style="width:35%; height: 40px">
+                    @csrf
                     <input type="text" class="form-control rounded-pill" name="search" id="searchInput" placeholder="Search catalogs...">
                 </form>
                 &nbsp;
@@ -202,7 +203,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($catalogs as $catalog)
+                        @foreach ($catalogs->where('status', 1) as $catalog)
                             <tr>
                                 <td id="id">{{ $catalog->title }}</td>
                                 @php
@@ -242,7 +243,7 @@
                     </tbody>
                 </table>
                 <div class="container">
-                    <p> {{ $catalogs->appends(['search' => $search])->links('pagination::bootstrap-5') }} </p>
+                    <p> {{ $catalogs->links('pagination::bootstrap-5') }} </p>
                 </div>
             </div>
             <!-- /.card-body -->

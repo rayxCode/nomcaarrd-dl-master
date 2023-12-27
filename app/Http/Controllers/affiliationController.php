@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Validator;
 
 class affiliationController extends Controller
 {
+    public function index(){
+        $affs = Affiliation::orderBy('name')->paginate(10);
+        $affs->appends(['sort' => 'name']);
+        return view('admin.admin_affiliations', compact('affs'));
+    }
+
     public function show($id)
     {
         // Retrieve a specific affiliation

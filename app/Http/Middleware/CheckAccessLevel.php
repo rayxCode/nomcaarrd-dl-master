@@ -15,15 +15,10 @@ class CheckAccessLevel
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check()) {
-
-            if (auth()->user()->access_level > 1) {
-                return $next($request);
-            }
-            else
-            {
-                return redirect('/');
-            }
+        if (auth()->check() && auth()->user()->access_level !== 2) {
+            return redirect('/');
+        } elseif (auth()->check() && auth()->user()->access_level >= 2) {
+            return $next($request);
         } else {
             return redirect('login');
         }

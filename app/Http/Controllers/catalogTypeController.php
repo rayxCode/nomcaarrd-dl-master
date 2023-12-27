@@ -11,6 +11,11 @@ use function PHPSTORM_META\type;
 class catalogTypeController extends Controller
 {
     //
+    public function index(){
+        $types = CatalogType::paginate(10);
+        $types->appends(['sort' => 'name']);
+        return view('admin.admin_catalogsType', compact('types'));
+    }
 
     public function show($id)
     {

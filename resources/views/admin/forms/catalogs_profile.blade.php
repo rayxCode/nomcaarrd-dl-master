@@ -1,4 +1,4 @@
-@extends('admin.admin_dashboard')
+@extends('admin.admin_master')
 @section('styles')
     <style>
         .form-label {
@@ -18,7 +18,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('users') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('index') }}">Home</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('catalogs_index') }}">Catalogs </a></li>
                             <li class="breadcrumb-item active">Edit</li>
                         </ol>

@@ -13,9 +13,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        // Retrieve all users
-        $users = User::all();
-        return view('users.index', compact('users'));
+        $users = User::with('affiliation')->paginate(10);
+        $affs = Affiliation::all();
+        return view('admin.admin_users', compact('users', 'affs'));
     }
 
     public function show($id)
@@ -30,14 +30,13 @@ class UserController extends Controller
         // Fetch the user's details from the database using the provided $id
         $selectUser = User::with('affiliation')->find($id);
         $affs = Affiliation::all();
-        /* if (!$selectUser) {
+        if (!$selectUser) {
             // If the user is not found, returns an error or redirect to an error page
             return redirect()->back()->with('error', 'User not found');
-        } */
+        }
 
         // Pass the user data to the view for editing
-        return view('admin.edit_users')->with('selectUser', $selectUser)
-        ->with('affs', $affs);
+        return view('admin.forms.users_profile', compact('selectUser', 'affs'));
         //return redirect()->back()->compact('selectUser', 'affs');
     }
 

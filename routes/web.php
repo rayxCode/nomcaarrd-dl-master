@@ -60,6 +60,8 @@ Route::get('/catalogs', function () {
     return view('pages.catalogs');
 })->name('catalogs');
 
+
+
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/u/profiles', function () {
@@ -69,7 +71,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('profiles');
 
     Route::view('/u/profiles/dashboard', 'pages.accounts')
-    ->name('dashboard_profile');
+    ->name('dashboard_profiles');
 
     Route::get('/u/profiles/addCatalog', function(){
         $types = CatalogType::all();
@@ -83,7 +85,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['checkAccessLevel:admin'])->group(function () {
     // Your routes or controller actions here
     Route::put('/account/{id}/update', [UserController::class, 'updateAdmin'])->name('updateAd');
-
+    Route::get('/users/u/{id}/edit', [UserController::class, 'edit'])->name('edit');
     Route::delete('/users/u/{id}/delete', [UserController::class, 'destroy'])->name('destroy');
     Route::resource('/index/affiliation', affiliationController::class);
     Route::resource('/index/catalog/types', catalogTypeController::class);
@@ -93,42 +95,22 @@ Route::middleware(['checkAccessLevel:admin'])->group(function () {
     //index dashboard page
     Route::get('/index/dashboard', [Controller::class, 'index'])->name('index');
 
+    //edit profile setting route for admin
     Route::get('/u/edit/{id}', [UserController::class, 'edit'])->name('settings');
 
     //index review page
-    Route::get('/index/review', function(){
-        $catalogs = Catalog::orderBy('title')->with('types')->paginate(10);
-        $types = CatalogType::all();
-        return view('reviewer.review_catalogs', compact('catalogs', 'types'));
-    })->name('catalogs_review');
+    Route::get('/index/review', [ReviewController::class, 'index'])->name('catalogs_review');
 
     //index users page
-    Route::get('/index/users', function () {
-        $users = User::with('affiliation')->paginate(10);
-        $affs = Affiliation::all();
-        return view('admin.admin_users', compact('users', 'affs'));
-    })->name('users');
+    Route::get('/index/users', [UserController::class, 'index'])->name('users');
 
     //index affiliations page
-    Route::get('/index/affiliations', function () {
-        $affs = Affiliation::orderBy('name')->paginate(10);
-        $affs->appends(['sort' => 'name']);
-        return view('admin.admin_affiliations', compact('affs'));
-    })->name('affiliations');
+    Route::get('/index/affiliations', [affiliationController::class, 'index'])->name('affiliations');
 
     //index catalog page
-    Route::get('/index/catalogs', function () {
-        $catalogs = Catalog::orderBy('title')->with('types')->paginate(10);
-        $catalogs->appends(['sort' => 'title']);
-        $types = CatalogType::all();
-        return view('admin.admin_catalogs', compact('catalogs', 'types'));
-    })->name('catalogs_index');
+    Route::get('/index/catalogs', [CatalogController::class, 'index'])->name('catalogs_index');
 
     //index types page
-    Route::get('/index/types', function () {
-        $types = CatalogType::paginate(10);
-        $types->appends(['sort' => 'name']);
-        return view('admin.admin_catalogsType', compact('types'));
-    })->name('types_index');
+    Route::get('/index/types', [catalogTypeController::class, 'index'])->name('types_index');
 
 });

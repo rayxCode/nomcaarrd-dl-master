@@ -12,8 +12,7 @@
     <div class="content-wrapper" style="height: 95vh">
         <div class="card-header">
         <h3 class="card-title mt-2">Welcome back, {{auth()->user()->username}}!</h3>
-    </div>
-
+        </div>
         <section class="content mt-2">
             <div class="row mb-2">
 

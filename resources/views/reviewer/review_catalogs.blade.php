@@ -25,10 +25,10 @@
                     <h3 class="card-title mt-2">Pending catalogs</h3>
                     <div class="d-flex justify-content-end mt-1">
                         <label for="searchInput" class="pr-2 mt-1"> Search: </label>
-
-                        <form action="{{route('searchCatalog')}}" method="POST" style="width: 35%">
-                        <input type="text" class="form-control rounded-pill" name="searchInput" id="searchInput"
-                            placeholder="Search catalogs...">
+                        <form action="{{ route('searchCatalog') }}" method="GET" style="width: 35%">
+                            @csrf
+                            <input type="text" class="form-control rounded-pill" role="search" name="search" id="searchInput"
+                                placeholder="Search catalogs..." value="{{ isset($search) ? $search : '' }}">
                         </form>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                                     <td class="d-flex" style="min-width: 230px">
                                         <form action="{{ route('catalogs.destroy', $catalog->id) }}" method="post">
                                             @csrf
-                                            @method('')
+                                            @method('POST')
                                             <a href="{{ route('catalogs.edit', $catalog->id) }}"
                                                 class="p-2 btn btn-success btnAction" type="submit">
                                                 <i class="bi bi-check-circle-fill"></i> Approve
@@ -61,9 +61,9 @@
                                         &nbsp;
                                         <form action="{{ route('catalogs.destroy', $catalog->id) }}" method="post">
                                             @csrf
-                                            @method('')
+                                            @method('POST')
                                             <button class="p-2 btn btn-danger btnAction" type="submit">
-                                                <i class="bi bi-x-circle-fill"></i> Declined
+                                                <i class="bi bi-x-circle-fill"></i> Decline
                                             </button>
                                         </form>
                                     </td>

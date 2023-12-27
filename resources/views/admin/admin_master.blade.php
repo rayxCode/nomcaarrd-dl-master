@@ -74,13 +74,12 @@
                         </a>
                     </li>
                     <li class="nav-item p-2 {{ request()->routeIs('catalogs_review') ? 'active' : '' }}" id="btnMenu">
-                            <a href="" class="nav-links text-white">
+                            <a href="{{route('catalogs_review')}}" class="nav-links text-white">
                                 <div class="d-flex">
                                     <i class=" nav-icon bi bi-files mt-2" style="padding-right: 10px"></i>
                                     <p class=" mt-2 d-block" style="font-size: 1.02em"> Review Documents</p>
                                 </div>
                             </a>
-                        </form>
                     </li>
                     <li class="nav-item p-2 {{ request()->routeIs('users') ? 'active' : '' }}" id="btnMenu">
                         <a href="{{ route('users') }}" class="nav-links text-white">
@@ -114,12 +113,11 @@
                             <div class="d-flex">
                                 <i class="bi bi-bookshelf mt-2" style="padding-right: 10px"></i>
                                 &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Catalog Types</p>
-
                             </div>
                         </a>
                     </li>
                     <li class="nav-item p-2 {{ request()->routeIs('settings') ? 'active' : '' }}" id="btnMenu">
-                        <a href="{{ route('settings', auth()->user()->id) }}" class="nav-links text-white">
+                        <a href="{{ route('settings', auth()->user()->id)}}" class="nav-links text-white">
                             <div class="d-flex">
                                 <i class="bi bi-gear-fill mt-2" style="padding-right: 10px"></i>
                                 <p class=" mt-2 d-block" style="font-size: 1.02em">Settings</p>
