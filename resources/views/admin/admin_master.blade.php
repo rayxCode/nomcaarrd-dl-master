@@ -74,15 +74,12 @@
                         </a>
                     </li>
                     <li class="nav-item p-2 {{ request()->routeIs('catalogs_review') ? 'active' : '' }}" id="btnMenu">
-                        <form action="{{ route('searchCatalog')}}" method="GET">
-                            <button type="submit" style="text-decoration: none">
                             <a href="" class="nav-links text-white">
                                 <div class="d-flex">
                                     <i class=" nav-icon bi bi-files mt-2" style="padding-right: 10px"></i>
                                     <p class=" mt-2 d-block" style="font-size: 1.02em"> Review Documents</p>
                                 </div>
                             </a>
-                        </button>
                         </form>
                     </li>
                     <li class="nav-item p-2 {{ request()->routeIs('users') ? 'active' : '' }}" id="btnMenu">
@@ -121,8 +118,8 @@
                             </div>
                         </a>
                     </li>
-                    <li class="nav-item p-2 {{ request()->routeIs('edit') ? 'active' : '' }}" id="btnMenu">
-                        <a href="{{ route('edit', auth()->user()->id) }}" class="nav-links text-white">
+                    <li class="nav-item p-2 {{ request()->routeIs('settings') ? 'active' : '' }}" id="btnMenu">
+                        <a href="{{ route('settings', auth()->user()->id) }}" class="nav-links text-white">
                             <div class="d-flex">
                                 <i class="bi bi-gear-fill mt-2" style="padding-right: 10px"></i>
                                 <p class=" mt-2 d-block" style="font-size: 1.02em">Settings</p>

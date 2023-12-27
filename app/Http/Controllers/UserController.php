@@ -30,13 +30,14 @@ class UserController extends Controller
         // Fetch the user's details from the database using the provided $id
         $selectUser = User::with('affiliation')->find($id);
         $affs = Affiliation::all();
-        if (!$selectUser) {
+        /* if (!$selectUser) {
             // If the user is not found, returns an error or redirect to an error page
             return redirect()->back()->with('error', 'User not found');
-        }
+        } */
 
         // Pass the user data to the view for editing
-        return view('admin.forms.users_profile', compact('selectUser', 'affs'));
+        return view('admin.edit_users')->with('selectUser', $selectUser)
+        ->with('affs', $affs);
         //return redirect()->back()->compact('selectUser', 'affs');
     }
 

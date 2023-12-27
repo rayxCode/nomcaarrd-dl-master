@@ -242,7 +242,7 @@
                     </tbody>
                 </table>
                 <div class="container">
-                    <p> {{ $catalogs->->appends(['search' => $search])->links('pagination::bootstrap-5') }} </p>
+                    <p> {{ $catalogs->appends(['search' => $search])->links('pagination::bootstrap-5') }} </p>
                 </div>
             </div>
             <!-- /.card-body -->

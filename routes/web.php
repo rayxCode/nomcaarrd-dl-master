@@ -69,7 +69,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('profiles');
 
     Route::view('/u/profiles/dashboard', 'pages.accounts')
-    ->name('dashboard');
+    ->name('dashboard_profile');
 
     Route::get('/u/profiles/addCatalog', function(){
         $types = CatalogType::all();
@@ -83,7 +83,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['checkAccessLevel:admin'])->group(function () {
     // Your routes or controller actions here
     Route::put('/account/{id}/update', [UserController::class, 'updateAdmin'])->name('updateAd');
-    Route::get('/users/u/{id}/edit', [UserController::class, 'edit'])->name('edit');
+
     Route::delete('/users/u/{id}/delete', [UserController::class, 'destroy'])->name('destroy');
     Route::resource('/index/affiliation', affiliationController::class);
     Route::resource('/index/catalog/types', catalogTypeController::class);
@@ -99,6 +99,14 @@ Route::middleware(['checkAccessLevel:admin'])->group(function () {
         return view('admin.admin_dashboard', compact('userCounts',
         'catalogCounts', 'pending', 'affiliationCounts'));
     })->name('index');
+
+    Route::view('/u/edit', function () {
+        $id = auth()->user()->id;
+        $selectUser = User::with('affiliation')->find($id);
+        $affs = Affiliation::all();
+
+        return view('admin.edit_users', compact('selectUser', 'affs'));
+    })->name('settings');
 
     //index review page
     Route::get('/index/review', function(){

@@ -160,7 +160,7 @@
                                 <td>{{ $fullname ? $fullname : 'N/A' }}</td>
                                 <td>{{ $user->affiliation->name }}</td>
                                 <td class="d-flex">
-                                    <a href="{{ route('edit', $user->id) }}" class="p-2 btn btn-primary btnAction"
+                                    <a href="{{ route('settings', $user->id) }}" class="p-2 btn btn-primary btnAction"
                                         type="submit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>

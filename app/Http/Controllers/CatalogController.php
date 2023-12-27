@@ -143,7 +143,7 @@ class CatalogController extends Controller
     {
         $edit = Catalog::find($id);
         $types = CatalogType::all();
-        return view('admin.forms.catalogs_profile', compact('edit', 'types'));
+        return view('admin.edit_catalog', compact('edit', 'types'));
     }
 
     // Update the specified catalog entry in storage.
