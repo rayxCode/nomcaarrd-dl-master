@@ -88,15 +88,15 @@
         {{-- number counts for dashboard --}}
         <div class="d-flex justify-content-center">
             <div class="text-center">
-                <h4>0</h4>
+                <h4>{{$cComments}}</h4>
                 <h5><i>Comments</i></h5>
             </div>
             <div class="ms-5 text-center">
-                <h4>0</h4>
+                <h4>{{$cReviews}}</h4>
                 <h5><i>Reviews</i></h5>
             </div>
             <div class="ms-5 text-center">
-                <h4>0</h4>
+                <h4>{{$cCounts}}</h4>
                 <h5><i>Published</i></h5>
             </div>
         </div>

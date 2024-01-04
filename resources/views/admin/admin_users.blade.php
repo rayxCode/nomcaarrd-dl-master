@@ -186,6 +186,9 @@
         <!-- /.card -->
     </section>
     <!-- /.container-fluid -->
+    <footer>
+        @include('includes.footer')
+    </footer>
 @endsection
 @section('scripts')
     <script>

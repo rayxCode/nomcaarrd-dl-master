@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Affiliation;
+use App\Models\Catalog;
+use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -16,6 +18,24 @@ class UserController extends Controller
         $users = User::with('affiliation')->paginate(10);
         $affs = Affiliation::all();
         return view('admin.admin_users', compact('users', 'affs'));
+    }
+
+    public function showDashboard()
+    {
+        // Retrieve the user's full name or username
+        $userName = auth()->user()->fullname ?: auth()->user()->username;
+
+        // Clean up the user name (remove extra characters)
+        $userName = trim($userName);
+
+        // Query to count distinct authors in the 'authors' JSON column
+        $cCounts = Catalog::where('authors', 'like', '%' . $userName . '%')->where('status', 1)->count();
+
+        $comments = Comment::where('users_id', auth()->user()->id)->get();
+        $cReviews = $comments->where('rating', '>', 0)->count();
+        $cComments = $comments->count();
+
+        return view('pages.accounts', compact('cCounts', 'cReviews', 'cComments'));
     }
 
     public function show($id)
@@ -36,7 +56,7 @@ class UserController extends Controller
         }
 
         // Pass the user data to the view for editing
-        return view('admin.forms.users_profile', compact('selectUser', 'affs'));
+        return view('admin.forms.edit_users', compact('selectUser', 'affs'));
         //return redirect()->back()->compact('selectUser', 'affs');
     }
 
@@ -46,10 +66,6 @@ class UserController extends Controller
         $request->validate([
             'username' => 'required',
             'email' => 'required|email',
-            'firstname' => 'required',
-            'middlename' => 'required',
-            'lastname' => 'required',
-            'affiliation' => 'required',
             'currentPassword' => [
                 'required',
                 'string',
@@ -62,8 +78,7 @@ class UserController extends Controller
             ],
         ]);
 
-        if(!($request->input('password') === $request->input('cfpassword')))
-        {
+        if (!($request->input('password') === $request->input('cfpassword'))) {
             return back()->withErrors('error', "Input password does not match.");
         }
 
@@ -71,23 +86,25 @@ class UserController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return redirect()->back()->session()->flash('error', 'User not found!');
+            return redirect()->back()->with('error', 'User not found!');
         }
+
+        $fn = $request->input('firstname') . " " . $request->input('middlename') . " " . $request->input('lastname');
 
         // Create the 'name' from 'firstname', 'middlename', and 'lastname'
         // Update the user's profile with the new data
         $user->username = $request->input('username');
+        $user->fullname = $fn;
         $user->firstname = $request->input('firstname');
         $user->middlename = $request->input('middlename');
         $user->lastname = $request->input('lastname');
-        $user->affiliation = $request->input('affiliation');
+        $user->affiliation_id = $request->input('affiliation');
         $user->photo_path = $request->input('photo_path');
         if ($request->input('password'))
             $user->password = bcrypt($request->input('password'));
-        $user->access_level = $request->input('access_level');
         $user->update();
         // Redirect back to the profile page or a success page
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Profile updated successfully');
     }
 
     public function updateAdmin(Request $request, $id)
@@ -107,14 +124,14 @@ class UserController extends Controller
         }
 
         // Updates the 'name' from 'firstname', 'middlename', and 'lastname'
-        $fullname = $request->input('lastname').", ".$request->input('firstname')." ".$request->input('middlename');
+        $fullname = $request->input('lastname') . ", " . $request->input('firstname') . " " . $request->input('middlename');
         // Update the user's profile with the new data
         $user->username = $request->input('username');
-        $user->fullname =
+        $user->fullname = $fullname;
         $user->firstname = $request->input('firstname');
         $user->middlename = $request->input('middlename');
         $user->lastname = $request->input('lastname');
-        $user->affiliation_id = $request->input('affiliation')?? $user->affiliation_id;
+        $user->affiliation_id = $request->input('affiliation') ?? $user->affiliation_id;
         if ($request->input('password'))
             $user->password = bcrypt($request->input('password'));
         $user->access_level = $request->input('access_level');

@@ -21,7 +21,7 @@ class LoginController extends Controller
             // Authentication was successful
             // Redirect to the desired page after login
             if(auth()->user()->access_level == 1)
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard_profiles');
             else
             return redirect()->route('index');
         }

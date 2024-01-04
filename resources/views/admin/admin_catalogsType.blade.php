@@ -47,6 +47,7 @@
             position: fixed;
             transform: translate(100%, 15%);
         }
+
     </style>
 @endsection
 
@@ -67,102 +68,105 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
-              <!-- Start of modal for new types-->
-              <div class="modal mx-auto" id="modal">
-                <div class="modal-content p-3">
-                    <span class="container" >
-                        <p style="margin-left: -10px"><b>ADD TYPE </b> </p>
-                        <hr style="margin-top: -10px">
-                    </span>
-                    <form action="{{ route('types.store') }}" method="POST">
-                        @csrf
-                        <div>
-                            <label for="name" class="form-label mt-2">
-                                <p>Type Name </p>
-                            </label>
-                            <input class="form-control rounded-pill" id="name"  type="text"
-                                name="name" placeholder="Enter new type name" required />
-                        </div>
-                        <div class="modal-footer mt-3 mx-auto d-flex">
-                            <button type="submit" class="ms-2  modal-button rounded-pill btn btn-success "
-                                onclick="closeModal()" style="width: 120px">
-                                Add
-                            </button>
-                    </form>
-                    <button class="modal-close rounded-pill btn btn-secondary " onclick="closeModal()" style="width: 120px">
-                        Cancel
+        <!-- Start of modal for new types-->
+        <div class="modal mx-auto" id="modal">
+            <div class="modal-content p-3">
+                <span class="container">
+                    <p style="margin-left: -10px"><b>ADD TYPE </b> </p>
+                    <hr style="margin-top: -10px">
+                </span>
+                <form action="{{ route('types.store') }}" method="POST">
+                    @csrf
+                    <div>
+                        <label for="name" class="form-label mt-2">
+                            <p>Type Name </p>
+                        </label>
+                        <input class="form-control rounded-pill" id="name" type="text" name="name"
+                            placeholder="Enter new type name" required />
+                    </div>
+                    <div class="modal-footer mt-3 mx-auto d-flex">
+                        <button type="submit" class="ms-2  modal-button rounded-pill btn btn-success "
+                            onclick="closeModal()" style="width: 120px">
+                            Add
+                        </button>
+                </form>
+                <button class="modal-close rounded-pill btn btn-secondary " onclick="closeModal()" style="width: 120px">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- end of modal -->
+    <section class="content">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title mt-2">Types</h3>
+                <div class="d-flex justify-content-end">
+                    <button class="ms-3 btn btn-success" type="submit" id="onClickModal"">
+                        <i class="bi bi-plus-square"></i>
+                        Add Type
                     </button>
                 </div>
             </div>
-    </div>
-        <!-- end of modal -->
-        <section class="content">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title mt-2">Types</h3>
-                    <div class="d-flex justify-content-end">
-                        <button class="ms-3 btn btn-success" type="submit" id="onClickModal"">
-                            <i class="bi bi-plus-square"></i>
-                            Add Type
-                        </button>
-                    </div>
-                </div>
 
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table id="dataTable" class="table table-bordered table-striped">
-                        <thead>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
 
+                        <tr>
+                            <th>Type ID</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($types as $type)
                             <tr>
-                                <th>Type ID</th>
-                                <th>Name</th>
-                                <th>Actions</th>
+                                <td id="id">{{ $type->id }}</td>
+                                <td>{{ $type->name ?? '' }}</td>
+                                <td class="d-flex">
+                                    <a href="{{ route('types.show', $type->id) }}" class="p-2 btn btn-primary btnAction"
+                                        type="submit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    &nbsp;
+                                    <form action="{{ route('types.destroy', $type->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="p-2 btn btn-danger btnAction" type="submit">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($types as $type)
-                                <tr>
-                                    <td id="id">{{ $type->id }}</td>
-                                    <td>{{ $type->name ?? '' }}</td>
-                                    <td class="d-flex">
-                                            <a href="{{ route('types.show', $type->id) }}" class="p-2 btn btn-primary btnAction" type="submit">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                        &nbsp;
-                                        <form action="{{ route('types.destroy', $type->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="p-2 btn btn-danger btnAction" type="submit">
-                                                <i class="bi bi-trash-fill"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
+                        @endforeach
 
-                        </tbody>
-                    </table>
-                    <div class="container">
-                        <p> {{ $types->links('pagination::bootstrap-5') }} </p>
-                    </div>
+                    </tbody>
+                </table>
+                <div class="container">
+                    <p> {{ $types->links('pagination::bootstrap-5') }} </p>
                 </div>
-                <!-- /.card-body -->
-
             </div>
-            <!-- /.card -->
-        </section>
-        <!-- /.container-fluid -->
+            <!-- /.card-body -->
 
-    @endsection
+        </div>
+        <!-- /.card -->
+    </section>
+    <!-- /.container-fluid -->
+    <footer>
+        @include('includes.footer')
+    </footer>
+@endsection
 
-    @section('scripts')
-        <script>
-            document.getElementById('onClickModal').addEventListener('click', function() {
-                document.getElementById("modal").style.display = "block";
-            });
+@section('scripts')
+    <script>
+        document.getElementById('onClickModal').addEventListener('click', function() {
+            document.getElementById("modal").style.display = "block";
+        });
 
-            function closeModal() {
-                document.getElementById("modal").style.display = "none";
-            }
-        </script>
-    @endsection
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+    </script>
+@endsection

@@ -81,7 +81,7 @@
                             <p>Affiliaton Name </p>
                         </label>
                         <input class="form-control rounded-pill" id="name" type="text"
-                            value="{{ isset($edit) ? $edit : old('type') }}" name="type"
+                            value="{{ isset($edit) ? $edit : old('type') }}" name="name"
                             placeholder="Enter new affiliate name" required />
 
                     </div>
@@ -159,6 +159,9 @@
         <!-- /.card -->
     </section>
     <!-- /.container-fluid -->
+    <footer>
+        @include('includes.footer')
+    </footer>
 @endsection
 @section('scripts')
     <script>

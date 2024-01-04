@@ -27,8 +27,9 @@
                         <label for="searchInput" class="pr-2 mt-1"> Search: </label>
                         <form action="{{ route('searchCatalog') }}" method="GET" style="width: 35%">
                             @csrf
-                            <input type="text" class="form-control rounded-pill" role="search" name="search" id="searchInput"
-                                placeholder="Search catalogs..." value="{{ isset($search) ? $search : '' }}">
+                            <input type="text" class="form-control rounded-pill" role="search" name="search"
+                                id="searchInput" placeholder="Search catalogs..."
+                                value="{{ isset($search) ? $search : '' }}">
                         </form>
                     </div>
                 </div>
@@ -44,31 +45,52 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($catalogs->where('status', 0) as $catalog)
-                                <tr>
-                                    <td id="id">{{ $catalog->title }}</td>
-                                    <td>{{ $catalog->types->name }}</td>
-                                    <td>{{ $catalog->description }}</td>
-                                    <td class="d-flex" style="min-width: 230px">
-                                        <form action="{{ route('catalogs.destroy', $catalog->id) }}" method="post">
-                                            @csrf
-                                            @method('POST')
-                                            <a href="{{ route('catalogs.edit', $catalog->id) }}"
-                                                class="p-2 btn btn-success btnAction" type="submit">
-                                                <i class="bi bi-check-circle-fill"></i> Approve
-                                            </a>
-                                        </form>
-                                        &nbsp;
-                                        <form action="{{ route('catalogs.destroy', $catalog->id) }}" method="post">
-                                            @csrf
-                                            @method('POST')
-                                            <button class="p-2 btn btn-danger btnAction" type="submit">
-                                                <i class="bi bi-x-circle-fill"></i> Decline
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
+                            @if ($catalogs->count() < 1)
+                                <caption> <i>No pending reviews yet.</i> </caption>
+                            @else
+                                <caption> <i>Current list for pending documents.</i> </caption>
+{{--                                 <!-- Modal -->
+                                <div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-fullscreen">
+                                        <div class="modal-content mx-auto" style="width: 70%; height: 100%">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="pdfModalLabel">{{ $catalogs->title }}</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <embed src="{{ asset('storage' . $catalogs->fileURL) }}"
+                                                    type="application/pdf" width="100%" height="95%" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End of modal --> --}}
+                                @foreach ($catalogs as $catalog)
+                                    <tr>
+                                        <td id="id"><a style="color:black" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#pdfModal">{{ $catalog->title }} </a></td>
+                                        <td>{{ $catalog->types->name }}</td>
+                                        <td>{{ $catalog->description }}</td>
+                                        <td class="d-flex" style="min-width: 230px">
+                                            <form action="{{ route('approved', $catalog->id) }}" method="post">
+                                                @csrf
+                                                <button class="p-2 btn btn-success btnAction" type="submit">
+                                                    <i class="bi bi-check-circle-fill"></i> Approve
+                                                </button>
+                                            </form>
+                                            &nbsp;
+                                            <form action="{{ route('declined', $catalog->id) }}" method="post">
+                                                @csrf
+                                                <button class="p-2 btn btn-danger btnAction" type="submit">
+                                                    <i class="bi bi-x-circle-fill"></i> Decline
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                     <div class="container">
@@ -85,57 +107,12 @@
 
     @section('scripts')
         <script>
-            $(document).ready(function() {
-                $('#searchInput').on('input', function() {
-                    // Get the search query from the input
-                    var query = $(this).val();
+            function openPdfModal() {
+                document.getElementById('pdfModal').style.display = 'block';
+            }
 
-                    // Make an AJAX request to the search route
-                    $.ajax({
-                        url: '/index/review',
-                        method: 'GET',
-                        data: {
-                            query: query
-                        },
-                        success: function(response) {
-                            // Update the table content with the search results
-                            updateTable(response);
-                        },
-                        error: function(error) {
-                            console.error(error);
-                        }
-                    });
-                });
-
-                // Function to update the table content
-                function updateTable(data) {
-                    var table = $('#dataTable');
-                    table.empty(); // Clear the table
-
-                    // Add the new rows based on the search results
-                    data.forEach(function(catalog) {
-                        var row = '<tr><td>' + catalog.name + '</td><td>' + catalog.description + '</td></tr>';
-                        table.append(row);
-                    });
-                }
-            });
-    // jQuery is used here for simplicity, but you can use vanilla JavaScript or other libraries
-    $(document).ready(function () {
-        $('#searchInput').on('input', function () {
-            var searchValue = $(this).val();
-
-            $.ajax({
-                url: '{{ route('searchCatalog') }}',
-                method: 'GET',
-                data: { search: searchValue },
-                success: function (data) {
-                    $('#catalogs-container').html(data);
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
-        });
-    });
+            function closePdfModal() {
+                document.getElementById('pdfModal').style.display = 'none';
+            }
         </script>
     @endsection

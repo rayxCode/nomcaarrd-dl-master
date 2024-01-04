@@ -17,9 +17,9 @@ class Bookmark extends Model
         'editedBy',
     ];
 
-    public function catalog()
+    public function catalogs()
     {
-        return $this->belongsTo(Catalog::class, 'id');
+        return $this->belongsTo(Catalog::class, 'catalog_id');
     }
 
     public function user()

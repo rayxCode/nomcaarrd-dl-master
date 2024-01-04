@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bookmarks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('catalog_id');
-            $table->foreign('catalog_id')->references('catalog_id')->on('catalogs')->onDelete('cascade');
+            $table->foreign('catalog_id')->references('id')->on('catalogs')->onDelete('cascade');
             $table->unsignedBigInteger('users_id');
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')->onDelete('cascade');
             $table->string('editedBy')->nullable();

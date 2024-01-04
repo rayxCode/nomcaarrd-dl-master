@@ -19,7 +19,7 @@ class affiliationController extends Controller
     {
         // Retrieve a specific affiliation
         $edit = Affiliation::findOrFail($id);
-        return view('admin.forms.affiliations_profile', compact('edit'));
+        return view('admin.forms.edit_affiliations', compact('edit'));
     }
 
     public function store(Request $request)
@@ -27,7 +27,6 @@ class affiliationController extends Controller
         // Validate the request
         $request->validate([
             'name' => 'required|string|max:255',
-            'editedBy' => 'required|string|max:255',
         ]);
 
         // Create a new affiliation
@@ -53,5 +52,12 @@ class affiliationController extends Controller
             return redirect()->back()->with('error', 'Something went wrong...');
         }
         // Add other methods like edit, update, delete based on your requirements
+    }
+
+    public function destroy($id){
+        $affiliate = Affiliation::findOrFail($id);
+        $affiliate->delete();
+
+        return redirect()->back()->with('success', 'Affiliate record deleted successfully!');
     }
 }

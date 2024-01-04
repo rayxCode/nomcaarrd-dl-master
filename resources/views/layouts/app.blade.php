@@ -9,7 +9,6 @@
     <!-- <title>{{ config('app.name', 'NOMCAARRD eLibrary') }}</title> --->
     <title>NOMCAARD eLibrary</title>
 
-
     <!-- Fonts -->
     {{--  <link rel="preconnect" href="https://fonts.bunny.net"> --}}
     {{-- <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" /> --}}
@@ -42,14 +41,16 @@
     <!--- Navbar--->
     <nav class="navbar navbar-light bg-light">
         <div class="d-flex ms-4">
+        <a href="{{route('home')}}">
         <img src="{{asset('bg/logo22.png')}}" alt="" srcset="" style="width:170px; height:60px">
+        </a>
         </div>
         <div class="d-flex justify-content-end" style="margin-inline-end: 2%">
             <div class="mt-2 border-black rounded-circle">
                 <img src="{{ Auth::check() ? asset(auth()->user()->photo_path) : asset('avatars/avatar-placeholder.png') }}"
                     style="width:2.2rem;height:2rem;">
             </div>
-            <a href="{{ route(Auth::check() ?  (auth()->user()->access_level >= 2 ? 'index': 'dashboard_profile') : 'login') }}"
+            <a href="{{ route(Auth::check() ?  (auth()->user()->access_level >= 2 ? 'index': 'dashboard_profiles') : 'login') }}"
                 class="text-decoration-none nav-link mt-3">
                 &nbsp <b> {{ Auth::check() ? $user->username : 'LOGIN' }} </b>
             </a>
@@ -64,6 +65,8 @@
     <!-- JavaScript Bundle with Popper -->
     <script src="{{ asset('styles/js/bootstrap.bundle.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
+
+
     @yield('script')
 </body>
 

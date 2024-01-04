@@ -8,16 +8,15 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('styles/css/fontstye.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    {{--  Sweet Alert2  --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.min.css">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('styles/datatables/css/reponsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('styles/datatables/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('styles/datatables/css/button.bootstrap4.min.css') }}">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('styles/css/adminlte.min.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-    {{--  Sweet Alert2  --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.min.css">
-
     @yield('styles')
     <style>
         #btnMenu.active {
@@ -31,11 +30,41 @@
             font-weight: bold;
             /* Change this to the desired text color */
         }
+
+        @media (max-width: 768px) {
+            #sidebar {
+                position: absolute;
+                top: 0;
+                left: -250px;
+                height: 100%;
+                display: none;
+                z-index: 1000;
+                overflow-x: hidden;
+                transition: 0.5s;
+            }
+
+            #sidebar.show {
+                left: 0;
+            }
+
+            #content-wrapper.full-width #content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            #content-wrapper #sidebar.hidden {
+                display: block;
+            }
+
+            .wrapper {
+                margin-left: 0 !important;
+            }
+        }
     </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
-    <div class="">
+    <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -50,16 +79,18 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4 text-white">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4 text-white" id="sidebar">
             <!-- Sidebar user (optional) -->
-            <div class="user-panel mt-3 mb-2 d-flex flex-column align-items-center text-center">
+            <div class="user-panel mt-3 mb-2 d-flex">
                 <div class="image mb-2">
                     <img src="{{ auth()->user()->photo_path != null ? asset(auth()->user()->photo_path) : '' }}"
-                        class="img-circle elevation-2 image-fluid" style="width: 100px; height: 100px" alt="User Image">
+                        class="img-circle elevation-2 image-fluid" style="width: 75px; height: 75px" alt="User Image">
                 </div>
                 <div class="info">
                     <p class="d-block"><b> Account:
-                        </b>{{ auth()->user()->username != null ? auth()->user()->username : '' }}</p>
+                        </b>{{ auth()->user()->username != null ? auth()->user()->username : auth()->user()->email }}</p>
+                    <p class="d-block"><b> Role:
+                        </b>{{ auth()->user()->access_level == 2 ? 'Reviewer' : 'Admin' }}</p>
                 </div>
             </div>
             <nav class="mt-2 " style="height:105vh">
@@ -73,13 +104,15 @@
                             </div>
                         </a>
                     </li>
-                    <li class="nav-item p-2 {{ request()->routeIs('catalogs_review') ? 'active' : '' }}" id="btnMenu">
-                            <a href="{{route('catalogs_review')}}" class="nav-links text-white">
-                                <div class="d-flex">
-                                    <i class=" nav-icon bi bi-files mt-2" style="padding-right: 10px"></i>
-                                    <p class=" mt-2 d-block" style="font-size: 1.02em"> Review Documents</p>
-                                </div>
-                            </a>
+                    <li class="nav-item p-2 {{ request()->routeIs('catalogs_review', 'searchCatalog') ? 'active' : '' }}"
+                        id="btnMenu">
+                        <a href="{{ route('catalogs_review') }}" class="nav-links text-white">
+                            <div class="d-flex">
+                                <i class=" nav-icon bi bi-files mt-2" style="padding-right: 10px"></i>
+                                <p class=" mt-2 d-block" style="font-size: 1.02em"> Review Documents</p>
+                            </div>
+                        </a>
+                        @if (auth()->user()->access_level > 2)
                     </li>
                     <li class="nav-item p-2 {{ request()->routeIs('users') ? 'active' : '' }}" id="btnMenu">
                         <a href="{{ route('users') }}" class="nav-links text-white">
@@ -99,7 +132,8 @@
                             </div>
                         </a>
                     </li>
-                    <li class="nav-item p-2 {{ request()->routeIs('catalogs_index') ? 'active' : '' }}" id="btnMenu">
+                    <li class="nav-item p-2 {{ request()->routeIs('catalogs_index', 'search') ? 'active' : '' }}"
+                        id="btnMenu">
                         <a href="{{ route('catalogs_index') }}" class="nav-links text-white">
                             <div class="d-flex">
                                 <i class="bi bi-book-fill mt-2" style="padding-right: 10px"></i>
@@ -117,13 +151,14 @@
                         </a>
                     </li>
                     <li class="nav-item p-2 {{ request()->routeIs('settings') ? 'active' : '' }}" id="btnMenu">
-                        <a href="{{ route('settings', auth()->user()->id)}}" class="nav-links text-white">
+                        <a href="{{ route('settings', auth()->user()->id) }}" class="nav-links text-white">
                             <div class="d-flex">
                                 <i class="bi bi-gear-fill mt-2" style="padding-right: 10px"></i>
                                 <p class=" mt-2 d-block" style="font-size: 1.02em">Settings</p>
                             </div>
                         </a>
                     </li>
+                    @endif
                     <li class="nav-item p-2" id="btnMenu">
                         <a href="{{ route('auth.logout') }}" class="nav-links text-white">
                             <div class="d-flex collapse">
@@ -142,12 +177,29 @@
         <!-- Content Wrapper. Contains page content -->
         @yield('admin-layouts')
         <!-- /.content -->
-
         <!-- /.content-wrapper -->
-
     </div>
     <!-- ./wrapper -->
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var sidebar = document.getElementById("sidebar");
+        var contentWrapper = document.getElementById("content-wrapper");
+        var wrapper = document.querySelector(".wrapper");
+        var burgerButton = document.getElementById("burger");
+
+        burgerButton.addEventListener("click", function() {
+            sidebar.classList.toggle("hidden");
+
+            // Toggle the margin-left of the .wrapper element
+            if (wrapper.style.marginLeft === "-250px" || wrapper.style.marginLeft === "") {
+                wrapper.style.marginLeft = "0";
+            } else {
+                wrapper.style.marginLeft = "-250px";
+            }
+        });
+    });
+</script>
 <!-- Sweet alert 2-->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
 <!-- DataTables  & Plugins -->
@@ -156,10 +208,7 @@
 <script src="{{ asset('styles/datatables/js/datatables.responsive.min.js') }}"></script>
 <script src="{{ asset('styles/datatables/js/responsive.bootstrap4.min.js') }}"></script>
 
-<!-- AdminLTE App -->
-<script src="{{ asset('styles/js/adminlte.min.js') }}"></script>
-<!-- Jquery -->
-<!--<script src="{{ asset('styles/js/jQuery.js') }}"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
 
 @yield('scripts')
 <!-- Page specific script -->

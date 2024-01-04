@@ -79,7 +79,7 @@
 @endsection
 
 @section('admin-layouts')
-<div class="content-wrapper">
+    <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
@@ -173,14 +173,15 @@
     <section class="content">
         <div class="card">
             <div class="card-header">
-                    <h3 class="card-title mt-2">Catalogs </h3>
+                <h3 class="card-title mt-2">Catalogs </h3>
 
                 <div class="d-flex justify-content-end">
-                <form action="{{route('searchCatalog')}}" method="GET" style="width:35%; height: 40px">
-                    @csrf
-                    <input type="text" class="form-control rounded-pill" name="search" id="searchInput" placeholder="Search catalogs...">
-                </form>
-                &nbsp;
+                    <form action="{{ route('search') }}" method="GET" style="width:35%; height: 40px">
+                        @csrf
+                        <input type="text" class="form-control rounded-pill" role="search" name="search" id="searchInput"
+                            placeholder="Search catalogs..." value="{{isset($search)? $search: ''}}">
+                    </form>
+                    &nbsp;
                     <button class="btn btn-success" type="submit" id="onClickModal">
                         <i class="bi bi-plus-square"></i>
                         Add
@@ -251,6 +252,9 @@
         <!-- /.card -->
     </section>
     <!-- /.container-fluid -->
+    <footer>
+        @include('includes.footer')
+    </footer>
 @endsection
 
 @section('scripts')

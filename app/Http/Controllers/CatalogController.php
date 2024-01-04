@@ -25,7 +25,7 @@ class CatalogController extends Controller
         // Retrieve other filters as needed
 
         // Query builder to filter catalogs based on search and filters
-        $catalogs = Catalog::query()->with('types');
+        $catalogs = Catalog::where('status', 1)->with('types');
 
         // Apply search query
         if ($search) {
@@ -50,7 +50,7 @@ class CatalogController extends Controller
     // Edit a selected listing in catalogs.
     public function index()
     {
-        $catalogs = Catalog::orderBy('title')->with('types')->paginate(10);
+        $catalogs = Catalog::where('status', 1)->orderBy('title')->with('types')->paginate(10);
         $catalogs->appends(['sort' => 'title']);
         $types = CatalogType::all();
         return view('admin.admin_catalogs', compact('catalogs', 'types'));
@@ -146,7 +146,7 @@ class CatalogController extends Controller
     {
         $edit = Catalog::find($id);
         $types = CatalogType::all();
-        return view('admin.edit_catalog', compact('edit', 'types'));
+        return view('admin.forms.edit_catalogs', compact('edit', 'types'));
     }
 
     // Update the specified catalog entry in storage.
@@ -206,12 +206,14 @@ class CatalogController extends Controller
     public function searchCatalog(Request $request)
     {
         $search= $request->input('search', '');
-        $catalogs = Catalog::query();
+        $catalogs = Catalog::where('status', 1);
 
        if($search){
-        $catalogs->where('title', 'like', '%' . $search. '%')->paginate(10);
+        $catalogs->where('title', 'like', '%' . $search. '%');
        }
+       $catalogs = $catalogs->orderBy('title')->with('types')->paginate(10);
+       $types = CatalogType::all();
 
-        return redirect()->route('catalogs_review')->with(['catalogs' => $catalogs]);
+        return view('admin.admin_catalogs', compact('catalogs', 'search', 'types'));
     }
 }

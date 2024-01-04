@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Bookmark;
+use Psy\Readline\Hoa\Console;
 
 use function Pest\Laravel\delete;
 
@@ -36,7 +37,8 @@ class bookmarkController extends Controller
 
     public function index()
     {
-        $bookmarks = Bookmark::where('users_id', auth()->user()->id)->get();
+        $bookmarks = Bookmark::with('catalogs')->where('users_id', auth()->user()->id)->get();
+
         $count = $bookmarks->count();
 
         return view('pages.account_bookmarks', compact('bookmarks', 'count'));
@@ -51,13 +53,8 @@ class bookmarkController extends Controller
 
     public function clearAllBookmarks($id)
     {
-        // Find all bookmarks for the given user ID
-        $bookmarks = Bookmark::findorFail('users_id');
-
-        // Delete each bookmark
-        foreach ($bookmarks as $bookmark) {
-            $bookmark->delete();
-        }
+        // Delete all bookmarks for the given user ID
+        Bookmark::where('users_id', $id)->delete();
 
         return redirect()->back()->with('success', "Bookmarks cleared.");
     }

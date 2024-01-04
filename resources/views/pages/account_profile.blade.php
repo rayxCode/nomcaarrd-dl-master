@@ -150,7 +150,7 @@
             </div>
         </div>
         {{-- End for modal --}}
-        <form action="account/update/{{ auth()->user()->id }}" method="post">
+        <form action="{{ route('update', auth()->user()->id) }}" method="post">
             @csrf
             @method('PUT')
             {{-- Avatar icon --}}
@@ -199,39 +199,29 @@
                 <label for="affiliation" class="form-label">Affiliation</label>
                 <select id="affiliation" name="affiliation" class="form-select">
                     @foreach ($aff as $option)
-                        <option value={{ $option->affiliation_id }} @if ($option->affiliation_id == auth()->user()->affiliation_id) selected @endif>
+                        <option value={{ $option->id }} @if ($option->id == auth()->user()->affiliation_id) selected @endif>
                             {{ $option->name }}</option>
                     @endforeach
                 </select>
             </div>
-
             <div class="mb-3">
                 <label for="newPassword" class="form-label">New Password</label>
                 <input type="password" id="password" name="password" class="form-control"
-                    placeholder="Enter your new password" required>
+                    placeholder="Enter your new password">
             </div>
             <div class="mb-3">
                 <label for="confirmPassword" class="form-label">Confirm New Password</label>
                 <input type="password" id="cfpassword" name="cfpassword" class="form-control"
-                    placeholder="Confirm your new password" required>
+                    placeholder="Confirm your new password">
             </div>
             <div class="mb-3">
                 <label for="currentPassword" class="form-label">Current Password</label>
-                <input type="fpassword" id="currentPassword" name="currentPassword" class="form-control"
+                <input type="password" id="currentPassword" name="currentPassword" class="form-control"
                     placeholder="Enter your current password" required>
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-success">Submit</button>
         </form>
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
     </div>
 
     {{-- end of container for user profile account --}}
@@ -243,7 +233,8 @@
 @endsection
 
 @section('script')
-    {{-- specific scripts here --}}
+@include('utility.sweetAlert2')
+{{-- specific scripts here --}}
     <script>
         const avatarContainer = document.querySelector('.avatar-container');
         const avatar = document.querySelector('.avatar');

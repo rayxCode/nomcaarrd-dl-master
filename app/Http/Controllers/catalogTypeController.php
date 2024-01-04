@@ -21,7 +21,7 @@ class catalogTypeController extends Controller
     {
         // Retrieve a specific catalog type
         $edit = CatalogType::findOrFail($id);
-        return view('admin.forms.catalogType_profile', compact('edit'));
+        return view('admin.forms.edit_types', compact('edit'));
     }
 
     public function update(Request $request, $id)
