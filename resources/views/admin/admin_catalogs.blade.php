@@ -88,8 +88,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Catalogs</li>
+                            <li class="breadcrumb-item"><a href="{{ route('index') }}">Home</a></li>
+                            <li class="breadcrumb-item active">Documents</li>
                         </ol>
                     </div>
                 </div>
@@ -99,7 +99,7 @@
         <div class="modal mx-auto" id="modal">
             <div class="modal-content p-3">
                 <span class="container">
-                    <p style="margin-left: -10px"><b>ADD CATALOG</b> </p>
+                    <p style="margin-left: -10px"><b>ADD DOCUMENT</b> </p>
                     <hr style="margin-top: -10px">
                 </span>
                 <form action="{{ route('catalogs.store') }}" method="POST" enctype="multipart/form-data">
@@ -112,7 +112,7 @@
                         </div>
                         <div>
                             <div class="d-flex p-1">
-                                <label for="authorsInput" class="mt-2 form-label">Author(s): &nbsp;</label>
+                                <label for="authorsInput" class="mt-2 form-label">Author(s) &nbsp;</label>
                                 <div style="width: 100%">
                                     <input class="form-control rounded p-1" id="authorInput" type="text"
                                         placeholder="Add author(s)" onkeydown="addAuthor(event)" />
@@ -125,12 +125,24 @@
                             </div>
                         </div>
                         <div class="d-flex p-1">
+                            <label for="publisher" class="mt-2 form-label" style="">Publisher &nbsp;</label>
+                            <input class="form-control mt-1 rounded p-1" id="publisher" type="text" name="publisher"
+                            placeholder="Publisher of the document"/>
+                        </div>
+                        <div class="d-flex p-1">
                             <label for="published" class="mt-2 form-label" style="">Published Date: &nbsp;</label>
                             <input class="form-control mt-1 rounded p-1" id="published" type="date" name="published"
                                 required />
                         </div>
                         <div class="d-flex p-1">
-                            <label for="type" class="mt-2 form-label">Catalog Type: &nbsp;</label>
+                            <label for="access" class="mt-2 form-label"> Access</label>
+                            <select name="visiblity" id="visiblity" class="form-control rounded">
+                                <option value="0" selected>Public</option>
+                                <option value="1">Private</option>
+                            </select>
+                        </div>
+                        <div class="d-flex p-1">
+                            <label for="type" class="mt-2 form-label">Category: &nbsp;</label>
                             <select id="type" name="type" class="form-control rounded">
                                 @foreach ($types as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -173,13 +185,12 @@
     <section class="content">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title mt-2">Catalogs </h3>
-
+                <h3 class="card-title mt-2">Documents </h3>
                 <div class="d-flex justify-content-end">
                     <form action="{{ route('search') }}" method="GET" style="width:35%; height: 40px">
                         @csrf
                         <input type="text" class="form-control rounded-pill" role="search" name="search" id="searchInput"
-                            placeholder="Search catalogs..." value="{{isset($search)? $search: ''}}">
+                            placeholder="Search documents..." value="{{isset($search)? $search: ''}}">
                     </form>
                     &nbsp;
                     <button class="btn btn-success" type="submit" id="onClickModal">
@@ -195,11 +206,11 @@
                     <thead>
 
                         <tr>
-                            <th>Catalog Title</th>
+                            <th>Title</th>
                             <th>Author(s)</th>
+                            <th>Publisher</th>
                             <th>Type</th>
                             <th>Published Date</th>
-                            <th>Serial</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -222,9 +233,9 @@
 
                                 @endphp
                                 <td>{{ $output }}</td>
+                                <td>{{ $catalog->publisher }}</td>
                                 <td>{{ $catalog->types->name }}</td>
                                 <td>{{ (new DateTime($catalog->publishedDate))->format('F d, Y') }}</td>
-                                <td>{{ (new DateTime($catalog->publishedDate))->format('Y') }}</td>
                                 <td class="d-flex">
                                     <a href="{{ route('catalogs.edit', $catalog->id) }}"
                                         class="p-2 btn btn-primary btnAction" type="submit">

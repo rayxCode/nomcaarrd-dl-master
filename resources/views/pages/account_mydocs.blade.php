@@ -26,37 +26,28 @@
         <thead style="font-size: 15px">
             <tr>
                 <th>Title </th>
-                <th>Author</th>
-                <th>Year</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Remarks</th>
             </tr>
         </thead>
         <tbody>
             @if ($count < 1)
                 <tr>
-                    <caption> <i> No bookmarks found</i> </caption>
+                    <caption> <i> You haven't submitted any documents yet.</i> </caption>
                 </tr>
             @else
-            <caption><i>Current list for bookmarked books</i></caption>
-                @foreach ($bookmarks as $bookmark)
+            <caption><i>Current list of submitted books</i></caption>
+                @foreach ($documents->where('created_at', 'desc') as $docs)
                     <tr>
-                        <td><a href="{{ url('catalogs/'.$bookmark->catalogs->code) }}"
-                                style="text-decoration: none; color:black">{{ $bookmark->catalogs->title }}
-                            </a>
+                        <td>
+                            {{$docs->title}}
                         </td>
-                        @php
-                            $authors = $bookmark->catalogs->authors;
-
-                            if (is_array($authors)) {
-                                // If $authors is an array, apply htmlspecialchars to each element
-                                $authorsArray = array_map('htmlspecialchars', $authors);
-                                // Now $authorsArray contains each element sanitized
-                                $output = implode(', ', $authorsArray);
-                            } else {
-                                // If $authors is not an array, treat it as a single string
-                                $output = htmlspecialchars($authors);
-                            }
-                        @endphp
-                        <td>{{ $output }}</td>
+                        @if ($docs->status !=0)
+                            @if ($docs->status == 1)
+                            @else
+                            @endif
+                        @endif
                         <td>{{ (new DateTime($bookmark->catalogs->publishedDate))->format('Y') }}</td>
                     </tr>
                 @endforeach
@@ -75,6 +66,4 @@
 @endsection
 
 @section('script')
-    {{-- specific scripts here --}}
-    @include('utility.sweetAlert2')
 @endsection

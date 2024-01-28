@@ -1,15 +1,35 @@
+
+<div class="bg-success p-2 rounded text-white" style="font-size:.85em">
+    <b>NEED TO SCHEDULE AN APPOINTMENT?</b>
+ </div>
+ <div class="mt-2 ">
+     <form action="{{route('scheduled')}}" method="post">
+         @csrf
+         <label for="name" class="form-label">Fullname</label>
+         <input type="text" class="form-control rounded" id="name" name="name"
+         required>
+         <label for="email" class="form-label">Email</label>
+         <input type="text" class="form-control rounded" id="email" name="email"
+         required>
+         <label for="published" class="form-label mt-1" style="">Schedule Date: &nbsp;</label>
+         <input class="form-control rounded" id="published"
+             type="date" name="schedule" required />
+         <button type="submit" class="btn btn-success rounded mt-2">Apply</button>
+     </form>
+ </div>
+ &nbsp;
 {{-- third div right - TOP PICKS FOR THE MONTH  --}}
-<div style="width: 250px; " class="flexible-div  ms-2 mt-1 pl-3 ">
+<div class="mt-1 pl-3 ">
     <span class="d-flex">
-        <div class="container bg-success text-white  rounded" style="margin-left: -5px; align-items:center;">
+        <div class="container bg-success text-white  rounded" style="align-items:center;">
             <p class="flex-fill text-center" style="margin-block-start: 15px"> <b>TOP PICKS FOR THE MONTH </b></p>
         </div>
         <hr class="bg-dark" style="margin-top: -5px">
     </span>
     <br>
 
-    @foreach ($ratedCatalogs as $catalogs)
-        <a href="{{ route('catalogs.show', $catalogs->id) }}" style="text-decoration: none; color:black;">
+    @foreach ($ratedCatalogs->where('rating', '>', 0) as $catalogs)
+        <a href="{{ url('catalogs/'.$catalogs->code) }}" style="text-decoration: none; color:black;">
             <span class="mx-auto" style="width: 18rem">
                 <p class="text-truncate">{{ $catalogs->title }}</p>
                 @php

@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         View::composer('layouts.app', AppComposer::class);
-        View::composer('admin.admin_dashboard', AppComposer::class);
+        View::composer('admin.admin_master', AppComposer::class);
 
     }
 }

@@ -9,68 +9,26 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('styles/css/fontstye.css') }}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     {{--  Sweet Alert2  --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.min.css">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('styles/datatables/css/reponsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('styles/datatables/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('styles/datatables/css/button.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/css/OverlayScrollbars.min.css') }}">
     @yield('styles')
     <style>
-        #btnMenu.active {
-            background-color: rgba(26, 26, 26, 0.5);
-            font-weight: bolder;
-        }
-
-        #btnMenu:hover {
-            background-color: rgba(0, 0, 0, .2);
-            color: #fff;
-            font-weight: bold;
-            /* Change this to the desired text color */
-        }
-
-        @media (max-width: 768px) {
-            #sidebar {
-                position: absolute;
-                top: 0;
-                left: -250px;
-                height: 100%;
-                display: none;
-                z-index: 1000;
-                overflow-x: hidden;
-                transition: 0.5s;
-            }
-
-            #sidebar.show {
-                left: 0;
-            }
-
-            #content-wrapper.full-width #content {
-                margin-left: 0;
-                width: 100%;
-            }
-
-            #content-wrapper #sidebar.hidden {
-                display: block;
-            }
-
-            .wrapper {
-                margin-left: 0 !important;
-            }
-        }
     </style>
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" id="burger" href="#" role="button">
+                    <a class="nav-link" data-widget="pushmenu" id="burger" role="button">
                         <i class="bi bi-list-ul"></i>
                     </a>
                 </li>
@@ -80,136 +38,172 @@
 
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4 text-white" id="sidebar">
+            <!--Site logo-->
+            <a href="{{ route('home') }}" class="brand-link">
+                <img src="{{ asset('bg/sitelogo.jpg') }}" alt="Site logo" class="brand-image img-circle elevation-3"
+                    style="opacity: .8">
+                <span class="brand-text font-weight-light">
+                    <p style="font-size: .85em">NOMCAARRD E-Library</p>
+                </span>
+            </a>
             <!-- Sidebar user (optional) -->
-            <div class="user-panel mt-3 mb-2 d-flex">
-                <div class="image mb-2">
-                    <img src="{{ auth()->user()->photo_path != null ? asset(auth()->user()->photo_path) : '' }}"
-                        class="img-circle elevation-2 image-fluid" style="width: 75px; height: 75px" alt="User Image">
+            <div class="sidebar">
+                <div class="user-panel mt-3 mb-2 d-flex">
+                    <div class="image">
+                        <img src="{{ auth()->user()->photo_path != null ? asset(auth()->user()->photo_path) : '' }}"
+                            class="img-circle elevation-2" alt="User Image" style="width: 35px; height:35px">
+                    </div>
+                    <div class="info">
+                        <p class="d-block"><b>
+                            </b>{{ auth()->user()->username != null ? auth()->user()->username : auth()->user()->email }}
+                        </p>
+                    </div>
                 </div>
-                <div class="info">
-                    <p class="d-block"><b> Account:
-                        </b>{{ auth()->user()->username != null ? auth()->user()->username : auth()->user()->email }}</p>
-                    <p class="d-block"><b> Role:
-                        </b>{{ auth()->user()->access_level == 2 ? 'Reviewer' : 'Admin' }}</p>
-                </div>
-            </div>
-            <nav class="mt-2 " style="height:105vh">
-                <ul class="nav nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <!-- Navbar Search -->
-                    <li class="nav-item p-2 {{ request()->routeIs('index') ? 'active' : '' }}" id="btnMenu">
-                        <a href="{{ route('index') }}" class="nav-links text-white">
-                            <div class="d-flex">
-                                <i class=" nav-icon bi bi-house-door-fill mt-2" style="padding-right: 10px"></i>
-                                <p class=" mt-2 d-block" style="font-size: 1.02em"> Dashboard</p>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item p-2 {{ request()->routeIs('catalogs_review', 'searchCatalog') ? 'active' : '' }}"
-                        id="btnMenu">
-                        <a href="{{ route('catalogs_review') }}" class="nav-links text-white">
-                            <div class="d-flex">
-                                <i class=" nav-icon bi bi-files mt-2" style="padding-right: 10px"></i>
-                                <p class=" mt-2 d-block" style="font-size: 1.02em"> Review Documents</p>
-                            </div>
-                        </a>
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+                        <!-- List items for nav bar-->
+                        <li class="nav-item {{ request()->routeIs('index') ? 'active' : '' }}">
+                            <a href="{{ route('index') }}" class="nav-link text-white d-flex">
+                                <i class=" nav-icon bi bi-house-door-fill"></i>
+                                <p class="d-block">Dashboard</p>
+                            </a>
+                        </li>
+                        <li
+                            class="nav-item {{ request()->routeIs('catalogs_review', 'searchCatalog') ? 'active' : '' }}">
+                            <a href="#" class="nav-link text-white d-flex">
+                                <i class="nav-icon bi bi-files"></i>
+                                <p class="d-block">Review Documents</p>
+                                @if ($pendingCount > 0)
+                                    <span class="right badge badge-danger">{{ $pendingCount }}</span>
+                                @endif
+                            </a>
+                            <!-- Move the <ul> directly under the <li> -->
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item {{ request()->routeIs('catalogs_review') ? 'active' : '' }}">
+                                    <a href="{{ route('catalogs_review') }}" class="nav-link text-white d-flex">
+                                        <i class="nav-icon bi bi-hourglass-top pl-2"></i>
+                                        &nbsp;
+                                        <p class="d-block">Pending Documents</p>
+                                        @if ($pendingCount > 0)
+                                            <span class="right badge badge-danger">{{ $pendingCount }}</span>
+                                        @endif
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ request()->routeIs('review_approved') ? 'active' : '' }}">
+                                    <a href="{{ route('review_approved') }}" class="nav-link text-white d-flex">
+                                        <i class="nav-icon bi bi-check-circle-fill pl-2"></i>
+                                        &nbsp;
+                                        <p class="d-block">Approved Documents</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ request()->routeIs('review_declined') ? 'active' : '' }}">
+                                    <a href="{{ route('review_declined') }}" class="nav-link text-white d-flex">
+                                        <i class="nav-icon bi bi-x-circle-fill pl-2"></i>
+                                        &nbsp;
+                                        <p class="d-block">Declined Documents</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         @if (auth()->user()->access_level > 2)
-                    </li>
-                    <li class="nav-item p-2 {{ request()->routeIs('users') ? 'active' : '' }}" id="btnMenu">
-                        <a href="{{ route('users') }}" class="nav-links text-white">
-                            <div class="d-flex ">
-                                <i class=" nav-icon bi-people-fill mt-2" style="padding-right: 10px"></i>
-                                <p class=" mt-2 d-block" style="font-size: 1.02em">User Accounts</p>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item p-2 {{ request()->routeIs('affiliations') ? 'active' : '' }}" id="btnMenu">
-                        <a href="{{ route('affiliations') }}" class="nav-links text-white">
-                            <div class="d-flex">
-                                <i class="bi bi-buildings-fill mt-2" style="padding-right: 10px"></i>
-                                &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Affiliations</p>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item p-2 {{ request()->routeIs('catalogs_index', 'search') ? 'active' : '' }}"
-                        id="btnMenu">
-                        <a href="{{ route('catalogs_index') }}" class="nav-links text-white">
-                            <div class="d-flex">
-                                <i class="bi bi-book-fill mt-2" style="padding-right: 10px"></i>
-                                &nbsp <p class="mt-2 d-block" style="font-size: 1.02em">Catalogs</p>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item p-2 {{ request()->routeIs('types_index') ? 'active' : '' }}" id="btnMenu">
-                        <a href="{{ route('types_index') }}" class="nav-links text-white">
-                            <div class="d-flex">
-                                <i class="bi bi-bookshelf mt-2" style="padding-right: 10px"></i>
-                                &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Catalog Types</p>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item p-2 {{ request()->routeIs('settings') ? 'active' : '' }}" id="btnMenu">
-                        <a href="{{ route('settings', auth()->user()->id) }}" class="nav-links text-white">
-                            <div class="d-flex">
-                                <i class="bi bi-gear-fill mt-2" style="padding-right: 10px"></i>
-                                <p class=" mt-2 d-block" style="font-size: 1.02em">Settings</p>
-                            </div>
-                        </a>
-                    </li>
-                    @endif
-                    <li class="nav-item p-2" id="btnMenu">
-                        <a href="{{ route('auth.logout') }}" class="nav-links text-white">
-                            <div class="d-flex collapse">
-                                <i class="bi bi-box-arrow-left mt-2" style="padding-right: 10px"></i>
-                                &nbsp <p class=" mt-2 d-block" style="font-size: 1.02em">Logout</p>
-                            </div>
-                        </a>
-                    </li>
-                    <!-- Dropdown Menu -->
-                </ul>
-            </nav>
-            <!-- /.sidebar-menu -->
-            <!-- /.sidebar -->
+                            <li class="nav-item {{ request()->routeIs('catalogs_index', 'search') ? 'active' : '' }}">
+                                <a href="{{ route('catalogs_index') }}" class="nav-link text-white d-flex">
+                                    <i class=" nav-icon bi bi-book-half"></i>
+                                    <p class="d-block">Documents</p>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('requests_index') ? 'active' : '' }}">
+                                <a href="{{ route('requests_index') }}" class="nav-link text-white d-flex">
+                                    <i class="nav-icon bi bi-box-arrow-in-down-right"></i>
+                                    <p class="d-block">Requests</p>
+                                    @if ($docsCount > 0)
+                                        <span class="right badge badge-danger">{{ $docsCount }}</span>
+                                    @endif
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('types_index') ? 'active' : '' }}"
+                                id="btnMenu">
+                                <a href="{{ route('types_index') }}" class="nav-link text-white d-flex">
+                                    <i class="nav-icon bi bi-journal-plus"></i>
+                                    <p class="d-block">Categories</p>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('users') ? 'active' : '' }}" id="btnMenu">
+                                <a href="{{ route('users') }}" class="nav-link text-white d-flex">
+                                    <i class=" nav-icon bi-people-fill"></i>
+                                    <p class="d-block">Accounts</p>
+                                </a>
+                            </li>
+                            <li class="nav-item  {{ request()->routeIs('emails') ? 'active' : '' }}" id="btnMenu">
+                                <a href="{{ route('emails') }}" class="nav-link text-white d-flex">
+                                    <i class=" nav-icon bi bi-envelope-exclamation-fill"></i>
+                                    <p class="d-block">Email verifications</p>
+                                    @if ($requestCount > 0)
+                                        <span class="right badge badge-danger">{{ $requestCount }}</span>
+                                    @endif
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('affiliations') ? 'active' : '' }}">
+                                <a href="{{ route('affiliations') }}" class="nav-link text-white d-flex">
+                                    <i class="nav-icon bi bi-buildings-fill"></i>
+                                    <p class="d-block">Affiliations</p>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('appointments') ? 'active' : '' }}">
+                                <a href="{{ route('appointments') }}" class="nav-link text-white d-flex">
+                                    <i class="nav-icon bi bi-clock-fill"></i>
+                                    <p class="d-block">Library Appointments</p>
+                                    @if ($appointmentsCount > 0)
+                                        <span class="right badge badge-danger">{{ $appointmentsCount }}</span>
+                                    @endif
+                                </a>
+                            </li>
+                            {{--  <li class="nav-item p-2 {{ request()->routeIs('settings') ? 'active' : '' }}" id="btnMenu">
+                                <a href="{{ route('settings', auth()->user()->id) }}" class="nav-links text-white">
+                                    <div class="d-flex">
+                                        <i class="bi bi-gear-fill mt-2" style="padding-right: 10px"></i>
+                                        <p class=" mt-2 d-block" style="font-size: 1em">Settings</p>
+                                    </div>
+                                </a>
+                            </li> --}}
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ route('auth.logout') }}" class="nav-link text-white d-flex">
+                                <i class="nav-icon bi bi-box-arrow-left"></i>
+                                <p class="d-block">Logout</p>
+                            </a>
+                        </li>
+                        <!-- Dropdown Menu -->
+                    </ul>
+                </nav>
+            </div>
+            <div class="sidebar-custom">
+                <a href="#" class="nav-link">
+                    <div class="d-flex">
+                        <i class="bi bi-gear-fill mt-2" style="padding-right: 10px"></i>
+                        <p class=" mt-2 d-block" style="font-size: 1em">Settings</p>
+                    </div>
+                </a>
+            </div>
         </aside>
         <!-- Main content -->
         <!-- Content Wrapper. Contains page content -->
         @yield('admin-layouts')
         <!-- /.content -->
         <!-- /.content-wrapper -->
+        <!-- /.control-sidebar -->
+    </div>
     </div>
     <!-- ./wrapper -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
+    <script src="{{ asset('styles/js/jQuery.js') }}"></script>
+    <script src="{{ asset('styles/js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ asset('styles/js/jquery.overlayScrollbars.min.js') }}"></script>
+    <script src="{{ asset('styles/js/adminlte.min.js') }}"></script>
 </body>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var sidebar = document.getElementById("sidebar");
-        var contentWrapper = document.getElementById("content-wrapper");
-        var wrapper = document.querySelector(".wrapper");
-        var burgerButton = document.getElementById("burger");
-
-        burgerButton.addEventListener("click", function() {
-            sidebar.classList.toggle("hidden");
-
-            // Toggle the margin-left of the .wrapper element
-            if (wrapper.style.marginLeft === "-250px" || wrapper.style.marginLeft === "") {
-                wrapper.style.marginLeft = "0";
-            } else {
-                wrapper.style.marginLeft = "-250px";
-            }
-        });
-    });
-</script>
 <!-- Sweet alert 2-->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
-<!-- DataTables  & Plugins -->
-<script src="{{ asset('styles/datatables/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('styles/datatables/js/datatables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('styles/datatables/js/datatables.responsive.min.js') }}"></script>
-<script src="{{ asset('styles/datatables/js/responsive.bootstrap4.min.js') }}"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
-
 @yield('scripts')
 <!-- Page specific script -->
 @if ($errors->any())
@@ -245,6 +239,5 @@
         });
     </script>
 @endif
-<script></script>
 
 </html>

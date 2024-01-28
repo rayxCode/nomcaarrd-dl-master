@@ -37,6 +37,13 @@
                             <input type="text" id="name" name="name" class="form-control rounded ms-2"
                                 value="{{ isset($edit->name) ? $edit->name : old('') }}">
                         </div>
+                        <div class="d-flex p-1">
+                            <label for="description" class="mt-2 form-label">Description: &nbsp;</label>
+                            <div id="comment-message" class="form-row ms-1 mt-3" style="width:100%">
+                                <textarea class="rounded " name="description" id="description" placeholder="Please add a description." id="comment"
+                                    style="width: 100%; height: 5rem">{{ $edit->description }}</textarea>
+                            </div>
+                        </div>
                         <div class="modal-footer mt-3 mx-auto">
                             <button type="submit" class="ms-2 modal-button rounded-pill btn btn-success"
                                 style="width: 150px;">

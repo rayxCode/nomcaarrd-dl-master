@@ -25,7 +25,8 @@ class User extends Authenticatable
         'password',
         'affiliation_id',
         'photo_path',
-        'access_level'
+        'access_level',
+        'email_verified_at',
     ];
     protected $guarded = ['password', 'email'];
 
@@ -57,10 +58,5 @@ class User extends Authenticatable
     public function affiliation()
     {
         return $this->belongsTo(Affiliation::class, 'affiliation_id');
-    }
-
-    public function authors()
-    {
-        return $this->hasOne(Author::class);
     }
 }

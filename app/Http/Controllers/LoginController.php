@@ -15,20 +15,25 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password',);
+        $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             // Authentication was successful
             // Redirect to the desired page after login
-            if(auth()->user()->access_level == 1)
-            return redirect()->route('dashboard_profiles');
-            else
-            return redirect()->route('index');
+            if (auth()->user()->access_level == 1) {
+                return redirect()->route('dashboard_profiles');
+            } else {
+                return redirect()->route('index');
+            }
         }
 
         // Authentication failed
-       return redirect()->back()->withErrors('error', 'Authentication failed')->withInput();
+        return redirect()
+            ->back()
+            ->withErrors(['error' => 'Wrong combination of email and password'])
+            ->withInput();
     }
+
 
     public function logout()
     {

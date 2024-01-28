@@ -61,8 +61,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Users</li>
+                            <li class="breadcrumb-item"><a href="{{ route('index') }}">Home</a></li>
+                            <li class="breadcrumb-item active">Accounts</li>
                         </ol>
                     </div>
                 </div>
@@ -130,17 +130,22 @@
             <div class="card-header">
                 <h3 class="card-title mt-2">Users</h3>
                 <div class="d-flex justify-content-end">
+                    <form action="{{ route('searchUsers') }}" method="GET" style="width:35%; height: 40px">
+                        @csrf
+                        <input type="text" class="form-control rounded-pill" role="search" name="search" id="searchInput"
+                            placeholder="Search user accounts or email..." value="{{isset($search)? $search: ''}}">
+                    </form>
+                    &nbsp;
                     <button class="ms-3 btn btn-success" type="submit" id="onClickModal">
                         <i class="bi bi-plus-square"></i>
-                        Create new user
+                        New user
                     </button>
                 </div>
             </div>
 
             <!-- /.card-header -->
             <div class="card-body">
-                <table id="dataTable" class="table table-bordered table-striped">
-                    <thead>
+                <table id="dataTable" class="table table-bordered">
                         <tr>
                             <th>Username</th>
                             <th>Email</th>
@@ -148,7 +153,6 @@
                             <th>Affiliation</th>
                             <th>Actions</th>
                         </tr>
-                    </thead>
                     <tbody>
                         @foreach ($users as $user)
                             <tr>

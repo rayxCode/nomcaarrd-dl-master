@@ -6,17 +6,18 @@ use App\Models\Catalog;
 use Illuminate\Http\Request;
 use App\Models\Comment;
 
+use function PHPUnit\Framework\isEmpty;
+
 class CommentsController extends Controller
 {
     public function store(Request $request)
     {
         $request->validate([
             'id' => 'required',
-            'rating' => 'required',
         ]);
 
         $id = $request->input('id');
-        $rate = $request->input('rating');
+        $rate = $request->input('rating') ?? 0;
 
         // Validation
         $commentary = app('profanityFilter')
@@ -25,11 +26,11 @@ class CommentsController extends Controller
             ->filter($request->input('comment'));
 
         // Updating Catalog
-        $catalog = Catalog::findOrFail($id);
-        $catalog->rating = (($catalog->rating * $catalog->nUserRated) + $rate) / ($catalog->nUserRated + 1);
-        $catalog->nUserRated++;
-
-
+        if ($rate > 0) {
+            $catalog = Catalog::findOrFail($id);
+            $catalog->rating = (($catalog->rating * $catalog->nUserRated) + $rate) / ($catalog->nUserRated + 1);
+            $catalog->nUserRated++;
+        }
 
         // Create a new comment
         $comment = new Comment();
@@ -38,8 +39,12 @@ class CommentsController extends Controller
         $comment->catalog_id = $id;
         $comment->rating = $rate;
         // Save Comment and Update Catalog
-        $comment->save();
-        $catalog->update();
+        if ($rate > 0 || $commentary) {
+            $comment->save();
+            if ($rate > 0)
+                $catalog->update();
+        }
+
 
         return back();
     }

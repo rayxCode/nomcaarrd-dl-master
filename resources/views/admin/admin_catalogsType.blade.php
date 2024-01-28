@@ -61,8 +61,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Types</li>
+                            <li class="breadcrumb-item"><a href="{{ route('index') }}">Home</a></li>
+                            <li class="breadcrumb-item active">Categories</li>
                         </ol>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
         <div class="modal mx-auto" id="modal">
             <div class="modal-content p-3">
                 <span class="container">
-                    <p style="margin-left: -10px"><b>ADD TYPE </b> </p>
+                    <p style="margin-left: -10px"><b>ADD CATEGORY</b> </p>
                     <hr style="margin-top: -10px">
                 </span>
                 <form action="{{ route('types.store') }}" method="POST">
@@ -100,11 +100,11 @@
     <section class="content">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title mt-2">Types</h3>
+                <h3 class="card-title mt-2">CATEGORIES</h3>
                 <div class="d-flex justify-content-end">
                     <button class="ms-3 btn btn-success" type="submit" id="onClickModal"">
                         <i class="bi bi-plus-square"></i>
-                        Add Type
+                        Add CATEGORY
                     </button>
                 </div>
             </div>
@@ -115,16 +115,16 @@
                     <thead>
 
                         <tr>
-                            <th>Type ID</th>
                             <th>Name</th>
+                            <th>Description</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($types as $type)
                             <tr>
-                                <td id="id">{{ $type->id }}</td>
-                                <td>{{ $type->name ?? '' }}</td>
+                                <td id="id">{{ $type->name ?? '' }}</td>
+                                <td>{{ $type->description ?? 'N/A' }}</td>
                                 <td class="d-flex">
                                     <a href="{{ route('types.show', $type->id) }}" class="p-2 btn btn-primary btnAction"
                                         type="submit">

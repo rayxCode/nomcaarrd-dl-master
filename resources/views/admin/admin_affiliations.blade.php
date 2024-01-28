@@ -60,7 +60,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('index') }}">Home</a></li>
                             <li class="breadcrumb-item active">Affiliations</li>
                         </ol>
                     </div>
@@ -117,6 +117,7 @@
                     <thead>
                         <tr>
                             <th>Affiliation Name</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -128,6 +129,7 @@
                             <tr data-id="{{ $aff->id }}">
                                 <td style="display: none">{{ $aff->id }}</td>
                                 <td>{{ $aff->name }}</td>
+                                <td></td>
                                 <td class="d-flex">
                                     {{--                      <form action="{{ route('affiliation.show', $aff->id) }}" method="GET">
                                         @csrf --}}

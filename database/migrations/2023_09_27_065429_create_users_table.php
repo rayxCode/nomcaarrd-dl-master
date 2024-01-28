@@ -23,6 +23,8 @@ return new class extends Migration
                 $table->varchar('lastname', 50);
                 $table->unsignedBigInteger('affiliation_id')->default(1);
                 $table->foreign('affiliation_id')->references('id')->on('affiliations');
+                $table->tinyInteger('verify_status');
+                $table->date('verified_email_at');
                 $table->string('photo_path');
                 $table->string('editedBy')->nullable();
                 $table->timestamps();

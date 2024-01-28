@@ -8,20 +8,26 @@ class Catalog extends Model
 {
     protected $primaryKey = 'id';
 
+    protected $table = 'docs';
+
     protected $fillable = [
         'title',
+        'code',
         'description',
         'publishedDate',
         'authors',
+        'publisher',
+        'visibility',
         'type_id',
         'fileURL',
         'photo_path',
         'status',
         'editedBy',
         'nUserRated',
-        'author_id', // Added author_id
         'comment_id', // Added comment_id
         'rating',
+        'view_count',
+        'dl_count',
     ];
 
     protected $casts = [
@@ -33,11 +39,6 @@ class Catalog extends Model
     public function types()
     {
         return $this->belongsTo(CatalogType::class, 'type_id');
-    }
-
-    public function authors()
-    {
-        return $this->hasMany(Author::class, 'id');
     }
 
     public function comments()

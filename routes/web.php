@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\affiliationController;
+use App\Http\Controllers\ApptController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use App\Models\Affiliation;
+use App\Models\Appointments;
 use Illuminate\Support\Facades\Route;
 use App\Models\Catalog;
 use App\Models\User;
@@ -34,17 +36,16 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/register/u/', [RegisterController::class, 'register'])->name('users.add');;
 Route::get('/search', [CatalogController::class, 'search'])->name('catalog.search');
 Route::resource('/catalogs', CatalogController::class);
-
-
-
+Route::post('/appointments', [ApptController::class, 'store'])->name('scheduled');
 
 Route::get('/', function () {
-    $catalogs = Catalog::inRandomOrder()->take(4)->get();
-    $rates = Catalog::orderBy('rating', 'desc')->get();
-    $recents = Catalog::orderBy('created_at', 'desc')->get();
+    $views= Catalog::where('status', 1)->orderBy('view_count', 'desc')->take(5)->get();
+    $catalogs = Catalog::where('status', 1)->inRandomOrder()->take(4)->get();
+    $rates = Catalog::where('status', 1)->orderBy('nUserRated', 'desc')->orderBy('rating', 'desc')->take(5)->get();
+    $recents = Catalog::where('status', 1)->latest('created_at')->take(5)->get();
     $catalogTypes = CatalogType::all();
     // This is where elibrary fetch data from the database
-    return view('landing.index', compact('catalogs', 'rates', 'recents', 'catalogTypes'));
+    return view('landing.index', compact('catalogs','views' ,'rates', 'recents', 'catalogTypes'));
 })->name('home');
 
 Route::view('/login', 'pages.login')
@@ -59,32 +60,45 @@ Route::get('/catalogs', function () {
 })->name('catalogs');
 
 
+Route::middleware(['auth','email_verified'])->group(function () {
+    Route::get('/profiles/request', [UserController::class, 'requestVerify'])->name('requestEmail');
+    Route::get('/profiles/verify', function(){
+        return view('pages.account_verify');
+    })->name('verify');
+    Route::get('/u/submit', function () {
+        $types = CatalogType::all();
+        return view('pages.account_addCatalog', compact('types'));
+    })->name('addCatalog');
+});
+
 
 Route::middleware(['auth'])->group(function () {
 
     Route::post('/catalogs/c/comments', [CommentsController::class, 'store'])->name('comment');
     Route::post('/profiles/upload', [UserController::class, 'upload']);
     Route::put('account/u/update/{id}', [UserController::class, 'update'])->name('update');
+    Route::post('change', [UserController::class, 'changePassword'])->name('changePw');
+    Route::post('/request', [Controller::class, 'requestAccess'])->name('req');
+    Route::get('/download/{id}', [CatalogController::class, 'dlCounts'])->name('download');
 
     Route::get('/u/profiles', function () {
-        $aff = Affiliation::all();
+        $aff = Affiliation::orderBy('name', 'asc')->get();
         return view('pages.account_profile', compact('aff'));
     })->name('profiles');
 
-    Route::get('/u/profiles/dashboard', [UserController::class, 'showDashboard'])
+    Route::get('/u/dashboard', [UserController::class, 'showDashboard'])
         ->name('dashboard_profiles');
 
-    Route::get('/u/profiles/addCatalog', function () {
-        $types = CatalogType::all();
-        return view('pages.account_addCatalog', compact('types'));
-    })->name('addCatalog');
+    Route::get('/u/password', function(){
+        return view('pages.account_chpass');
+    })->name('password');
 
     Route::resource('/u/profiles/bookmarks', bookmarkController::class);
     Route::delete('/u/profiles/bookmarks/clear/{id}', [BookmarkController::class, 'clearAllBookmarks'])->name('bookmarks.clearAll');
     Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 });
 
-Route::middleware(['checkAccessLevel:2'])->group(function () {
+Route::middleware(['checkAccessLevel:2', 'auth'])->group(function () {
 
     //index dashboard page
     Route::get('/index/dashboard', [Controller::class, 'index'])->name('index');
@@ -95,12 +109,20 @@ Route::middleware(['checkAccessLevel:2'])->group(function () {
         Route::put('/account/{id}/update', [UserController::class, 'updateAdmin'])->name('updateAd');
         Route::get('/users/u/{id}/edit', [UserController::class, 'edit'])->name('edit');
         Route::delete('/users/u/{id}/delete', [UserController::class, 'destroy'])->name('destroy');
+        Route::get('/index/users/search', [UserController::class,'search' ])->name('searchUsers');
         Route::resource('/index/affiliation', affiliationController::class);
         Route::resource('/index/catalog/types', catalogTypeController::class);
         Route::get('/index/catalog/search', [CatalogController::class, 'searchCatalog'])->name('search');
+        Route::get('documents/requests', [Controller::class, 'requestAccessIndex'])->name('requests_index');
+        Route::put('documents/requests/udpated', [Controller::class, 'setRequests'])->name('setReq');
+        Route::get('/emails/verification', [UserController::class, 'verifyIndex'])->name('emails');
+        Route::post('/emails/verifying', [UserController::class, 'getVerify'])->name('getVerify');
+        Route::get('/appointments', [ApptController::class, 'index'])->name('appointments');
+        Route::put('/appointment/update/', [ApptController::class, 'completed'])->name('complete');
+        Route::get('appointment/search', [ApptController::class, 'search'])->name('searchAppt');
 
         //edit profile setting route for admin
-        Route::get('/u/edit/{id}', [UserController::class, 'edit'])->name('settings');
+       /*  Route::get('/u/edit/{id}', [UserController::class, 'edit'])->name('settings'); */
 
         //index review page
         Route::get('/index/review', [ReviewController::class, 'index'])->name('catalogs_review');
@@ -118,9 +140,13 @@ Route::middleware(['checkAccessLevel:2'])->group(function () {
         Route::get('/index/types', [catalogTypeController::class, 'index'])->name('types_index');
 
         // ... other routes for access level 3
-    });
 
+    });
+    Route::post('/index/review/g/{code}', [ReviewController::class, 'showPDF'])->name('openPDF');
+    Route::put('/index/review/remarks/{id}', [ReviewController::class, 'remarksAdded'])->name('remarks');
     Route::get('/index/review', [ReviewController::class, 'index'])->name('catalogs_review');
+    Route::get('/index/review/approves', [ReviewController::class, 'approved'])->name('review_approved');
+    Route::get('/index/review/declines', [ReviewController::class, 'declined'])->name('review_declined');
     Route::get('/index/review/search', [ReviewController::class, 'search'])->name('searchCatalog');
     Route::post('/index/review/s/approved/{id}', [ReviewController::class, 'setStatusApproved'])->name('approved');
     Route::post('/index/review/s/declined/{id}', [ReviewController::class, 'setStatusDeclined'])->name('declined');

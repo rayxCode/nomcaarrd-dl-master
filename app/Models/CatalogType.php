@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CatalogType extends Model
 {
     use HasFactory;
-    protected $table = 'catalogtypes';
+    protected $table = 'categories';
 
     protected $primaryKey = 'id';
 

@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('authors_catalogs', function (Blueprint $table) {
+        Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('author_id')->nullable()->constrained();
-            $table->foreignId('catalog_id')->constrained();
+            $table->string('name');
+            $table->date('time');
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('authors_catalogs');
+        Schema::dropIfExists('appointments');
     }
 };

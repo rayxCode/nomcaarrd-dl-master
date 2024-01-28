@@ -19,7 +19,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('index') }}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('catalogs_index') }}">Catalogs </a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('catalogs_index') }}">Documents </a></li>
                             <li class="breadcrumb-item active">Edit</li>
                         </ol>
                     </div>
@@ -30,7 +30,7 @@
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title mt-2">Catalog Profile</h3>
+                    <h3 class="card-title mt-2">Document Profile</h3>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('catalogs.update', $edit->id) }}" method="POST" enctype="multipart/form-data">
@@ -58,13 +58,25 @@
                                 </div>
                             </div>
                             <div class="d-flex p-1">
+                                <label for="publisher" class="mt-2 form-label" style="">Publisher &nbsp;</label>
+                                <input class="form-control mt-1 rounded p-1" id="publisher" type="text" name="publisher"
+                                placeholder="Publisher of the document" value="{{$edit->publisher}}"/>
+                            </div>
+                            <div class="d-flex p-1">
                                 <label for="published" class="mt-2 form-label" style="">Published Date: &nbsp;</label>
                                 <input class="form-control mt-1 rounded p-1" id="published"
                                     value="{{ \Carbon\Carbon::parse($edit->publishedDate)->format('Y-m-d') ?? old('published') }}"
                                     type="date" name="published" required />
                             </div>
                             <div class="d-flex p-1">
-                                <label for="type" class="mt-2 form-label">Catalog Type: &nbsp;</label>
+                                <label for="access" class="mt-2 form-label"> Access</label>
+                                <select name="visiblity" id="visiblity" class="form-control rounded">
+                                    <option value="0" {{($edit->visibility == 0) ?  'selected' : ''}}>Public</option>
+                                    <option value="1" {{($edit->visibility == 1) ?  'selected' : ''}}>Private</option>
+                                </select>
+                            </div>
+                            <div class="d-flex p-1">
+                                <label for="type" class="mt-2 form-label">Category: &nbsp;</label>
                                 <select id="type" name="type" class="form-control rounded">
                                     @foreach ($types as $item)
                                         <option value="{{ $item->id }}"

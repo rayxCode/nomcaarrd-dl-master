@@ -24,7 +24,7 @@
 @section('layouts')
     <div class="content-wrapper">
         <div class="flex-fill">
-            <p class="text-black-50">Submit Catalog </p>
+            <p class="text-black-50">Submit Document </p>
         </div>
     </div>
     {{-- start table query here  --}}
@@ -47,7 +47,7 @@
                             <div id="authors-container" class="mt-1">
                                 <!-- Authors will be added here dynamically -->
                                 <span
-                                    class="author-tag default-author">{{auth()->user()->fullname ?: auth()->user()->username}}
+                                    class="author-tag default-author">{{ auth()->user()->fullname ?: auth()->user()->username }}
                                 </span>
                             </div>
                             <!-- Hidden input field for authors -->
@@ -55,6 +55,11 @@
 
                         </div>
                     </div>
+                </div>
+                <div class="d-flex p-1">
+                    <label for="publisher" class="mt-2 form-label" style="">Publisher: &nbsp;</label>
+                    <input class="form-control mt-1 rounded p-1" id="publisher" type="text" name="publisher"
+                    placeholder="Publisher of the document"/>
                 </div>
                 <div class="d-flex p-1">
                     <label for="published" class="mt-2 form-label" style="">Published Date: &nbsp;</label>
@@ -70,6 +75,7 @@
                         @endforeach
                     </select>
                 </div>
+                <input type="hidden" name="visibility" id="visibility" value="0">
                 <div class="d-flex p-1">
                     <label for="description" class="mt-2 form-label">Description: &nbsp;</label>
                     <div id="comment-message" class="form-row ms-1 mt-3" style="width:100%">
@@ -95,10 +101,12 @@
                     Save
                 </button>
         </form>
-        <a href="{{ route('catalogs_index') }}" class="modal-close rounded-pill btn btn-success" style="width: 120px">
+        <a href="{{ route('catalogs_index') }}" class="modal-close ms-2 rounded-pill btn btn-success" style="width: 120px">
             Back
         </a>
     </div>
+    <br>
+    <br>
     </div>
 @endsection
 

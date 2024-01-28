@@ -4,9 +4,22 @@
     <!--- specific styles should be put here --->
     {{-- compile specific style class here for clean code --}}
     <style>
+        ul {
+            list-style: none;
+        }
+
+        .footer-li:hover {
+            font-size: 1.15em;
+            animation: fadeInFromLeft 1s ease-in-out;
+        }
+
+
+
+        a {
+            text-decoration: none;
+        }
+
         .description {
-            max-width: 320px;
-            max-height: 150px;
             /* Set your maximum width and height */
             overflow: hidden;
             text-overflow: ellipsis;
@@ -14,14 +27,6 @@
             -webkit-line-clamp: 4;
             /* Limit to maximum 4 lines */
             -webkit-box-orient: vertical;
-        }
-
-        ul {
-            list-style-type: none;
-        }
-
-        li {
-            margin-left: -20px;
         }
 
         .container-fluid {
@@ -43,13 +48,9 @@
             }
         }
 
-
         #homeSearch {
-
             /* Initial Y translation */
             animation: fadeInFromBottom 2s ease-in-out;
-            /* Corrected animation name */
-            /* You can adjust the duration and timing function */
         }
 
         @keyframes fadeInFromBottom {
@@ -115,12 +116,11 @@
         <div style="height: 20px"> </div> <!-- space for section 2 start container-->
         <div class="container-fluid" style="width: 80%; border-radius:10px">
             <div class="ms-2">
-                <h2>Explore various topics!...</h2>
+                <h2>EXPLORE VARIOUS TOPICS</h2>
                 <hr class="bg-dark" style="margin-top: -5px; height:2px;">
             </div>
             <!-- remove dev to start query here -->
             <!-- 1st row -->
-
             <div class="container mt-4">
                 <div class="row">
                     @foreach ($catalogs as $catalogs)
@@ -203,7 +203,7 @@
                                         <p class="description" style="font-size: 1rem; text-align:justify">
                                             {{ $catalogs->description }}
                                         <p class="text-center"> <a class="text-decoration-none text-black"
-                                                href="{{ route('catalogs.show', $catalogs->id) }}">Read More...</a></p>
+                                                href="{{ url('catalogs/'.$catalogs->code) }}">Read More...</a></p>
                                         </p>
                                     </div>
                                 </div>
@@ -217,6 +217,36 @@
         </div>
         <div style="height: 20px"> </div> <!-- space for section 2 end container-->
     </div> <!-- end for section 2-->
+
+    <!-- Draggable Image gallery for popular documents -->
+    <div class="mx-auto text-center">
+        <p style="font-size: 1.5em"> MOST VISITED DOCUMENTS</p>
+        <hr class="mx-auto" style="width: 50%; margin-top: -10px">
+    </div>
+    <div style="background-image: url('{{ asset('bg/lib_logo.jpg') }}'); width:100%" id="content-slider">
+        <div id="slider" class="slider-container">
+            <div class="container-fluid">
+                <ul class="d-flex flex-wrap justify-content-center">
+                    @foreach ($views as $item)
+                        <li class="slider ms-3 text-center mt-4">
+                            <span>
+                                <p class="text-white"><b></b><i class="bi bi-eye-fill"></i> {{ $item->view_count }} VIEWS </b></p>
+                                <a href="{{url('catalogs/'.$item->code) }}">
+                                    <img class="image-fluid" src="{{ asset('storage' . $item->photo_path) }}" alt=""
+                                        style="width: 35vmin; height: 50vmin; margin-top: -10px" draggable="false">
+                                </a>
+                            </span>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+        <br>
+    </div>
+
+
+    <!-- End for draggable image gallery -->
+
     <!-- start for section 3  -->
     <!-- space for section 3 start container-->
     <div class="bg-light">
@@ -226,20 +256,22 @@
             <div class="row">
                 <div class="col-md-6 mb-4">
                     <div>
-                        <h4 style="font-size: 1.5em">Recently Added Catalogs</h4>
+                        <h4 style="font-size: 1.5em">RECENTLY ADDED</h4>
                         <hr class="bg-dark" style="margin-top: -2px; height: 2px">
                     </div>
-                    @foreach ($rates as $index => $catalogs)
+                    @foreach ($recents as $index => $catalogs)
+
                         @if ($index < 3)
-                            <a class="text-decoration-none text-black" href="{{ route('catalogs.show', $catalogs->id) }}">
+                            <a class="text-decoration-none text-black"
+                                href="{{ url('catalogs/'.$catalogs->code) }}">
                                 <div class="d-flex ms-2 mt-2">
                                     <div>
                                         <img src="{{ asset('storage' . $catalogs->photo_path) }}" alt=""
                                             class="img-fluid" style="width: 75px; height: 90px">
                                     </div>
                                     <div class="ms-3">
-                                        <p>{{ $catalogs['title'] }}</p>
-                                        <div class="d-flex">
+                                        <p style="font-size: 1.05em">{{ $catalogs['title'] }}</p>
+                                        {{--       <div class="d-flex">
                                             <span class="d-flex" style="margin-top: -5px">
                                                 @php
                                                     $rating = $catalogs->rating;
@@ -291,7 +323,7 @@
                                                     &nbsp {{ $catalogs->rating }}
                                                 </p>
                                             </span>
-                                        </div>
+                                        </div> --}}
                                         @php
                                             $authors = $catalogs->authors;
 
@@ -337,13 +369,13 @@
             </div>
             <div class="col-md-6 mb-4">
                 <div>
-                    <h4>Popular Catalogs</h4>
+                    <h4>TOP RATED </h4>
                     <hr class="bg-dark" style="margin-top: -2px; height: 2px">
                 </div>
-                @foreach ($rates as $index => $catalogs)
+                @foreach ($rates->where('rating', '>', 0) as $index => $catalogs)
                     @if ($index < 3)
                         <a class="text-decoration-none text-black"
-                            href="{{ route('catalogs.show', $catalogs->id) }}">
+                            href="{{ url('catalogs/'.$catalogs->code) }}">
                             <div class="d-flex ms-2 m-2">
                                 <div>
                                     <img src="{{ asset('storage' . $catalogs->photo_path) }}" alt=""
@@ -416,72 +448,7 @@
 </div>
 <div style="height: 20px"> </div> <!-- space for section 3 end container-->
 </div>
-
-{{-- footer for landing page --}}
-<div class="container-fluid bg-dark text-white">
-<div class="row justify-content-center mx-auto" style="width: 80%">
-
-    <div class="col-lg-3 col-md-6 col-sm-12 mt-2">
-        <p>NOMCAARRD</p>
-        <ul>
-            <li>
-                <p>About NOMCAARRD</p>
-            </li>
-            <li>
-                <p>Catalogs</p>
-            </li>
-            <li>
-                <p>Frequently asked questions (FAQ)</p>
-            </li>
-        </ul>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-12 mt-2">
-        <p>LOCAL RESOURCES</p>
-        <ul>
-            <li>
-                <p>About NOMCAARRD</p>
-            </li>
-            <li>
-                <p>Catalogs</p>
-            </li>
-            <li>
-                <p>Frequently asked questions (FAQ)</p>
-            </li>
-        </ul>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-12 mt-2">
-        <br>
-        <ul class="mt-3">
-            <li>
-                <p>About NOMCAARRD</p>
-            </li>
-            <li>
-                <p>Catalogs</p>
-            </li>
-            <li>
-                <p>Frequently asked questions (FAQ)</p>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-lg-3 col-md-6 col-sm-12 mt-2">
-        <p>HOW TO REACH US</p>
-        <ul>
-            <li>
-                <p>nomcaarrd.sample@gmail.com</p>
-            </li>
-            <li>
-                <p>OR CONTACT US</p>
-            </li>
-            <li>
-                <P>+63 999 287 7281</P>
-            </li>
-        </ul>
-    </div>
-
-</div>
-</div>
-
+@include('includes.footer2')
 {{-- end footer queques --}}
 <div class="container-fluid bg-dark" style="margin-top: -10px">
 @include('includes.footer')
