@@ -5,15 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Appointments extends Model
+
+class Appointment extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'status',
-        'name',
-        'time',
+    protected $table = "tbl_appointments";
 
-        // Add other fields as needed
+    protected $fillable = [
+        'name',
+        'email',
+        'time',
+        'status',
+    ];
+
+    protected $casts = [
+        'time' => 'date',
     ];
 }

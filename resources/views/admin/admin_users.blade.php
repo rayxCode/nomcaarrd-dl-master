@@ -13,13 +13,14 @@
 
         /* Rest of your styles remain the same */
         .modal-content {
-            max-width: 60%;
-            min-width: 470px;
-            transform: translate(38%, 15%);
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(15, 15, 15, 0.2);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
             /* Add this to enable scrolling if needed */
         }
 
@@ -47,6 +48,11 @@
             position: fixed;
             transform: translate(100%, 15%);
         }
+
+        .card-body {
+            overflow: auto;
+        }
+
     </style>
 @endsection
 
@@ -71,7 +77,7 @@
         <!-- Start of modal for new user-->
         <div class="modal mx-auto" id="modal">
             <div class="modal-content p-3">
-                <span class="container" >
+                <span class="container">
                     <p style="margin-left: -10px"><b>ADD USER </b> </p>
                     <hr style="margin-top: -10px">
                 </span>
@@ -132,8 +138,9 @@
                 <div class="d-flex justify-content-end">
                     <form action="{{ route('searchUsers') }}" method="GET" style="width:35%; height: 40px">
                         @csrf
-                        <input type="text" class="form-control rounded-pill" role="search" name="search" id="searchInput"
-                            placeholder="Search user accounts or email..." value="{{isset($search)? $search: ''}}">
+                        <input type="text" class="form-control rounded-pill" role="search" name="search"
+                            id="searchInput" placeholder="Search user accounts or email..."
+                            value="{{ isset($search) ? $search : '' }}">
                     </form>
                     &nbsp;
                     <button class="ms-3 btn btn-success" type="submit" id="onClickModal">
@@ -146,15 +153,36 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <table id="dataTable" class="table table-bordered">
-                        <tr>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Full Name</th>
-                            <th>Affiliation</th>
-                            <th>Actions</th>
-                        </tr>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Full Name</th>
+                        <th>Asffiliation</th>
+                        <th>Actions</th>
+                    </tr>
                     <tbody>
                         @foreach ($users as $user)
+                            <!-- Confirmation Modal for Delete -->
+                            <div id="confirmationModal{{ $user->id }}" class="delete" style="display: none;">
+                                <div class="delete-content">
+                                    <div>
+                                        DELETE CONFRIMATION
+                                        <hr class="bg-black">
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Are you sure you want to remove {{ $user->username }} from users table?</p>
+                                        <div class="text-center d-flex">
+                                            <button class="btn btn-danger p-1" style="width: 50%"
+                                                onclick="deleteItem('{{ $user->id }}')">Yes</button>
+                                            &nbsp;
+                                            <button class="btn btn-primary p-1 " style="width: 50%"
+                                                onclick="closeModalDelete('confirmationModal{{ $user->id }}')">No</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- End for confirmation Modal for Delete -->
                             <tr>
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->email }}</td>
@@ -169,12 +197,16 @@
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                     &nbsp;
-                                    <form action="{{ route('destroy', $user->id) }}" method="POST">
+
+                                    <button class="ms-3 p-2 btn btn-danger btnAction"
+                                        onclick="modalDeleteOpen('{{ $user->id }}')">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+
+                                    <form id="deleteForm{{ $user->id }}" action="{{ route('destroy', $user->id) }}"
+                                        method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="ms-3 p-2 btn btn-danger btnAction" type="submit">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -196,6 +228,24 @@
 @endsection
 @section('scripts')
     <script>
+          /*
+        Confirmation modal for delete form
+        */
+        function modalDeleteOpen(id) {
+            var modal = document.getElementById("confirmationModal" + id);
+            modal.style.display = "block";
+        }
+
+        function closeModalDelete(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "none";
+        }
+
+        function deleteItem(itemId) {
+            var form = document.getElementById("deleteForm" + itemId);
+            form.submit();
+        }
+
         document.getElementById('onClickModal').addEventListener('click', function() {
             document.getElementById("modal").style.display = "block";
         });

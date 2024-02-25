@@ -18,6 +18,36 @@
     <link rel="stylesheet" href="{{ asset('styles/css/OverlayScrollbars.min.css') }}">
     @yield('styles')
     <style>
+        .card-body {
+            overflow: auto;
+        }
+
+        /* Modal Styles for delete*/
+        .delete {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* semi-transparent background */
+            z-index: 9999;
+            /* ensure it's on top of other content */
+            box-shadow: #000;
+
+        }
+
+        .delete-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+
+        }
     </style>
 </head>
 
@@ -37,7 +67,7 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4 text-white" id="sidebar">
+        <aside class="main-sidebar sidebar-dark-primary text-white" id="sidebar">
             <!--Site logo-->
             <a href="{{ route('home') }}" class="brand-link">
                 <img src="{{ asset('bg/sitelogo.jpg') }}" alt="Site logo" class="brand-image img-circle elevation-3"
@@ -47,8 +77,8 @@
                 </span>
             </a>
             <!-- Sidebar user (optional) -->
-            <div class="sidebar">
-                <div class="user-panel mt-3 mb-2 d-flex">
+            <div class="sidebar" style="height: 80%">
+              {{--   <div class="user-panel mt-2 mb-1 d-flex">
                     <div class="image">
                         <img src="{{ auth()->user()->photo_path != null ? asset(auth()->user()->photo_path) : '' }}"
                             class="img-circle elevation-2" alt="User Image" style="width: 35px; height:35px">
@@ -58,9 +88,9 @@
                             </b>{{ auth()->user()->username != null ? auth()->user()->username : auth()->user()->email }}
                         </p>
                     </div>
-                </div>
+                </div> --}}
                 <!-- Sidebar Menu -->
-                <nav class="mt-2">
+                <nav class="mt-1">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <!-- List items for nav bar-->
@@ -160,14 +190,48 @@
                                     @endif
                                 </a>
                             </li>
-                            {{--  <li class="nav-item p-2 {{ request()->routeIs('settings') ? 'active' : '' }}" id="btnMenu">
-                                <a href="{{ route('settings', auth()->user()->id) }}" class="nav-links text-white">
-                                    <div class="d-flex">
-                                        <i class="bi bi-gear-fill mt-2" style="padding-right: 10px"></i>
-                                        <p class=" mt-2 d-block" style="font-size: 1em">Settings</p>
-                                    </div>
+                            <li class="nav-item">
+                                <a href="{{''}}" class="nav-link text-white d-flex">
+                                    <i class="nav-icon bi bi-recycle"></i>
+                                    <p class="d-block"> Bin</p>
+                                    @if ($appointmentsCount > 0)
+                                        <span class="right badge badge-danger">{{ $appointmentsCount }}</span>
+                                    @endif
                                 </a>
-                            </li> --}}
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item {{ request()->routeIs('catalogs_review') ? 'active' : '' }}">
+                                        <a href="" class="nav-link text-white d-flex">
+                                            <i class="nav-icon bi bi-book-half pl-3"></i>
+                                            &nbsp;
+                                            <p class="d-block pl-2">Documents</p>
+                                            @if ($pendingCount > 0)
+                                                <span class="right badge badge-danger">{{ $pendingCount }}</span>
+                                            @endif
+                                        </a>
+                                    </li>
+                                    <li class="nav-item {{ request()->routeIs('review_approved') ? 'active' : '' }}">
+                                        <a href="" class="nav-link text-white d-flex">
+                                            <i class=" nav-icon bi-people-fill pl-3"></i>
+                                            &nbsp;
+                                            <p class="d-block pl-2">Accounts</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item {{ request()->routeIs('review_declined') ? 'active' : '' }}">
+                                        <a href="" class="nav-link text-white d-flex">
+                                            <i class="nav-icon bi bi-journal-plus pl-3"></i>
+                                            &nbsp;
+                                            <p class="d-block pl-2">Categories</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item {{ request()->routeIs('review_declined') ? 'active' : '' }}">
+                                        <a href="" class="nav-link text-white d-flex">
+                                            <i class="nav-icon bi bi-clock-fill pl-3"></i>
+                                            &nbsp;
+                                            <p class="d-block pl-2">Affiliations</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         @endif
                         <li class="nav-item">
                             <a href="{{ route('auth.logout') }}" class="nav-link text-white d-flex">
@@ -179,22 +243,34 @@
                     </ul>
                 </nav>
             </div>
-            <div class="sidebar-custom">
-                <a href="#" class="nav-link">
-                    <div class="d-flex">
-                        <i class="bi bi-gear-fill mt-2" style="padding-right: 10px"></i>
-                        <p class=" mt-2 d-block" style="font-size: 1em">Settings</p>
-                    </div>
-                </a>
+            <div class="sidebar-custom" >
+              <nav>
+                <ul class="nav sidebar">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-white" style="margin-top: -10px">
+                            <div class="d-flex" style="align-items: center">
+                                <i class="nav-icon bi bi-gear-fill pl-3" style="font-size:1.25em"></i>
+                                <p class=" mt-3 pl-2 d-block" style="font-size: 1.15em; width: 100%">Settings</p>
+
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+              </nav>
             </div>
         </aside>
         <!-- Main content -->
         <!-- Content Wrapper. Contains page content -->
-        @yield('admin-layouts')
+        <main>
+            @yield('admin-layouts')
+        </main>
+
         <!-- /.content -->
         <!-- /.content-wrapper -->
         <!-- /.control-sidebar -->
+
     </div>
+
     </div>
     <!-- ./wrapper -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
@@ -202,6 +278,7 @@
     <script src="{{ asset('styles/js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('styles/js/jquery.overlayScrollbars.min.js') }}"></script>
     <script src="{{ asset('styles/js/adminlte.min.js') }}"></script>
+
 </body>
 <!-- Sweet alert 2-->
 @yield('scripts')

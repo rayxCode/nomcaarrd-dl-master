@@ -12,14 +12,14 @@
 
         /* Rest of your styles remain the same */
         .modal-content {
-            position: fixed;
-            max-width: 40%;
-            min-width: 350px;
-            transform: translate(80%, 45%);
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(15, 15, 15, 0.2);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
             /* Add this to enable scrolling if needed */
         }
 
@@ -46,6 +46,7 @@
         tr.active {
             background-color: rgb(0, 0, 0, .2);
         }
+
     </style>
 @endsection
 
@@ -70,10 +71,10 @@
         <!-- Start of modal for new affiliation-->
         <div class="modal mx-auto" id="modal">
             <div class="modal-content p-3">
-                <span class="container" >
-                    <p style="margin-left: -10px"><b>ADD AFFILIATE </b> </p>
-                    <hr style="margin-top: -10px">
-                </span>
+                <div class="">
+                    <b>ADD AFFILIATE </b>
+                    <hr>
+                </div>
                 <form id="popForm" action="{{ route('affiliation.store') }}" method="POST">
                     @csrf
                     <div>
@@ -117,7 +118,7 @@
                     <thead>
                         <tr>
                             <th>Affiliation Name</th>
-                            <th>Status</th>
+                            <th>Representative</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -126,24 +127,52 @@
                             $count = 1;
                         @endphp
                         @foreach ($affs as $aff)
+                            <!-- Confirmation Modal for Delete -->
+                            <div id="confirmationModal{{ $aff->id }}" class="delete" style="display: none;">
+                                <div class="delete-content">
+                                    <div>
+                                        DELETE CONFRIMATION
+                                        <hr class="bg-black">
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Are you sure you want to remove <i>{{ $aff->name }} </i> from affiliations table?</p>
+                                        <div class="text-center d-flex">
+                                            <button class="btn btn-danger p-1" style="width: 50%"
+                                                onclick="deleteItem('{{ $aff->id }}')">Yes</button>
+                                            &nbsp;
+                                            <button class="btn btn-primary p-1 " style="width: 50%"
+                                                onclick="closeModalDelete('confirmationModal{{ $aff->id }}')">No</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- End for confirmation Modal for Delete -->
+
                             <tr data-id="{{ $aff->id }}">
                                 <td style="display: none">{{ $aff->id }}</td>
                                 <td>{{ $aff->name }}</td>
-                                <td></td>
+                                <td>{{ $aff->representative }}</td>
                                 <td class="d-flex">
                                     {{--                      <form action="{{ route('affiliation.show', $aff->id) }}" method="GET">
                                         @csrf --}}
-                                    <a href="{{route('affiliation.show', $aff->id)}}" id="editBtn" class="p-2 btn btn-primary btnAction" type="submit">
+                                    <a href="{{ route('affiliation.show', $aff->id) }}" id="editBtn"
+                                        class="p-2 btn btn-primary btnAction" type="submit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                     {{--  </form> --}}
+
                                     &nbsp;
-                                    <form action="{{ route('affiliation.destroy', $aff->id) }}" method="POST">
+                                    <button class="p-2 btn btn-danger btnAction"
+                                        onclick="modalDeleteOpen('{{ $aff->id }}')">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+
+
+                                    <form id="deleteForm{{ $aff->id }}"
+                                        action="{{ route('affiliation.destroy', $aff->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="ms-3 p-2 btn btn-danger btnAction" type="submit">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -167,30 +196,23 @@
 @endsection
 @section('scripts')
     <script>
-        /*$(document).on('click', '#affTable tbody tr', function() {
-        // Remove 'active' class from all rows
-        $('#affTable tbody tr').removeClass('active');
-        // Add 'active' class to the clicked row
-        $(this).addClass('active');
-        }); */
-        /* document.getElementById('affTable').addEventListener('click', function(e) {
-            // Check if the clicked element is a button within a row
-            if (e.target.id === 'editBtn' && e.target.closest('tr')) {
-                // Get the selected row
-                const selectedRow = e.target.closest('tr');
+        /*
+        Confirmation modal for delete form
+        */
+        function modalDeleteOpen(id) {
+            var modal = document.getElementById("confirmationModal" + id);
+            modal.style.display = "block";
+        }
 
-                // Get the values of cells in the selected row
-                const id = selectedRow.cells[0].textContent;
-                const name = selectedRow.cells[1].textContent;
+        function closeModalDelete(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "none";
+        }
 
-                // Log or use the retrieved values
-                const myForm = document.getElementById('popForm');
-                const formName = document.getElementById('name');
-                myForm.action = "affiliations/" + id;
-                myForm.method = "PUT";
-                formName.value = name;
-            }
-        }); */
+        function deleteItem(itemId) {
+            var form = document.getElementById("deleteForm" + itemId);
+            form.submit();
+        }
 
         function onClickListenerBtn() {
             document.getElementById("modal").style.display = "block";

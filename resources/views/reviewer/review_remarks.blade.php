@@ -43,9 +43,8 @@
                             </div>
                             <div class="d-flex p-1">
                                 <label for="description" class="mt-2 form-label">Description: &nbsp;</label>
-                                <div id="comment-message" class="form-row ms-1 mt-3" style="width:100%">
-                                    <textarea class="rounded " name="description" id="description" placeholder="Description for new catalog." id="comment"
-                                        style="width: 100%; height: 5rem" disabled>{{ $catalog->description }}</textarea>
+                                <div id="comment-message" class="form-row ms-1 mt-2" style="width:100%">
+                                    <p class="pl-2"><i>{{$catalog->description}}</i></p>
                                 </div>
                             </div>
                             <input type="hidden" value="{{$status}}" name="status">
@@ -62,7 +61,7 @@
                                 Save
                             </button>
                     </form>
-                    <a href="{{ route($status > 1 ? 'review_declined' : 'review_approved') }}" class="modal-close rounded-pill btn btn-success"
+                    <a href="{{ route('catalogs_review') }}" class="modal-close rounded-pill btn btn-success"
                         style="width: 120px">
                         Back
                     </a>

@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::create('catalogTypes', function (Blueprint $table) {
+        Schema::create('tbl_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description');
-            $table->string('color_code');
-            $table->string('editedBy')->nullable();;
+            $table->string('logo');
+            $table->string('email');
+            $table->string('contact');
+            $table->string('link_fb');
+            $table->string('link_insta');
+            $table->string('link_twitter');
             $table->timestamps();
-          });
+        });
     }
 
     /**
@@ -27,7 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
-        Schema::dropIfExists('catalogType');
+        Schema::dropIfExists('tbl_settings');
     }
 };

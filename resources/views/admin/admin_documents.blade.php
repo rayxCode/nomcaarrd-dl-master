@@ -7,21 +7,21 @@
             background-color: rgba(0, 0, 0, 0.5);
             box-shadow: #000;
             display: none;
-            overflow-y: auto;
+            overflow: auto;
         }
 
         /* Rest of your styles remain the same */
         .modal-content {
-            max-width: 40%;
-            min-width: 480px;
-            bottom: 5%;
-            left: 10%;
-            right: 25%;
-            transform: translate(50%, 10%);
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(15, 15, 15, 0.2);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 90%;
+            overflow: auto;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
             /* Add this to enable scrolling if needed */
         }
 
@@ -97,10 +97,10 @@
         </section>
         <!-- Start of modal for new catalog-->
         <div class="modal mx-auto" id="modal">
-            <div class="modal-content p-3">
-                <span class="container">
-                    <p style="margin-left: -10px"><b>ADD DOCUMENT</b> </p>
-                    <hr style="margin-top: -10px">
+            <div class="modal-content p-1 mt-2">
+                <span class="container ">
+                    <b>ADD DOCUMENT</b>
+                    <hr>
                 </span>
                 <form action="{{ route('catalogs.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -127,7 +127,7 @@
                         <div class="d-flex p-1">
                             <label for="publisher" class="mt-2 form-label" style="">Publisher &nbsp;</label>
                             <input class="form-control mt-1 rounded p-1" id="publisher" type="text" name="publisher"
-                            placeholder="Publisher of the document"/>
+                                placeholder="Publisher of the document" />
                         </div>
                         <div class="d-flex p-1">
                             <label for="published" class="mt-2 form-label" style="">Published Date: &nbsp;</label>
@@ -143,14 +143,22 @@
                         </div>
                         <div class="d-flex p-1">
                             <label for="type" class="mt-2 form-label">Category: &nbsp;</label>
-                            <select id="type" name="type" class="form-control rounded">
+                            <select id="type" name="type" class="form-control rounded"
+                                onchange="updateDescription()">
                                 @foreach ($types as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}" data-description="{{ $item->description }}">
+                                        {{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="d-flex p-1">
-                            <label for="description" class="mt-2 form-label">Description: &nbsp;</label>
+                            <label for="details" class="form-label">Description: &nbsp;</label>
+                            <i>
+                                <p id="description" class="ms-2"></p>
+                            </i>
+                        </div>
+                        <div class="d-flex p-1">
+                            <label for="description" class="mt-2 form-label">Summary: &nbsp;</label>
                             <div id="comment-message" class="form-row ms-1 mt-3" style="width:100%">
                                 <textarea class="rounded " name="description" id="description" placeholder="Description for new catalog." id="comment"
                                     style="width: 100%; height: 5rem"></textarea>
@@ -189,8 +197,9 @@
                 <div class="d-flex justify-content-end">
                     <form action="{{ route('search') }}" method="GET" style="width:35%; height: 40px">
                         @csrf
-                        <input type="text" class="form-control rounded-pill" role="search" name="search" id="searchInput"
-                            placeholder="Search documents..." value="{{isset($search)? $search: ''}}">
+                        <input type="text" class="form-control rounded-pill" role="search" name="search"
+                            id="searchInput" placeholder="Search documents..."
+                            value="{{ isset($search) ? $search : '' }}">
                     </form>
                     &nbsp;
                     <button class="btn btn-success" type="submit" id="onClickModal">
@@ -216,6 +225,27 @@
                     </thead>
                     <tbody>
                         @foreach ($catalogs->where('status', 1) as $catalog)
+                            <!-- Confirmation Modal for Delete -->
+                            <div id="confirmationModal{{ $catalog->id }}" class="delete" style="display: none;">
+                                <div class="delete-content">
+                                    <div>
+                                        APPROVE CONFRIMATION
+                                        <hr class="bg-black">
+                                    </div>
+                                    <div class="card-body">
+                                        <p style="text-align: justify">Are you sure you want to approve
+                                            <i>{{ $catalog->title }} </i> from documents table?</p>
+                                    </div>
+                                    <div class="text-center d-flex">
+                                        <button class="btn btn-danger p-1" style="width: 50%"
+                                            onclick="deleteItem('{{ $catalog->id }}')">Yes</button>
+                                        &nbsp;
+                                        <button class="btn btn-primary p-1 " style="width: 50%"
+                                            onclick="closeModalDelete('confirmationModal{{ $catalog->id }}')">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End for confirmation Modal for Delete -->
                             <tr>
                                 <td id="id">{{ $catalog->title }}</td>
                                 @php
@@ -236,23 +266,31 @@
                                 <td>{{ $catalog->publisher }}</td>
                                 <td>{{ $catalog->types->name }}</td>
                                 <td>{{ (new DateTime($catalog->publishedDate))->format('F d, Y') }}</td>
-                                <td class="d-flex">
-                                    <a href="{{ route('catalogs.edit', $catalog->id) }}"
-                                        class="p-2 btn btn-primary btnAction" type="submit">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    &nbsp;
-                                    <form action="{{ route('catalogs.destroy', $catalog->id) }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="p-2 btn btn-danger btnAction" type="submit">
+                                <td class="align-items-center">
+                                    <div class="d-flex">
+                                        <a href="{{ route('catalogs.edit', $catalog->id) }}"
+                                            class="p-2 btn btn-primary btnAction" type="submit">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        &nbsp;
+
+                                        <button class="p-2 btn btn-danger btnAction"
+                                            onclick="modalDeleteOpen({{ $catalog->id }})">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
-                                    </form>
+
+                                        <form id="deleteForm{{ $catalog->id }}"
+                                            action="{{ route('catalogs.destroy', $catalog->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
+
                     </tbody>
+
                 </table>
                 <div class="container">
                     <p> {{ $catalogs->links('pagination::bootstrap-5') }} </p>
@@ -270,6 +308,37 @@
 
 @section('scripts')
     <script>
+        /*
+                            Confirmation modal for delete form
+                            */
+        function modalDeleteOpen(id) {
+            var modal = document.getElementById("confirmationModal" + id);
+            modal.style.display = "block";
+        }
+
+        function closeModalDelete(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "none";
+        }
+
+        function deleteItem(itemId) {
+            var form = document.getElementById("deleteForm" + itemId);
+            form.submit();
+        }
+        //end for delete confirmation script
+
+        // Descriptions for categories
+        function updateDescription() {
+            var select = document.getElementById("type");
+            var description = document.getElementById("description");
+            var selectedOption = select.options[select.selectedIndex];
+            var descriptionText = selectedOption.getAttribute("data-description");
+            description.innerText = descriptionText;
+        }
+
+        // Initially update description when the page loads
+        window.onload = updateDescription
+
         document.getElementById('onClickModal').addEventListener('click', function() {
             document.getElementById("modal").style.display = "block";
         });
@@ -278,6 +347,7 @@
             document.getElementById("modal").style.display = "none";
         }
 
+        //adding for authors script
         function addAuthor(event) {
             if (event.key === "Enter") {
                 const authorInput = document.getElementById("authorInput");
@@ -286,6 +356,7 @@
 
                 const authorName = authorInput.value.trim();
                 if (authorName !== "") {
+                    //creates removable span onclick
                     const authorElement = document.createElement("span");
                     authorElement.textContent = `${authorName} × `;
                     authorElement.style.backgroundColor = 'green';

@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_bookmarks', function (Blueprint $table) {
+        Schema::create('tbl_replies', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('document_id');
-            $table->foreign('document_id')->references('id')->on('tbl_documents')->onDelete('cascade');
+            $table->unsignedBigInteger('comment_id');
+            $table->foreign('comment_id')->references('id')->on('tbl_comments')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('tbl_users')->onDelete('cascade');
             $table->unsignedBigInteger('edited_by')->nullable();
             $table->foreign('edited_by')->references('id')->on('tbl_users')->onDelete('set null');
+            $table->softDeletes();
             $table->timestamps();
-
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_bookmarks');
+        Schema::dropIfExists('tbl_replies');
     }
 };

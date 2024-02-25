@@ -41,7 +41,7 @@
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12 mt-4">
             <div>
-                <p><b>CONCERNS</b></p>
+                <p><b>FEEDBACK</b></p>
                 <ul>
 
                     <li>

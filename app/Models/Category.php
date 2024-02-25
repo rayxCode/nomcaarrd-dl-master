@@ -6,18 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Affiliation extends Model
+class Category extends Model
 {
     use HasFactory;
-
     use HasFactory, SoftDeletes;
 
-    protected $table = "tbl_affiliations";
+    protected $table = "tbl_categories";
 
-    protected $fillable = ['name', 'person_in_charge'];
+    protected $fillable = ['name', 'description', 'color_code'];
 
-    public function users()
+    public function editor()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class, 'edited_by');
     }
 }

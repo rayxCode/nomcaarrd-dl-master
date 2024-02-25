@@ -11,24 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-                $table->id();
-                $table->int('access_level');
-                $table->string('email')->unique();
-                $table->string('password');
-                $table->string('username');
-                $table->varchar('fullname', 50);
-                $table->varchar('firstname', 50);
-                $table->varchar('middlename', 50);
-                $table->varchar('lastname', 50);
-                $table->unsignedBigInteger('affiliation_id')->default(1);
-                $table->foreign('affiliation_id')->references('id')->on('affiliations');
-                $table->tinyInteger('verify_status');
-                $table->date('verified_email_at');
-                $table->string('photo_path');
-                $table->string('editedBy')->nullable();
-                $table->timestamps();
-            });
+        // Migration file for tbl_users table
+        Schema::create('tbl_users', function (Blueprint $table) {
+            $table->id();
+            $table->integer('access');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('username');
+            $table->string('firstname', 50);
+            $table->string('middlename', 50)->nullable();
+            $table->string('lastname', 50);
+            $table->unsignedBigInteger('affiliation_id')->default(1);
+            $table->foreign('affiliation_id')->references('id')->on('tbl_affiliations');
+            $table->tinyInteger('status');
+            $table->timestamp('verified_email_at')->nullable();
+            $table->string('photo_path')->nullable();
+            $table->unsignedBigInteger('edited_by')->nullable();
+            $table->foreign('edited_by')->references('id')->on('tbl_users')->onDelete('set null');
+            $table->softDeletes();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -36,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('tbl_users');
     }
 };

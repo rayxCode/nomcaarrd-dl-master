@@ -59,7 +59,7 @@
                 <div class="d-flex p-1">
                     <label for="publisher" class="mt-2 form-label" style="">Publisher: &nbsp;</label>
                     <input class="form-control mt-1 rounded p-1" id="publisher" type="text" name="publisher"
-                    placeholder="Publisher of the document"/>
+                        placeholder="Publisher of the document" />
                 </div>
                 <div class="d-flex p-1">
                     <label for="published" class="mt-2 form-label" style="">Published Date: &nbsp;</label>
@@ -67,13 +67,18 @@
                         type="date" name="published" required />
                 </div>
                 <div class="d-flex p-1">
-                    <label for="type" class="mt-2 form-label">Catalog Type: &nbsp;</label>
-                    <select id="type" name="type" class="form-control rounded">
+                    <label for="type" class="mt-2 form-label">Category: &nbsp;</label>
+                    <select id="type" name="type" class="form-control rounded"
+                        onchange="updateDescription()">
                         @foreach ($types as $item)
-                            <option value="{{ $item->id }}">{{ $item->name }}
-                            </option>
+                            <option value="{{ $item->id }}" data-description="{{ $item->description }}">
+                                {{ $item->name }}</option>
                         @endforeach
                     </select>
+                </div>
+                <div class="d-flex p-1">
+                    <label for="details" class="form-label">Description: &nbsp;</label>
+                    <i><p id="description" class="ms-2"></p></i>
                 </div>
                 <input type="hidden" name="visibility" id="visibility" value="0">
                 <div class="d-flex p-1">
@@ -112,6 +117,19 @@
 
 @section('scripts')
     <script>
+        // Descriptions for categories
+        function updateDescription() {
+            var select = document.getElementById("type");
+            var description = document.getElementById("description");
+            var selectedOption = select.options[select.selectedIndex];
+            var descriptionText = selectedOption.getAttribute("data-description");
+            description.innerText = descriptionText;
+        }
+
+        // Initially update description when the page loads
+        window.onload = updateDescription
+
+        // Add key authors
         function addAuthor(event) {
             if (event.key === "Enter") {
                 const authorInput = document.getElementById("authorInput");

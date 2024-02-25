@@ -60,7 +60,7 @@
                             <div class="d-flex p-1">
                                 <label for="publisher" class="mt-2 form-label" style="">Publisher &nbsp;</label>
                                 <input class="form-control mt-1 rounded p-1" id="publisher" type="text" name="publisher"
-                                placeholder="Publisher of the document" value="{{$edit->publisher}}"/>
+                                    placeholder="Publisher of the document" value="{{ $edit->publisher }}" />
                             </div>
                             <div class="d-flex p-1">
                                 <label for="published" class="mt-2 form-label" style="">Published Date: &nbsp;</label>
@@ -71,19 +71,26 @@
                             <div class="d-flex p-1">
                                 <label for="access" class="mt-2 form-label"> Access</label>
                                 <select name="visiblity" id="visiblity" class="form-control rounded">
-                                    <option value="0" {{($edit->visibility == 0) ?  'selected' : ''}}>Public</option>
-                                    <option value="1" {{($edit->visibility == 1) ?  'selected' : ''}}>Private</option>
+                                    <option value="0" {{ $edit->visibility == 0 ? 'selected' : '' }}>Public</option>
+                                    <option value="1" {{ $edit->visibility == 1 ? 'selected' : '' }}>Private
+                                    </option>
                                 </select>
                             </div>
                             <div class="d-flex p-1">
                                 <label for="type" class="mt-2 form-label">Category: &nbsp;</label>
-                                <select id="type" name="type" class="form-control rounded">
+                                <select id="type" name="type" class="form-control rounded"
+                                    onchange="updateDescription()">
                                     @foreach ($types as $item)
-                                        <option value="{{ $item->id }}"
-                                            @if ($item->id === $edit->type_id) {{ 'selected' }} @endif>{{ $item->name }}
-                                        </option>
+                                        <option value="{{ $item->id }}" data-description="{{ $item->description }}">
+                                            {{ $item->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="d-flex p-1">
+                                <label for="details" class="form-label">Description: &nbsp;</label>
+                                <i>
+                                    <p id="description" class="ms-2"></p>
+                                </i>
                             </div>
                             <div class="d-flex p-1">
                                 <label for="description" class="mt-2 form-label">Description: &nbsp;</label>
@@ -95,8 +102,8 @@
                             <div class="d-flex p-1">
                                 <label for="file" class="mt-3 form-label">Upload file: &nbsp;</label>
                                 <div id="upload-image" class="form-row mt-3">
-                                    <input type="file" id="file" name="file" value="{{ asset($edit->fileURL) }}"
-                                        accept=".pdf">
+                                    <input type="file" id="file" name="file"
+                                        value="{{ asset($edit->fileURL) }}" accept=".pdf">
                                 </div>
                             </div>
                             <div class="d-flex mx-auto p-1">
@@ -125,6 +132,19 @@
 
 @section('scripts')
     <script>
+        // Descriptions for categories
+        function updateDescription() {
+            var select = document.getElementById("type");
+            var description = document.getElementById("description");
+            var selectedOption = select.options[select.selectedIndex];
+            var descriptionText = selectedOption.getAttribute("data-description");
+            description.innerText = descriptionText;
+        }
+
+        // Initially update description when the page loads
+        window.onload = updateDescription
+
+        //Add key authors
         function addAuthor(event) {
             if (event.key === "Enter") {
                 const authorInput = document.getElementById("authorInput");

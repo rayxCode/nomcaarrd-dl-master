@@ -12,14 +12,14 @@
 
         /* Rest of your styles remain the same */
         .modal-content {
-            position: fixed;
-            max-width: 40%;
-            min-width: 270px;
-            transform: translate(80%, 45%);
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(15, 15, 15, 0.2);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
             /* Add this to enable scrolling if needed */
         }
 
@@ -122,6 +122,27 @@
                     </thead>
                     <tbody>
                         @foreach ($types as $type)
+                            <!-- Confirmation Modal for Delete -->
+                            <div id="confirmationModal{{ $type->id }}" class="delete" style="display: none;">
+                                <div class="delete-content">
+                                    <div>
+                                        DELETE CONFRIMATION
+                                        <hr class="bg-black">
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Are you sure you want to remove {{ $type->name }} from categories table?</p>
+                                        <div class="text-center d-flex">
+                                            <button class="btn btn-danger p-1" style="width: 50%"
+                                                onclick="deleteItem('{{ $type->id }}')">Yes</button>
+                                            &nbsp;
+                                            <button class="btn btn-primary p-1 " style="width: 50%"
+                                                onclick="closeModalDelete('confirmationModal{{ $type->id }}')">No</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- End for confirmation Modal for Delete -->
                             <tr>
                                 <td id="id">{{ $type->name ?? '' }}</td>
                                 <td>{{ $type->description ?? 'N/A' }}</td>
@@ -131,12 +152,15 @@
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                     &nbsp;
-                                    <form action="{{ route('types.destroy', $type->id) }}" method="post">
+                                    <button class="p-2 btn btn-danger btnAction"
+                                        onclick="modalDeleteOpen('{{ $type->id }}')">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+
+                                    <form id="deleteForm{{ $type->id }}"
+                                        action="{{ route('types.destroy', $type->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="p-2 btn btn-danger btnAction" type="submit">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -161,6 +185,24 @@
 
 @section('scripts')
     <script>
+        /*
+                Confirmation modal for delete form
+                */
+        function modalDeleteOpen(id) {
+            var modal = document.getElementById("confirmationModal" + id);
+            modal.style.display = "block";
+        }
+
+        function closeModalDelete(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "none";
+        }
+
+        function deleteItem(itemId) {
+            var form = document.getElementById("deleteForm" + itemId);
+            form.submit();
+        }
+
         document.getElementById('onClickModal').addEventListener('click', function() {
             document.getElementById("modal").style.display = "block";
         });

@@ -108,6 +108,29 @@
                 min-width: 500px;
             }
         }
+
+        .modal {
+            position: fixed;
+            max-width: 100%;
+            max-height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            box-shadow: #000;
+            display: none;
+        }
+
+        /* Rest of your styles remain the same */
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 450px;
+            height: 580px;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            /* Add this to enable scrolling if needed */
+        }
     </style>
 @endsection
 @section('content')
@@ -125,12 +148,21 @@
                 </ol>
             </nav>
         </div>
+        <!--MODAL IMAGE-->
+        <div class="modal" id="modalImage" onclick="closeModalImg(event)">
+            <div class="modal-content" id="imageContent">
+                <img src="{{ asset('storage' . $catalogs->photo_path) }}" class="img-fluid" alt="cover photo">
+            </div>
+        </div>
+        <!--END MODAL IMAGE-->
         <div class="row mt-1 justify-content-center">
             {{-- first div left side --}}
             <div class="col-md-4 text-center" style="width: 15rem">
                 <div class="bg-success p-2 text-white">DOCUMENT</div>
-                <img class="mt-1" src="{{ asset('storage' . $catalogs->photo_path) }}" alt=""
-                    style="width: 13em; height: 17em">
+                <button class="btn " onclick="openModalImg()">
+                    <img class="" src="{{ asset('storage' . $catalogs->photo_path) }}" alt=""
+                        style="width: 13em; height: 17em; margin-left: -10px">
+                </button>
                 <p class="mt-3" style="font-size: 14px"><i> {{ $bookmarkCount->count() }} added this to bookmark </i></p>
                 <p class="mt-3"> Type: {{ $catalogs->types->name }}</p>
                 <form
@@ -278,8 +310,8 @@
                         <p class="ms-2 info-p">{{ $catalogs->dl_count }} Downloads</p>
                     </span>
                 </div>
-                <h5 class="ms-2 mt-3 text-justify">SUMMARY</h5>
-                <p class="mt-2 ms-5 justify-content-start" style="text-align: justify"> {{ $catalogs->description }}</p>
+                <h5 class="mt-3 text-justify">SUMMARY</h5>
+                <p class="mt-2 ms-3 justify-content-start" style="text-align: justify"> {{ $catalogs->description }}</p>
                 <div class="mt-2 row" style="width: 95%">
                     @php
                         $authors = $catalogs->authors;
@@ -294,14 +326,14 @@
                             $output = htmlspecialchars($authors);
                         }
                     @endphp
-                    <p class="pr-2">
+                    <p class="pr-2" style="text-align: justify">
                         @if ($output)
-                            Author(s): {{ $output }}
+                            <b> Author(s): </b> {{ $output }}
                         @else
-                            Publisher: {{ $catalogs->publisher }}
+                            <b> Publisher: </b> {{ $catalogs->publisher }}
                         @endif
                     </p>
-                    <p> Published Date: {{ (new DateTime($catalogs->publishedDate))->format('F d, Y') }}</p>
+                    <p> <b> Published Date: </b> {{ (new DateTime($catalogs->publishedDate))->format('F d, Y') }}</p>
                 </div>
                 <br>
                 {{-- start comment section --}}
@@ -312,42 +344,46 @@
                     <hr>
                     @auth
                         {{-- comment form start --}}
-                        <div id='form'>
+                        <div id='form' class="bg-light rounded">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <Label class="ms-1"><b>Leave a comment </b></Label>
-                                    <hr class="bg-dark" style="margin-top: -1px">
                                     <form action="{{ route('comment') }}" method="POST">
                                         @csrf
-                                        <p class="form-label mt-2"> <i> Write a review... </i></p>
-                                        <input type="hidden" id="id" name="id" value="{{ $catalogs->id }}">
-                                        @php
-                                            $user = auth()->user()->id;
-                                        @endphp
-
-                                        @if ($comments->where('users_id', $user)->where('rating', '>', 0)->count() < 1)
-                                            <div class="d-flex">
-                                                <div class="rating ms-3">
-                                                    <input type="radio" id="star1" name="rating" value="5.0" />
-                                                    <label for="star1"> </label>
-                                                    <input type="radio" id="star2" name="rating" value="4.0" />
-                                                    <label for="star2"> </label>
-                                                    <input type="radio" id="star3" name="rating" value="3.0" />
-                                                    <label for="star3"> </label>
-                                                    <input type="radio" id="star4" name="rating" value="2.0" />
-                                                    <label for="star4"> </label>
-                                                    <input type="radio" id="star5" name="rating" value="1.0" />
-                                                    <label for="star5"> </label>
+                                        <div class="d-flex">
+                                            <p class="form-label mt-2"> Write a review </p>
+                                            <input type="hidden" id="id" name="id"
+                                                value="{{ $catalogs->id }}">
+                                            @php
+                                                $user = auth()->user()->id;
+                                            @endphp
+                                            @if ($comments->where('users_id', $user)->where('rating', '>', 0)->count() < 1)
+                                                <div class="d-flex">
+                                                    <div class="rating ms-3">
+                                                        <input type="radio" id="star1" name="rating"
+                                                            value="5.0" />
+                                                        <label for="star1"> </label>
+                                                        <input type="radio" id="star2" name="rating"
+                                                            value="4.0" />
+                                                        <label for="star2"> </label>
+                                                        <input type="radio" id="star3" name="rating"
+                                                            value="3.0" />
+                                                        <label for="star3"> </label>
+                                                        <input type="radio" id="star4" name="rating"
+                                                            value="2.0" />
+                                                        <label for="star4"> </label>
+                                                        <input type="radio" id="star5" name="rating"
+                                                            value="1.0" />
+                                                        <label for="star5"> </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        @endif
-                                        <div id="comment-message" class="form-row">
-                                            <textarea class="rounded" name = "comment" placeholder="Leave a comment..." id = "comment"
-                                                style="width: 100%; height: 5rem"></textarea>
+                                            @endif
                                         </div>
-
-                                        <button class="btn btn-success float-end rounded-pill" type="submit" name="submit"
-                                            id="commentSubmit"> Submit </button>
+                                        <div id="comment-message" class="form-row d-flex align-items-center">
+                                            <textarea class="rounded align-items-center" name = "comment" placeholder="Leave a comment..." id = "comment"
+                                                style="width: 100%; height: 2.5rem"> </textarea>
+                                            <button class="ms-1 btn btn-success float-end rounded" type="submit"
+                                                name="submit" id="commentSubmit" style="height: 2.5rem"> Submit </button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -359,7 +395,7 @@
                             @foreach ($comments as $comment)
                                 <div class="d-flex">
                                     <!-- If you want to add photo add it in this section-->
-                                    <div class="d-flex ms-2 mt-1">
+                                    <div class="d-flex mt-1">
                                         <div class="commentText">
                                             <div class="d-flex">
                                                 <p class="ms-1"><b>{{ $comment->user->username }}</b> </p>
@@ -395,7 +431,7 @@
                             @endforeach
                             {{ $comments->links('pagination::bootstrap-5') }}
                         @else
-                            <p class="text-center"> <i> This catalog has no comments yet... </i> </p>
+                            <p class="text-center"> <i> Be the first to comment. </i> </p>
                         @endif
                     </div>
                     {{-- end for comment section details --}}
@@ -424,12 +460,27 @@
 @section('script')
     {{-- specific scripts here --}}
     <script>
+        let img = document.getElementById('modalImage');
+        let content = document.getElementById('imageContent');
+
+        function openModalImg() {
+            img.style.display = 'block';
+        }
+
+        function closeModalImg(event) {
+            // Check if the click occurred outside of the modal content
+            if (event.target === img) {
+                img.style.display = 'none';
+            }
+        }
+
+
         function openPdfModal() {
-            document.getElementById('pdfModal').style.display = 'block';
+            $('#pdfModal').modal('show');
         }
 
         function closePdfModal() {
-            document.getElementById('pdfModal').style.display = 'none';
+            $('#pdfModal').modal('hide');
         }
     </script>
     @include('utility.sweetAlert2')

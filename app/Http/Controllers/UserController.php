@@ -149,7 +149,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($request->input('id'));
 
-
         // SENDING EMAIL
         $senderEmail = "noreply@gmail.com";
         $receiverEmail = $request->input('email');
@@ -182,7 +181,7 @@ class UserController extends Controller
                 $user->email_verified_at = now();
             }
             $user->update();
-            return redirect()->back()->with('success', 'Email verification confirmation has been sent');
+            return redirect()->back()->with('success', 'Email verification confirmation has been sent.');
         } else {
             // Mail sending failed
             return redirect()->back()->with('error', 'Email confirmation failed to send.');
@@ -275,6 +274,6 @@ class UserController extends Controller
 
     public function myDocuments()
     {
-
+        // reserve for viewing user documents
     }
 }

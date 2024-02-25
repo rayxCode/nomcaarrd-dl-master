@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::create('tbl_affiliations', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('person_in_charge');
-            $table->softDeletes();
-            $table->timestamps();
+        Schema::table('tbl_categories', function (Blueprint $table) {
+            //
+            $table->unsignedBigInteger('edited_by')->nullable()->after('color_code');
+            $table->foreign('edited_by')->references('id')->on('tbl_users')->onDelete('set null');
         });
     }
 
@@ -26,7 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
-        Schema::dropIfExists('tbl_affiliations');
+        Schema::table('categories', function (Blueprint $table) {
+            //
+        });
     }
 };

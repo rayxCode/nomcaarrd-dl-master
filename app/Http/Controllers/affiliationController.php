@@ -27,6 +27,7 @@ class affiliationController extends Controller
         // Validate the request
         $request->validate([
             'name' => 'required|string|max:255',
+            'in_charge' => 'required|string|max:50',
         ]);
 
         // Create a new affiliation
@@ -40,11 +41,9 @@ class affiliationController extends Controller
     {
         // Retrieve a specific affiliation
         $affiliation = Affiliation::findOrFail($id);
-        $request->validate([
-            'name' => 'required',
-        ]);
         try {
             $affiliation->name = $request->input('name');
+            $affiliation->name = $request->input('in_charge');
             $affiliation->editedBy = auth()->user()->username;
             $affiliation->update();
             return redirect()->back()->with('success', 'Edited successfully!');

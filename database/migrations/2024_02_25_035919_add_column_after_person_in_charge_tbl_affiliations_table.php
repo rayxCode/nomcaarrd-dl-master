@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('catalogs', function (Blueprint $table) {
+        Schema::table('tbl_affiliations', function (Blueprint $table) {
             //
-            $table->unsignedBigInteger('comment_id')->nullable();
-            $table->foreign('comment_id')->references('id')->on('comments');
+            $table->unsignedBigInteger('edited_by')->nullable()->after('person_in_charge');
+            $table->foreign('edited_by')->references('id')->on('tbl_users')->onDelete('set null');
         });
     }
 
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('catalogs', function (Blueprint $table) {
+        Schema::table('charge_affiliations', function (Blueprint $table) {
             //
         });
     }

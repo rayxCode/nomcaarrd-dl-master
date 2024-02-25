@@ -4,22 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Bookmark extends Model
+class Reply extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $table = "tbl_bookmarks";
+    protected $table = "tbl_replies";
 
     protected $fillable = [
-        'document_id',
+        'comment_id',
         'user_id',
         'edited_by',
     ];
 
-    public function document()
+    public function comment()
     {
-        return $this->belongsTo(Document::class);
+        return $this->belongsTo(Comment::class);
     }
 
     public function user()

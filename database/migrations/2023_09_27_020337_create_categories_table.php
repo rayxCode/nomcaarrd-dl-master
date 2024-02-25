@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('tbl_affiliations', function (Blueprint $table) {
+        Schema::create('tbl_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('person_in_charge');
+            $table->string('description');
+            $table->string('color_code');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -27,6 +28,6 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::dropIfExists('tbl_affiliations');
+        Schema::dropIfExists('tbl_categories');
     }
 };

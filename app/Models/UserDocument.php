@@ -4,14 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Bookmark extends Model
+class UserDocument extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $table = "tbl_bookmarks";
+    protected $table = 'tbl_users_documents';
 
     protected $fillable = [
+        'author_name',
         'document_id',
         'user_id',
         'edited_by',

@@ -38,13 +38,13 @@
                             @csrf
                             <input type="hidden"
                                 value="
-                            @if (request()->routeIs('review_approved'))1
+                            @if (request()->routeIs('review_approved')) 1
                             @elseif (request()->routeIs('review_declined'))3
                             @elseif(isset($status))
-                                {{$status}}
-                            @else 0
-                            @endif
-                            " name="status">
+                                {{ $status }}
+                            @else 0 @endif
+                            "
+                                name="status">
                             <input type="text" class="form-control rounded-pill" role="search" name="search"
                                 id="searchInput" placeholder="Search documents..."
                                 value="{{ isset($search) ? $search : '' }}">
@@ -73,26 +73,38 @@
                             @if ($catalogs->count() < 1)
                                 <caption> <i>No pending reviews yet.</i> </caption>
                             @else
-                                <caption> <i>Current list for pending documents.</i> </caption>
-                                {{--                                 <!-- Modal -->
-                                <div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-fullscreen">
-                                        <div class="modal-content mx-auto" style="width: 70%; height: 100%">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="pdfModalLabel">{{ $catalogs->title }}</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                                <caption>
+                                    @if (request()->routeIs('review_declined'))
+                                        <i>Current list for declined documents.</i>
+                                    @elseif (request()->routeIs('review_approved'))
+                                        <i>Current list for approved documents.</i>
+                                    @else
+                                        <i>Current list for pending documents.</i>
+                                    @endif
+                                </caption>
+                                @foreach ($catalogs as $catalog)
+                                    <!-- Confirmation Modal for approval -->
+                                    <div id="approveModal{{ $catalog->id}}" class="delete" style="display: none;">
+                                        <div class="delete-content">
+                                            <div>
+                                                APPROVE CONFRIMATION
+                                                <hr class="bg-black">
                                             </div>
-                                            <div class="modal-body">
-                                                <embed src="{{ asset('storage' . $catalogs->fileURL) }}"
-                                                    type="application/pdf" width="100%" height="95%" />
+                                            <div class="card-body">
+                                                <p>Are you sure you want to approve <b>{{$catalog->title}}</b>?
+                                                </p>
+                                            </div>
+                                            <div class="text-center d-flex">
+                                                <button class="btn btn-success p-1" style="width: 50%"
+                                                    onclick="approveItem('{{ $catalog->id }}')">Yes</button>
+                                                &nbsp;
+                                                <button class="btn btn-primary p-1 " style="width: 50%"
+                                                    onclick="closeModalDelete('approveModal{{ $catalog->id }}')">No</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!--End of modal --> --}}
-                                @foreach ($catalogs as $catalog)
+                                    <!-- End for confirmation Modal for approval -->
+
                                     <tr>
                                         <td id="id">{{ $catalog->title }}</td>
                                         @if (request()->routeIs('review_declined') || $catalogs->where('status', 3)->isNotEmpty())
@@ -103,19 +115,21 @@
                                             @if (request()->routeIs('review_approved') || $catalogs->where('status', 1)->isNotEmpty())
                                             @else
                                                 <td class="d-flex" style="min-width: 230px">
-                                                    <form action="{{url('/index/review/g/'.$catalog->code)}}" method="post">
+                                                    <form action="{{ url('/index/review/g/' . $catalog->code) }}"
+                                                        method="post">
                                                         @csrf
                                                         <button class="p-2 btn btn-primary btnAction" type="submit">
                                                             <i class="bi bi-eye-fill"></i> View
                                                         </button>
                                                     </form>
                                                     &nbsp;
-                                                    <form action="{{ route('approved', $catalog->id) }}" method="post">
+                                                    <button class="p-2 btn btn-success btnAction" type="submit"
+                                                    onclick="modalApproveOpen({{$catalog->id}})">
+                                                        <i class="bi bi-check-circle-fill"></i> Approve
+                                                    </button>
+                                                    <form id="approveForm{{$catalog->id}}" action="{{ route('approved', $catalog->id) }}" method="post">
                                                         @csrf
                                                         <input type="hidden" value="1" name="status">
-                                                        <button class="p-2 btn btn-success btnAction" type="submit">
-                                                            <i class="bi bi-check-circle-fill"></i> Approve
-                                                        </button>
                                                     </form>
                                                     &nbsp;
                                                     <form action="{{ route('declined', $catalog->id) }}" method="post">
@@ -149,6 +163,22 @@
 
 @section('scripts')
     <script>
+        // Confirmation modals
+         function modalApproveOpen(id) {
+            let modal = document.getElementById("approveModal" + id);
+            modal.style.display = "block";
+        }
+
+        function closeModalDelete(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "none";
+        }
+
+        function approveItem(itemId) {
+            var form = document.getElementById("approveForm" + itemId);
+            form.submit();
+        }
+
         function openPdfModal() {
             document.getElementById('pdfModal').style.display = 'block';
         }

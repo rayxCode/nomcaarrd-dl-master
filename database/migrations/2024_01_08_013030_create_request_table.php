@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('request_access', function (Blueprint $table) {
+        Schema::create('tbl_requests', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('status')->default(0);
-            $table->unsignedBigInteger('catalog_id');
-            $table->foreign('catalog_id')->references('id')->on('catalogs')->onDelete('cascade');
+            $table->date('expires_on');
+            $table->unsignedBigInteger('document_id');
+            $table->foreign('document_id')->references('id')->on('tbl_documents')->onDelete('cascade');
             $table->unsignedBigInteger('users_id');
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('users_id')->references('id')->on('tbl_users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('tbl_requests');
     }
 };

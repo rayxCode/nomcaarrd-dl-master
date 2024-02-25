@@ -9,12 +9,14 @@ use App\Models\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
-    public function index(){
+    public function index()
+    {
         $user = User::all();
         $userCounts = $user->count();
         $catalogs = Catalog::all();
@@ -23,17 +25,25 @@ class Controller extends BaseController
         $approved = $catalogs->where('status', 1)->count();
         $declined = $catalogs->where('status', 3)->count();
         $affiliationCounts = Affiliation::count();
-        return view('admin.admin_dashboard', compact('userCounts',
-        'catalogCounts', 'approved', 'pending', 'declined', 'affiliationCounts'));
+        return view('admin.admin_dashboard', compact(
+            'userCounts',
+            'catalogCounts',
+            'approved',
+            'pending',
+            'declined',
+            'affiliationCounts'
+        ));
     }
 
-    public function requestAccessIndex(){
-        $index = Requests::where('status', 0)->paginate(10);
+    public function requestAccessIndex()
+    {
+        $index = Requests::where('status', 0)->orderBy('created_at','desc')->paginate(10);
         return view('admin.admin_requests', compact('index'));
     }
 
 
-    public function requestAccess(Request $request){
+    public function requestAccess(Request $request)
+    {
 
         $requestFile = Requests::create([
             'catalog_id' => $request->input('id'),
@@ -47,9 +57,33 @@ class Controller extends BaseController
     {
         $id = $request->input('id');
         $requestsFile = Requests::findOrFail($id);
-        $requestsFile->status = $request->input('status');
-        $requestsFile->update();
+        $user = User::findOrFail($requestsFile->users_id);
 
-        return redirect()->back()->with('success', 'Request updated successfully');
+        // SENDING EMAIL
+        $receiverEmail = $user->email;
+
+        $dummySenderEmail = 'noreply@gmail.com';
+        $dummySenderName = 'NOMCAARRD E-Library';
+
+        $messageBody = "\nYour requested file, " . $requestsFile->catalog->title . " has been approved and is now available for viewing. \nThank you for your patience. \n\n Sincerely, \n NOMCAARRD E-Library";
+
+        $emailContent = "Greetings, " . $user->username . "! \n" . $messageBody;
+
+        $mailSent = Mail::raw($emailContent, function ($message) use ($dummySenderEmail, $dummySenderName, $receiverEmail) {
+            $message->subject('NOMCAARRD E-Library Request File Available')
+                ->from($dummySenderEmail, $dummySenderName)
+                ->to($receiverEmail);
+        });
+        // SENDING EMAIL (END)
+        if ($mailSent) {
+            // Mail was sent successfully
+            $requestsFile->status = $request->input('status');
+            $requestsFile->update();
+            return redirect()->back()->with('success', 'Request updated successfully.');
+        }
+        else
+        {
+            return redirect()->back()->with('error', 'Something went wrong.');
+        }
     }
 }

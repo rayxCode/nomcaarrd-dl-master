@@ -6,24 +6,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Comment extends Model
+class Document extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = "tbl_comments";
+    protected $table = "tbl_documents";
 
     protected $fillable = [
-        'user_id',
-        'document_id',
+        'title',
+        'visibility',
+        'publisher',
+        'description',
+        'publishedDate',
+        'category_id',
+        'fileURL',
+        'status',
         'rating',
-        'comment',
+        'nUserRated',
+        'view_count',
+        'dl_count',
+        'photo_path',
+        'remarks',
         'edited_by',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $dates = [
+        'publishedDate',
+    ];
 
     public function category()
     {
@@ -34,4 +43,5 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class, 'edited_by');
     }
+
 }

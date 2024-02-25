@@ -28,6 +28,7 @@ class ApptController extends Controller
     public function store(Request $request){
         $appointment = Appointments::create([
             'name' => $request->input('name'),
+            'email'=> $request->input('email'),
             'time' => $request->input('schedule'),
             'status' => 0,
         ]);

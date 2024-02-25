@@ -2,61 +2,39 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable
+class User extends Model
 {
+    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $primaryKey = 'id';
+    protected $table = "tbl_users";
+
     protected $fillable = [
-        'username',
+        'access',
         'email',
-        'fullname',
+        'password',
+        'username',
         'firstname',
         'middlename',
         'lastname',
-        'password',
         'affiliation_id',
+        'status',
+        'verified_email_at',
         'photo_path',
-        'access_level',
-        'email_verified_at',
-    ];
-    protected $guarded = ['password', 'email'];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-    ];
-    /**
-     * The attributes that should be guarded.
-     *
-     * @var array<int, string>
-     */
-    // Add other columns as needed
-
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'password' => 'hashed',
+        'edited_by',
     ];
 
     public function affiliation()
     {
-        return $this->belongsTo(Affiliation::class, 'affiliation_id');
+        return $this->belongsTo(Affiliation::class);
+    }
+
+    public function editor()
+    {
+        return $this->belongsTo(User::class, 'edited_by');
     }
 }
